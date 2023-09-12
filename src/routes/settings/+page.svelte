@@ -2,8 +2,13 @@
 	import type { Time } from '$lib/models/Time';
 	import { IconArrowBack } from '@tabler/icons-svelte';
 	import { settingsStore } from '../../stores/store';
+	import { Toast, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { initializeStores } from '@skeletonlabs/skeleton';
 
-	let startTime: string;
+	initializeStores();
+	const toastStore = getToastStore();
+
+	let startTime: string = formatTime($settingsStore.standardStartTime);
 
 	function formatDate(date: Date): string {
 		return (
@@ -20,6 +25,12 @@
 		const start: Time = { hours: parseInt(startTimes[0]), minutes: parseInt(startTimes[1]) };
 
 		$settingsStore.standardStartTime = start;
+
+		const toastSettings: ToastSettings = {
+			message: 'Erfolgreich gesichert!',
+			background: 'variant-filled-success'
+		};
+		toastStore.trigger(toastSettings);
 	}
 </script>
 
@@ -27,6 +38,7 @@
 	<a class="btn variant-filled-primary m-10" href="/">
 		<IconArrowBack />
 	</a>
+	<Toast position="tr" />
 
 	<div class="card p-4 mx-auto w-1/2">
 		<header class="card-header text-xl text-center"><strong>Einstellungen</strong></header>

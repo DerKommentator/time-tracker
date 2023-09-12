@@ -8,7 +8,11 @@
 	import { fly, slide } from 'svelte/transition';
 	import { settingsStore, timeslotStore } from '../stores/store';
 	import { onMount } from 'svelte';
-	import { Toast, type ToastSettings, toastStore } from '@skeletonlabs/skeleton';
+	import { Toast, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { initializeStores } from '@skeletonlabs/skeleton';
+
+	initializeStores();
+	const toastStore = getToastStore();
 
 	let startTime: string = formatTime($settingsStore.standardStartTime || { hours: 7, minutes: 30 });
 	let endTime: string;
