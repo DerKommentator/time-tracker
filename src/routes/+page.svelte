@@ -2,15 +2,13 @@
 	import { IconSettings, IconTrash } from '@tabler/icons-svelte';
 	import type { Timeslot } from '$lib/models/Timeslot';
 	import TimeInput from '$lib/components/TimeInput.svelte';
-	import { format } from '$lib/dispatcher/format';
 	import type { Time } from '$lib/models/Time';
 	import { flip } from 'svelte/animate';
 	import { sineInOut } from 'svelte/easing';
 	import { fly, slide } from 'svelte/transition';
 	import { settingsStore, timeslotStore } from '../stores/store';
-	import { onMount } from 'svelte';
 
-	let startTime: string = formatTime($settingsStore.standardStartTime);
+	let startTime: string = formatTime($settingsStore.standardStartTime || { hours: 7, minutes: 30 });
 	let endTime: string;
 	let date: Date = new Date();
 
