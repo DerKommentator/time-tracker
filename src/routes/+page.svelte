@@ -7,10 +7,12 @@
 	import { sineInOut } from 'svelte/easing';
 	import { fly, slide } from 'svelte/transition';
 	import { settingsStore, timeslotStore } from '../stores/store';
+	import { onMount } from 'svelte';
+	import { Toast, type ToastSettings, toastStore } from '@skeletonlabs/skeleton';
 
 	let startTime: string = formatTime($settingsStore.standardStartTime || { hours: 7, minutes: 30 });
 	let endTime: string;
-	let date: Date = new Date();
+	let dateString: string = new Date().toISOString().split('T')[0];
 
 	let inputError = false;
 	let inputErrorLabel = '';
@@ -34,9 +36,9 @@
 		}
 	];*/
 
-	// const timeFormat = new Intl.DateTimeFormat('de-DE', {
-	// 	timeStyle: 'short'
-	// });
+	const dateFormatDe = new Intl.DateTimeFormat('en-US', {
+		dateStyle: 'medium'
+	});
 
 	function saveTime(): void {
 		const startTimes = startTime.split(':');
@@ -55,10 +57,16 @@
 				uuid: crypto.randomUUID(),
 				begin: { hours: start.hours, minutes: start.minutes },
 				end: { hours: end.hours, minutes: end.minutes },
-				date: date
+				date: new Date(dateString)
 			},
 			...$timeslotStore
 		];
+
+		const toastSettings: ToastSettings = {
+			message: 'Erfolgreich gesichert!',
+			background: 'variant-filled-success'
+		};
+		toastStore.trigger(toastSettings);
 	}
 
 	function formatDate(date: Date): string {
@@ -77,6 +85,7 @@
 </script>
 
 <div class="relative">
+	<Toast position="tr" />
 	<div class="container min-w-full max-h-screen flex justify-between p-10">
 		<div class="card p-4 self-baseline flex-none w-1/3">
 			<header class="card-header text-xl"><strong>Hinzufügen:</strong></header>
@@ -84,7 +93,7 @@
 				<div>
 					<span><strong>Datum:</strong></span>
 					<div class="flex gap-4 m-2 mb-8">
-						<input class="input text-center text-lg" type="date" bind:value={date} />
+						<input class="input text-center text-lg" type="date" bind:value={dateString} />
 					</div>
 				</div>
 				<div>
@@ -151,9 +160,9 @@
 					<header class="card-header text-xl flex justify-between">
 						<strong>
 							<!--new Date() is necessery. Otherwise it would throw an exeption. Dont know why-->
-							{new Date(tt.date).getDate()}.{new Date(tt.date).getMonth() + 1}.{new Date(
-								tt.date
-							).getFullYear()}
+							{String(new Date(tt.date).getDate()).padStart(2, '0')}.{String(
+								new Date(tt.date).getMonth() + 1
+							).padStart(2, '0')}.{new Date(tt.date).getFullYear()}
 						</strong>
 						<button class="btn variant-filled-surface" on:click={() => deleteTimeslot(index)}
 							><IconTrash /></button
