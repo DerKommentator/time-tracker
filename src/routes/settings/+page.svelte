@@ -40,7 +40,7 @@
 	</a>
 	<Toast position="tr" />
 
-	<div class="card p-4 mx-auto w-1/2">
+	<div class="card p-4 mx-4 lg:mx-auto lg:w-1/2">
 		<header class="card-header text-xl text-center"><strong>Einstellungen</strong></header>
 		<section class="m-8">
 			<div>
