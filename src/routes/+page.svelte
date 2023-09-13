@@ -72,7 +72,7 @@
 		};
 		toastStore.trigger(toastSettings);
 
-		(window as any).api.notification(['Hallo', 'TestBody']);
+		//(window as any).api.notification(['Hallo', 'TestBody']);
 	}
 
 	function formatDate(date: Date): string {
@@ -203,7 +203,4 @@
 			</div>
 		</div>
 	</div>
-	<a class="absolute bottom-0 left-0 btn variant-filled-primary m-10" href="/settings">
-		<IconSettings />
-	</a>
 </div>

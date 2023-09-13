@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { IconSettings } from '@tabler/icons-svelte';
+
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
 	import { AppShell, AppBar, LightSwitch } from '@skeletonlabs/skeleton';
@@ -15,6 +17,9 @@
 				<a class="text-xl uppercase" href="/">TimeTracker</a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
+				<a class="btn" href="/settings">
+					<IconSettings />
+				</a>
 				<LightSwitch />
 			</svelte:fragment>
 		</AppBar>
