@@ -49,7 +49,7 @@
 				<IconHome /><span class="text-lg font-semibold">Home</span>
 			</a>
 			<a class="btn variant-ringed hidden lg:inline-flex" href="/statistics">
-				<IconChartPie /><span class="text-lg font-semibold">Statistiken</span>
+				<IconChartPie /><span class="text-lg font-semibold">Statistics</span>
 			</a>
 			<svelte:fragment slot="trail">
 				<a class="btn hidden md:inline-flex" href="/settings">

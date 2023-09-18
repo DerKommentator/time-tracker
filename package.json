@@ -6,7 +6,7 @@
 	"main": "electron/main.cjs",
 	"scripts": {
 		"dev": "vite dev",
-		"dev:electron": "concurrently --kill-others \"vite dev\" \"electron ./electron/main.cjs\"",
+		"dev:electron": "concurrently --kill-others \"vite dev\" \"electron ./electron/main.cjs --trace-warnings\"",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",

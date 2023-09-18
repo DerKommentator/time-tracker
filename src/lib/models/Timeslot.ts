@@ -1,3 +1,4 @@
+import type { Statistics } from "./Statistics";
 import type { Time } from "./Time";
 
 export type Timeslot = {
@@ -5,4 +6,5 @@ export type Timeslot = {
     begin: Time;
     end: Time;
     date: Date;
+    statistics: Statistics;
 }
