@@ -19,10 +19,12 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run svelte build
         run: npm run build:svelte
+      - name: Install browser for tests
+        run: npx playwright install chromium
       - name: Run tests
         run: npm run test
       - name: Upload test results
