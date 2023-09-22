@@ -3,7 +3,8 @@
 	import { onMount } from 'svelte';
 	import TimeGridCard from './TimeGridCard.svelte';
 	import type { Time } from '$lib/models/Time';
-	import { timeToMinutes } from '$lib/utils/HelperFunctions';
+	import { formatOvertime, timeToMinutes } from '$lib/utils/HelperFunctions';
+	import { statisticsStore } from '../../../stores/store';
 
 	export let data: Timeslot[] = [];
 
@@ -14,6 +15,10 @@
 	};
 
 	function calcAverage(values: Timeslot[]): { avgStart: number; avgEnd: number } {
+		if (values.length == 0) {
+			return { avgStart: 0, avgEnd: 0 };
+		}
+
 		let sumStart: number = 0;
 		let sumEnd: number = 0;
 
@@ -27,23 +32,37 @@
 
 	// TODO: OPTIMIZE
 	function timeLGreaterR(lhs: Time, rhs: Time): number {
-		if (lhs.hours > rhs.hours || (lhs.hours == rhs.hours && lhs.minutes >= rhs.minutes)) return 1;
-		else if (lhs.hours < rhs.hours || (lhs.hours == rhs.hours && lhs.minutes <= rhs.minutes))
-			return -1;
-		else return 0;
+		if (lhs.hours === rhs.hours) {
+			if (lhs.minutes === rhs.minutes) {
+				return 0;
+			} else {
+				return lhs.minutes > rhs.minutes ? 1 : -1;
+			}
+		} else {
+			return lhs.hours > rhs.hours ? 1 : -1;
+		}
 	}
 
 	// TODO: OPTIMIZE
 	function calcMedian(values: Timeslot[]): { medianStart: Time; medianEnd: Time } {
-		values.slice().sort((lhs: Timeslot, rhs: Timeslot) => {
+		if (values.length === 0) {
+			return {
+				medianStart: { hours: 0, minutes: 0 },
+				medianEnd: { hours: 0, minutes: 0 }
+			};
+		}
+
+		// Sort by begin
+		values.sort((lhs: Timeslot, rhs: Timeslot) => {
 			return timeLGreaterR(lhs.begin, rhs.begin);
 		});
-		let medianStartSlot = values[Math.ceil(values.length / 2)];
+		const medianStartSlot: Timeslot = values[Math.floor(values.length / 2)];
 
-		values.slice().sort((lhs: Timeslot, rhs: Timeslot) => {
+		// Sort by end
+		values.sort((lhs: Timeslot, rhs: Timeslot) => {
 			return timeLGreaterR(lhs.end, rhs.end);
 		});
-		let medianEndSlot = values[Math.ceil(values.length / 2)];
+		const medianEndSlot: Timeslot = values[Math.floor(values.length / 2)];
 
 		return { medianStart: medianStartSlot.begin, medianEnd: medianEndSlot.end };
 	}
@@ -60,4 +79,8 @@
 	<TimeGridCard headline="Abfahrtsszeit Durchschnitt:" displayText={average.avgEnd} />
 	<TimeGridCard headline="Ankunftszeit Median:" displayText={median.medianStart} />
 	<TimeGridCard headline="Abfahrtsszeit Median:" displayText={median.medianEnd} />
+	<TimeGridCard
+		headline="Verfügbare Überstunden:"
+		displayText={formatOvertime($statisticsStore.availableOvertime)}
+	/>
 </div>

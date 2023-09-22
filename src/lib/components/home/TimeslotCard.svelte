@@ -4,7 +4,7 @@
 	import { fly } from 'svelte/transition';
 	import { statisticsStore, timeslotStore } from '../../../stores/store';
 	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
-	import { calcTime, formatTime } from '$lib/utils/HelperFunctions';
+	import { calcTime, formatDate, formatTime } from '$lib/utils/HelperFunctions';
 	import type { Time } from '$lib/models/Time';
 	import { db } from '$lib/db/db';
 	import { liveQuery } from 'dexie';
@@ -22,20 +22,34 @@
 				.where('uuid')
 				.equals(id)
 				.delete()
-				.then(() => (status = { text: 'Deleted!', cssColor: 'variant-filled-success' }));
+				.then(() => {
+					status = { text: 'Deleted!', cssColor: 'variant-filled-success' };
+					const toastSettings: ToastSettings = {
+						message: status.text,
+						background: status.cssColor
+					};
+
+					toastStore.trigger(toastSettings);
+				});
 		} catch (error) {
-			status = { text: 'Failed to delete the timeslot!', cssColor: 'variant-filled-success' };
+			status = { text: 'Failed to delete the timeslot!', cssColor: 'variant-filled-error' };
+			const toastSettings: ToastSettings = {
+				message: status.text,
+				background: status.cssColor
+			};
+
+			toastStore.trigger(toastSettings);
 		}
 		// $timeslotStore = [...$timeslotStore.slice(0, index), ...$timeslotStore.slice(index + 1)];
 
 		$statisticsStore.availableOvertime = calcTime(timeToRemove, $statisticsStore.availableOvertime);
 
-		const toastSettings: ToastSettings = {
-			message: 'Deleted!',
-			background: 'variant-filled-success'
-		};
+		// const toastSettings: ToastSettings = {
+		// 	message: status.text,
+		// 	background: status.cssColor
+		// };
 
-		toastStore.trigger(toastSettings);
+		// toastStore.trigger(toastSettings);
 	}
 </script>
 

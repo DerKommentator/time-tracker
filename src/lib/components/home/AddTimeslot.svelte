@@ -1,7 +1,25 @@
+<script context="module" lang="ts">
+	import { get } from 'svelte/store';
+	import { settingsStore } from '../../../stores/store';
+	import { STARTUP_TIME } from '$lib/utils/Constants';
+
+	let startTime: string =
+		formatTime(get(settingsStore).standardStartTime) || formatTime({ hours: 7, minutes: 30 });
+
+	if (STARTUP_TIME instanceof Date) {
+		startTime = formatDateToTime(STARTUP_TIME);
+	}
+</script>
+
 <script lang="ts">
-	import { calcTime, formatDate, formatTime, stringToTime } from '$lib/utils/HelperFunctions';
-	import { IconClock } from '@tabler/icons-svelte';
-	import { settingsStore, statisticsStore, timeslotStore } from '../../../stores/store';
+	import {
+		calcTime,
+		formatDate,
+		formatDateToTime,
+		formatTime,
+		stringToTime
+	} from '$lib/utils/HelperFunctions';
+	import { statisticsStore } from '../../../stores/store';
 	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { Time } from '$lib/models/Time';
 	import type { Timeslot } from '$lib/models/Timeslot';
@@ -16,8 +34,6 @@
 	//export let timeslots: Timeslot[];
 	export let settings: Settings;
 	export let statistics: StatisticsStore;
-
-	let startTime: string = formatTime($settingsStore.standardStartTime || { hours: 7, minutes: 30 });
 	let endTime: string;
 	let now: Date = new Date();
 	let dateString: string = now.toISOString().split('T')[0];
@@ -59,7 +75,7 @@
 		}
 
 		let duplicates = await db.timeslots.where('date').equals(new Date(dateString)).count();
-		console.log(duplicates);
+
 		if (duplicates > 0) {
 			dateError = true;
 			errorMessage = 'A timeslot for this date already exist!';
@@ -108,7 +124,25 @@
 		};
 		toastStore.trigger(toastSettings);
 
-		//(window as any).api.notification(['Hallo', 'TestBody']);
+		//(window as any).ipcRenderer.notification(['Hallo', 'TestBody']);
+	}
+
+	if ((window as any)?.IN_DESKTOP_ENV) {
+		(window as any).ipcRenderer.on('sendEvent-saveTime', (event: any, arg: any) => {
+			endTime = formatDateToTime(new Date());
+			saveTime();
+
+			//(window as any).ipcRenderer.send('trigger-close');
+		});
+
+		(window as any).ipcRenderer.on('sendEvent-exit', (event: any, arg: any) => {
+			(window as any).ipcRenderer.send('trigger-close');
+		});
+
+		(window as any).ipcRenderer.on('sendEvent-set-startTime', () => {
+			startTime = formatDateToTime(new Date());
+			dateString = new Date().toISOString().split('T')[0];
+		});
 	}
 </script>
 

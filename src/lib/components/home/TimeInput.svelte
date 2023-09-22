@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatDate } from '$lib/utils/HelperFunctions';
+	import { formatDateToTime } from '$lib/utils/HelperFunctions';
 	import { IconClock } from '@tabler/icons-svelte';
 
 	export let label: string;
@@ -23,7 +23,7 @@
 	<button
 		class="btn variant-filled-primary"
 		on:click={() => {
-			time = formatDate(new Date());
+			time = formatDateToTime(new Date());
 		}}
 		><IconClock class="inline lg:hidden" /><span class="hidden lg:inline lg:!mx-0"
 			>Set current time</span

@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 
 	export let headline: string;
-	export let displayText: string | number | Time;
+	export let displayText: string | number | Time = '00:00';
 
 	let formattedText: string;
 

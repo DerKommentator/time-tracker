@@ -1,0 +1,26 @@
+{
+	"icon": "public/favicon.png",
+	"files": [
+		"electron/main.cjs",
+		"electron/preload.js",
+		{
+			"from": "build",
+			"to": ""
+		}
+	],
+	"productName": "TimeTracker",
+	"appId": "timetracker",
+	"directories": {
+		"output": "dist"
+	},
+	"dmg": {
+		"title": "${productName} ${version}"
+	},
+	"linux": {
+		"target": ["AppImage", "deb"]
+	},
+	"win": {
+		"target": "NSIS",
+		"icon": "build/icon.ico"
+	}
+}

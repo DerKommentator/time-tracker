@@ -20,10 +20,12 @@ export function formatTime(time: Time): string {
     return String(time.hours).padStart(2, '0') + ':' + String(time.minutes).padStart(2, '0');
 }
 
+export function formatDateToTime(date: Date): string {
+    return new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+}
+
 export function formatDate(date: Date): string {
-    return (
-        String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0')
-    );
+    return date.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
 export function stringToTime(time: string): Time {
@@ -44,4 +46,12 @@ export function calcTime(start: Time, end: Time, addition: boolean = false): Tim
     let minutes: number = remainder * 60;
 
     return { hours: hours, minutes: parseInt(minutes.toFixed(0)) };
+}
+
+export function formatOvertime(overtime: Time): string {
+    if (overtime.hours < 0 || overtime.minutes < 0) {
+        return `-${formatTime({ hours: Math.abs(overtime.hours), minutes: Math.abs(overtime.minutes) })}`;
+    } else {
+        return formatTime(overtime);
+    }
 }

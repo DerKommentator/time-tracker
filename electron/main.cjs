@@ -8,10 +8,15 @@ const {
 	Menu,
 	Notification,
 	ipcMain,
-	powerMonitor
+	powerMonitor,
+	powerSaveBlocker,
+	dialog
 } = require('electron');
 const path = require('path');
 const ws = require('electron-window-state');
+
+const serve = require('electron-serve');
+const serveURL = serve({ directory: '.' });
 //const serve = require("electron-serve");
 try {
 	require('electron-reloader')(module);
@@ -25,8 +30,7 @@ if (process.platform === 'win32') {
 	app.setAppUserModelId('TimeTracker' || app.name);
 }
 
-//const loadURL = serve({directory: "."});
-const isDevEnvironment = process.env.APP_DEV === 'true' || 'true';
+const isDevEnvironment = process.env.APP_DEV === 'true';
 const port = process.env.PORT || 5173;
 
 function showNotification(title, bodyText) {
@@ -56,9 +60,10 @@ function showNotification(title, bodyText) {
 // 	});
 // }
 
+let suspendAlreadyTriggered = false;
 let top = {}; // prevent gc to keep windows
 
-const createWindow = () => {
+function createWindow() {
 	// Create the browser window.
 	let mws = ws({
 		defaultWidth: 1300,
@@ -71,6 +76,7 @@ const createWindow = () => {
 		width: mws.width,
 		height: mws.height,
 		title: 'Timetracker',
+		show: true,
 
 		webPreferences: {
 			preload: path.join(app.getAppPath(), 'preload.js')
@@ -106,13 +112,14 @@ const createWindow = () => {
 	top.mainWindow.tray.on('click', () => {
 		top.mainWindow.show();
 	});
+
 	top.mainWindow.tray.setToolTip('TimeTracker');
 	top.mainWindow.tray.setTitle('TimeTracker'); // macOS only
 
+	mws.manage(top.mainWindow);
 	// define how electron will load the app
 	if (isDevEnvironment) {
 		// if your vite app is running on a different port, change it here
-		mws.manage(top.mainWindow);
 		top.mainWindow.loadURL('http://localhost:5173/');
 		//loadVite(port);
 
@@ -126,15 +133,27 @@ const createWindow = () => {
 		top.mainWindow.removeMenu();
 
 		// when not in dev mode, load the build file instead
-		top.mainWindow.loadFile(path.join(__dirname, 'build', 'index.html'));
-		// loadURL(top.mainWindow);
+		//top.mainWindow.loadFile(path.join(__dirname, 'build', 'index.html'));
+		serveURL(top.mainWindow);
 
 		log('Electron running in prod mode: 🚀');
 	}
-};
+}
 
 ipcMain.on('notification', (event, arg) => {
 	showNotification(arg[0], arg[1]);
+});
+
+ipcMain.on('trigger-close', () => {
+	// BrowserWindow "close" event spawn after quit operation,
+	// it requires to clean up listeners for "close" event
+
+	//top.mainWindow.removeAllListeners('close');
+
+	// release windows
+	//top = null;
+
+	app.exit();
 });
 
 // This method will be called when Electron has finished
@@ -142,18 +161,43 @@ ipcMain.on('notification', (event, arg) => {
 // Some APIs can only be used after this event occurs.
 app.once('ready', createWindow);
 
+// app.whenReady().then(() => {
+// 	createWindow();
+// });
+
 app.on('activate', () => {
 	// On macOS it's common to re-create a window in the app when the
 	// dock icon is clicked and there are no other windows open.
 	if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-app.on('before-quit', () => {
-	// BrowserWindow "close" event spawn after quit operation,
-	// it requires to clean up listeners for "close" event
-	top.mainWindow.removeAllListeners('close');
-	// release windows
-	top = null;
+app.on('before-quit', (e) => {
+	e.preventDefault();
+	dialog
+		.showMessageBox({
+			type: 'info',
+			buttons: ['Yes', 'No'],
+			cancelId: 1,
+			defaultId: 0,
+			title: 'Warning',
+			detail: 'Do you want to save the current time as work of end time?'
+		})
+		.then(({ response, checkboxChecked }) => {
+			if (response == 0) {
+				// trigger save of time in app
+				top.mainWindow.webContents.send('sendEvent-saveTime');
+				top.mainWindow.webContents.send('sendEvent-exit');
+			} else {
+				// BrowserWindow "close" event spawn after quit operation,
+				// it requires to clean up listeners for "close" event
+				top.mainWindow.removeAllListeners('close');
+
+				// release windows
+				top = null;
+
+				app.exit();
+			}
+		});
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -166,25 +210,43 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-// powerMonitor.addListener('lock-screen', () => {
-// 	log('lock-screen');
-// });
+// powerMonitor.addListener('lock-screen', () => {});
 
 // powerMonitor.addListener('unlock-screen', () => {
-// 	log('unlock-screen');
+// 	if (suspendEventTriggered) {
+// 		log('unlock-screen triggered after suspend');
+// 		top.mainWindow.webContents.send('sendEvent-set-startTime');
+// 	}
+
+// suspendEventTriggered = false;
 // });
 
 powerMonitor.addListener('suspend', () => {
+	powerSaveBlocker.start('prevent-app-suspension');
+
 	log('suspend');
+	if (!suspendAlreadyTriggered) {
+		top.mainWindow.webContents.send('sendEvent-saveTime');
+
+		suspendAlreadyTriggered = true;
+	}
+});
+
+powerMonitor.addListener('resume', () => {
+	log('resume');
+	top.mainWindow.webContents.send('sendEvent-set-startTime');
+
+	suspendAlreadyTriggered = false;
 });
 
 // https://www.npmjs.com/package/@paymoapp/electron-shutdown-handler
-// shutdown works only on linux / macOS
+// shutdown only works on linux / macOS
 powerMonitor.addListener('shutdown', (event) => {
 	log('shutdown');
-	showNotification('Shutdown', 'Shutdown');
+	//showNotification('Shutdown', 'Shutdown');
 });
 
 process.on('exit', (event) => {
+	//event.preventDefault();
 	log('exit shutdown');
 });

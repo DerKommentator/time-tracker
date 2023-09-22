@@ -23,7 +23,9 @@ settingsStore.subscribe((value) => localStorage.setItem("settings", JSON.stringi
 
 // -------------- Statistics Store --------------
 
-const storedStatistics: StatisticsStore = JSON.parse(localStorage.getItem("statistics") || "{}");
+let defaultStats: StatisticsStore = { availableOvertime: { hours: 0, minutes: 0 } };
+
+const storedStatistics: StatisticsStore = JSON.parse(localStorage.getItem("statistics") || JSON.stringify(defaultStats));
 
 export const statisticsStore = writable(storedStatistics);
 
