@@ -17,7 +17,7 @@
 		"title": "${productName} ${version}"
 	},
 	"linux": {
-		"target": ["AppImage", "deb"]
+		"target": ["7z", "deb"]
 	},
 	"win": {
 		"target": "NSIS",

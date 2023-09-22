@@ -20,8 +20,8 @@
 		"package": "npm run build && electron-forge package",
 		"make": "npm run build && electron-forge make",
 		"test": "npx playwright test",
-		"dist": "npm run build && electron-builder",
-		"build:electron": "electron-builder --config build.config.json",
+		"dist": "npm run build && electron-builder -wl",
+		"build:electron": "electron-builder -wl --config build.config.json",
 		"build": "cross-env APP_DEV=false npm run build:svelte && npm run build:electron"
 	},
 	"devDependencies": {
