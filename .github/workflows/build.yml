@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Dpkg changes
-        run: dpkg --add-architecture i386 && apt-get update
+        run: sudo dpkg --add-architecture i386 && sudo apt-get update
 
       - name: Install wine for building for windows
         run: sudo apt-get install -y wine32
