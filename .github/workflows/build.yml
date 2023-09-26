@@ -50,6 +50,8 @@ jobs:
 
       - name: Build electron application
         run: npm run build:electron
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Read release.md and use it as a body of new release
         id: read_release
