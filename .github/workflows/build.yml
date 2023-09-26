@@ -49,28 +49,28 @@ jobs:
           retention-days: 30
 
       - name: Build electron application
-        run: npm run build:electron
+        run: npm run build:electronAsRelease
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      - name: Read release.md and use it as a body of new release
-        id: read_release
-        shell: bash
-        run: |
-          r=$(cat RELEASE.md)
-          r="${r//'%'/'%25'}"
-          r="${r//$'\n'/'%0A'}"
-          r="${r//$'\r'/'%0D'}"
-          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
+      # - name: Read release.md and use it as a body of new release
+      #   id: read_release
+      #   shell: bash
+      #   run: |
+      #     r=$(cat RELEASE.md)
+      #     r="${r//'%'/'%25'}"
+      #     r="${r//$'\n'/'%0A'}"
+      #     r="${r//$'\r'/'%0D'}"
+      #     echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
 
-      - name: Upload Binaries to Release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          file: |
-            dist/TimeTracker-${{github.ref_name}}-linux-x64.tar.gz
-            dist/TimeTracker-${{github.ref_name}}-win-installer-x64.exe
-            dist/TimeTracker-${{github.ref_name}}-win-portable-x64.exe
-          body: |
-            ${{ steps.read_release.outputs.RELEASE_BODY }}
+      # - name: Upload Binaries to Release
+      #   uses: svenstaro/upload-release-action@v2
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     tag: ${{ github.ref }}
+      #     file: |
+      #       dist/TimeTracker-${{github.ref_name}}-linux-x64.tar.gz
+      #       dist/TimeTracker-${{github.ref_name}}-win-installer-x64.exe
+      #       dist/TimeTracker-${{github.ref_name}}-win-portable-x64.exe
+      #     body: |
+      #       ${{ steps.read_release.outputs.RELEASE_BODY }}

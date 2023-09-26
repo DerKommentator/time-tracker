@@ -4,6 +4,7 @@
 		"electron/preload.js",
 		"electron/logoPng/icon.png",
 		"electron/icon.ico",
+		"RELEASE.md",
 		{
 			"from": "build",
 			"to": ""
@@ -31,5 +32,12 @@
 	},
 	"portable": {
 		"artifactName": "${productName}-${version}-${os}-portable-${arch}.${ext}"
-	}
+	},
+	"publish": [
+		{
+			"provider": "github",
+			"private": true,
+			"releaseType": "release"
+		}
+	]
 }
