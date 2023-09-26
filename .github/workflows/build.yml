@@ -20,7 +20,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Install xmllint
+      - name: Install wine for building for windows
         run: sudo apt-get install -y wine-stable
 
       - name: Setup Node.js
