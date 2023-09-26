@@ -13,7 +13,7 @@ timeslotStore.subscribe((value) => localStorage.setItem("trackedTime", JSON.stri
 
 // -------------- Settings Store --------------
 
-let defaultSettings: Settings = { plannedWorkingTime: { hours: 7, minutes: 30 }, standardStartTime: { hours: 7, minutes: 30 } };
+let defaultSettings: Settings = { plannedWorkingTime: { hours: 7, minutes: 30 }, standardStartTime: { hours: 7, minutes: 30 }, useStartupTime: true };
 
 const storedSettings: Settings = JSON.parse(localStorage.getItem("settings") || JSON.stringify(defaultSettings));
 

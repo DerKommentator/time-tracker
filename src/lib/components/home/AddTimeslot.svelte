@@ -6,7 +6,7 @@
 	let startTime: string =
 		formatTime(get(settingsStore).standardStartTime) || formatTime({ hours: 7, minutes: 30 });
 
-	if (STARTUP_TIME instanceof Date) {
+	if (STARTUP_TIME instanceof Date && get(settingsStore).useStartupTime) {
 		startTime = formatDateToTime(STARTUP_TIME);
 	}
 </script>
@@ -129,7 +129,10 @@
 
 	if ((window as any)?.IN_DESKTOP_ENV) {
 		(window as any).ipcRenderer.on('sendEvent-saveTime', (event: any, arg: any) => {
-			endTime = formatDateToTime(new Date());
+			const now = new Date();
+			console.log('kekl');
+			// Add 1 minute so the end time is always greater than the start time
+			endTime = formatDateToTime(new Date(now.getTime() + 60000));
 			saveTime();
 
 			//(window as any).ipcRenderer.send('trigger-close');

@@ -1,14 +1,21 @@
-name: Build and create app
+name: Build, Test and Publish
+# on:
+#   push:
+#     branches: [main]
+
 on:
   push:
-    branches: [main]
+    tags:
+      - 'v*.*.*'
 
 env:
   APP_DEV: false
 
 jobs:
-  build-and-pack:
+  build:
+    name: Build, test and publish binaries
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -37,15 +44,25 @@ jobs:
 
       - name: Build electron application
         run: npm run build:electron
-      - name: Upload build to artifacts
-        uses: actions/upload-artifact@v3
-        if: always()
+
+      - name: Read release.md and use it as a body of new release
+        id: read_release
+        shell: bash
+        run: |
+          r=$(cat RELEASE.md)
+          r="${r//'%'/'%25'}"
+          r="${r//$'\n'/'%0A'}"
+          r="${r//$'\r'/'%0D'}"
+          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
+
+      - name: Upload Binaries to Release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: build
-          path: dist/
-          retention-days: 30
-    #   - name: Upload build
-    #     uses: softprops/action-gh-release@v1
-    #     if: startsWith(github.ref, 'refs/tags/')
-    #     with:
-    #         files: dist/
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          file: |
+            dist/TimeTracker-${{github.ref_name}}-linux-x64.tar.gz
+            dist/TimeTracker-${{github.ref_name}}-win-installer-x64.exe
+            dist/TimeTracker-${{github.ref_name}}-win-portable-x64.exe
+          body: |
+            ${{ steps.read_release.outputs.RELEASE_BODY }}

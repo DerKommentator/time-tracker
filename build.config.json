@@ -1,8 +1,9 @@
 {
-	"icon": "public/favicon.png",
 	"files": [
 		"electron/main.cjs",
 		"electron/preload.js",
+		"electron/logoPng/icon.png",
+		"electron/icon.ico",
 		{
 			"from": "build",
 			"to": ""
@@ -10,17 +11,25 @@
 	],
 	"productName": "TimeTracker",
 	"appId": "timetracker",
+	"icon": "build/icon.png",
 	"directories": {
 		"output": "dist"
 	},
+	"artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
 	"dmg": {
-		"title": "${productName} ${version}"
+		"title": "${productName} ${version}",
+		"icon": "build/icon.png"
 	},
 	"linux": {
-		"target": ["7z", "deb"]
+		"target": "tar.gz",
+		"icon": "build/icon.png"
 	},
 	"win": {
-		"target": "NSIS",
-		"icon": "build/icon.ico"
+		"target": ["NSIS", "portable"],
+		"icon": "build/icon.png",
+		"artifactName": "${productName}-${version}-${os}-installer-${arch}.${ext}"
+	},
+	"portable": {
+		"artifactName": "${productName}-${version}-${os}-portable-${arch}.${ext}"
 	}
 }

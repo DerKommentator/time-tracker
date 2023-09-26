@@ -42,10 +42,6 @@ function showNotification(title, bodyText) {
                <text id="2">${bodyText}</text>
              </binding>
            </visual>
-           <actions>
-             <action content="Count up" activationType="protocol" arguments="timetracker://notify" />
-             <action content="Count down" activationType="protocol" arguments="timetracker://notify2" />
-           </actions>
         </toast>`
 	});
 
@@ -70,18 +66,30 @@ function createWindow() {
 		defaultHeight: 1000
 	});
 
+	const wIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.ico'));
+	const windowIcon = wIcon.resize({ width: 32, height: 32 });
+	windowIcon.setTemplateImage(true);
+
 	top.mainWindow = new BrowserWindow({
 		x: mws.x,
 		y: mws.y,
 		width: mws.width,
 		height: mws.height,
-		title: 'Timetracker',
+		title: 'TimeTracker',
+		darkTheme: true,
 		show: true,
+		contextIsolation: true,
+		sandbox: true,
+		icon: windowIcon,
 
 		webPreferences: {
-			preload: path.join(app.getAppPath(), 'preload.js')
+			preload: path.join(__dirname, 'preload.js')
 		}
 	});
+
+	const tIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.ico'));
+	const trayIcon = tIcon.resize({ width: 32, height: 32 });
+	trayIcon.setTemplateImage(true);
 
 	top.mainWindow.on('close', (event) => {
 		//mainWindow = null;
@@ -89,7 +97,7 @@ function createWindow() {
 		event.preventDefault(); // prevent quit process
 	});
 
-	top.mainWindow.tray = new Tray(nativeImage.createEmpty());
+	top.mainWindow.tray = new Tray(trayIcon);
 	const menu = Menu.buildFromTemplate([
 		// {
 		// 	label: 'Actions',
@@ -148,10 +156,10 @@ ipcMain.on('trigger-close', () => {
 	// BrowserWindow "close" event spawn after quit operation,
 	// it requires to clean up listeners for "close" event
 
-	//top.mainWindow.removeAllListeners('close');
+	top?.mainWindow?.removeAllListeners('close');
 
 	// release windows
-	//top = null;
+	top = null;
 
 	app.exit();
 });
@@ -160,6 +168,10 @@ ipcMain.on('trigger-close', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.once('ready', createWindow);
+
+app.setLoginItemSettings({
+	openAtLogin: true
+});
 
 // app.whenReady().then(() => {
 // 	createWindow();
@@ -182,7 +194,7 @@ app.on('before-quit', (e) => {
 			title: 'Warning',
 			detail: 'Do you want to save the current time as work of end time?'
 		})
-		.then(({ response, checkboxChecked }) => {
+		.then(({ response }) => {
 			if (response == 0) {
 				// trigger save of time in app
 				top.mainWindow.webContents.send('sendEvent-saveTime');
@@ -237,6 +249,10 @@ powerMonitor.addListener('resume', () => {
 	top.mainWindow.webContents.send('sendEvent-set-startTime');
 
 	suspendAlreadyTriggered = false;
+
+	setTimeout(function () {
+		showNotification('Guten Morgen 😴', 'Hej! Ein neuer Arbeitstag beginnt!');
+	}, 3000);
 });
 
 // https://www.npmjs.com/package/@paymoapp/electron-shutdown-handler
