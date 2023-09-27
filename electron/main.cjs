@@ -22,7 +22,7 @@ try {
 	require('electron-reloader')(module);
 } catch {}
 
-if (require('electron-squirrel-startup')) app.quit();
+// if (require('electron-squirrel-startup')) app.quit();
 
 app.commandLine.appendSwitch('lang', 'de-DE');
 //app.setAsDefaultProtocolClient('timetracker');
@@ -124,6 +124,8 @@ function createWindow() {
 
 	top.mainWindow.tray.setToolTip('TimeTracker');
 	top.mainWindow.tray.setTitle('TimeTracker'); // macOS only
+
+	powerSaveBlocker.start('prevent-app-suspension');
 
 	mws.manage(top.mainWindow);
 	// define how electron will load the app
@@ -235,8 +237,6 @@ powerMonitor.addListener('unlock-screen', () => {
 });
 
 powerMonitor.addListener('suspend', () => {
-	powerSaveBlocker.start('prevent-app-suspension');
-
 	log('suspend');
 	if (!suspendAlreadyTriggered) {
 		top.mainWindow.webContents.send('sendEvent-saveTime');
@@ -251,6 +251,7 @@ powerMonitor.addListener('resume', () => {
 	top.mainWindow.webContents.send('sendEvent-set-startTime');
 
 	suspendAlreadyTriggered = false;
+	top.mainWindow.reload();
 });
 
 // https://www.npmjs.com/package/@paymoapp/electron-shutdown-handler

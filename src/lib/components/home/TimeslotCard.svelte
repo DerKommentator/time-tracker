@@ -72,12 +72,24 @@
 		<div class="flex flex-row gap-4 m-2 mb-6">
 			<div class="w-1/2">
 				<span class="inline-block mb-4"><strong>Start of Work:</strong></span>
-				<input class="input" type="time" value={formatTime(timeslot.begin)} disabled />
+				<input
+					class="input"
+					type="time"
+					value={formatTime(timeslot.begin)}
+					disabled
+					aria-label="View: Start of Work"
+				/>
 			</div>
 			<span class="divider-vertical h-24" />
 			<div class="w-1/2">
 				<span class="inline-block mb-4"><strong>End of Work:</strong></span>
-				<input class="input" type="time" value={formatTime(timeslot.end)} disabled />
+				<input
+					class="input"
+					type="time"
+					value={formatTime(timeslot.end)}
+					disabled
+					aria-label="View: End of Work"
+				/>
 			</div>
 		</div>
 	</div>

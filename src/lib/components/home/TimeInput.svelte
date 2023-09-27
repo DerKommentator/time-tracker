@@ -13,6 +13,7 @@
 	<input
 		class="input text-center text-lg"
 		class:input-error={inputError}
+		aria-label="Enter {label}"
 		type="time"
 		min={minTimeLimit}
 		bind:value={time}

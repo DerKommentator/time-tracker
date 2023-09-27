@@ -157,6 +157,7 @@
 			<input
 				class="input text-center text-lg"
 				class:input-error={errorMessage && dateError}
+				aria-label="Enter Date"
 				type="date"
 				bind:value={dateString}
 				on:input={() => {

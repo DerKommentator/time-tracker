@@ -33,9 +33,9 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-static": "^2.0.3",
 		"@sveltejs/kit": "^1.5.0",
+		"@tabler/icons-svelte": "2.30.0",
 		"@tailwindcss/forms": "^0.5.4",
 		"@tailwindcss/typography": "^0.5.9",
-		"@types/electron-squirrel-startup": "^1.0.0",
 		"@types/node": "^20.6.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
@@ -43,11 +43,11 @@
 		"chart.js": "^4.4.0",
 		"concurrently": "^8.2.1",
 		"cross-env": "^7.0.3",
+		"dexie": "^4.0.1-alpha.25",
 		"electron": "^26.2.0",
 		"electron-builder": "^24.6.4",
+		"electron-context-menu": "^3.6.1",
 		"electron-reload": "^2.0.0-alpha.1",
-		"electron-squirrel-startup": "^1.0.0",
-		"electron-window-state": "^5.0.3",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.26.0",
@@ -66,11 +66,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@tabler/icons-svelte": "2.30.0",
-		"dexie": "^4.0.1-alpha.25",
-		"electron-context-menu": "^3.6.1",
-		"electron-serve": "^1.1.0",
-		"electron-squirrel-startup": "^1.0.0",
-		"electron-window-state": "^5.0.3"
+		"electron-window-state": "^5.0.3",
+		"electron-serve": "^1.1.0"
 	}
 }

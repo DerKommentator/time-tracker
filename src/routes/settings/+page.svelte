@@ -35,7 +35,7 @@
 </script>
 
 <div>
-	<a class="btn variant-filled-primary m-10" href="/">
+	<a class="btn variant-filled-primary m-10" href="/" aria-label="Home">
 		<IconArrowBack />
 	</a>
 	<Toast position="tr" />
@@ -46,13 +46,23 @@
 			<div>
 				<span><strong>Daily start of work:</strong></span>
 				<div class="flex gap-4 m-2 mb-8">
-					<input class="input text-center text-lg" type="time" bind:value={startTime} />
+					<input
+						class="input text-center text-lg"
+						type="time"
+						bind:value={startTime}
+						aria-label="Settings: Set daily start of work"
+					/>
 				</div>
 			</div>
 			<div>
 				<span><strong>Planned working time:</strong></span>
 				<div class="flex gap-4 m-2 mb-8">
-					<input class="input text-center text-lg" type="time" bind:value={plannedWorkingTime} />
+					<input
+						class="input text-center text-lg"
+						type="time"
+						bind:value={plannedWorkingTime}
+						aria-label="Settings: Set planned working time"
+					/>
 				</div>
 			</div>
 			<div class="flex flex-row justify-between items-center">
