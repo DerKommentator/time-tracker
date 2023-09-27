@@ -23,10 +23,6 @@
 	let referenceDiv: HTMLDivElement;
 	let arrowDiv: HTMLDivElement;
 
-	function restartApp() {
-		(window as any).ipcRenderer.send('restart_app');
-	}
-
 	function showPopup(
 		referenceDiv: HTMLDivElement,
 		tooltipDiv: HTMLDivElement,
@@ -64,6 +60,11 @@
 		}
 	}
 
+	function restartApp() {
+		(window as any).ipcRenderer.removeAllListeners('before-quit');
+		(window as any).ipcRenderer.send('restart_app');
+	}
+
 	onMount(() => {
 		if ((window as any)?.IN_DESKTOP_ENV) {
 			(window as any).ipcRenderer.send('app_version');
@@ -77,7 +78,6 @@
 			(window as any).ipcRenderer.on('update_available', () => {
 				message = 'A new update is available. Downloading now...';
 
-				console.log(message);
 				showSpinner = true;
 				activatePopup = true;
 			});
@@ -85,7 +85,6 @@
 			(window as any).ipcRenderer.on('update_not_available', () => {
 				message = 'You are up to date!';
 
-				console.log(message);
 				showSpinner = false;
 				activatePopup = true;
 			});
@@ -93,14 +92,13 @@
 			(window as any).ipcRenderer.on('update_error', (event: any, error: any) => {
 				message = 'Error! Could not load update info!';
 
-				console.log(message, error.error);
 				showSpinner = false;
 				activatePopup = true;
 			});
 
 			(window as any).ipcRenderer.on('update_downloaded', () => {
 				message = 'Update Downloaded. It will be installed on restart. Restart now?';
-				console.log(message);
+
 				showSpinner = false;
 				showRestartBtn = true;
 			});
