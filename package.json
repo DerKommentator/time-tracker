@@ -23,8 +23,7 @@
 		"test": "npx playwright test",
 		"dist": "npm run build && electron-builder -wl",
 		"build:electron": "electron-builder -wl --x64 --config build.config.json",
-		"build": "cross-env APP_DEV=false npm run build:svelte && npm run build:electron",
-		"build:electronAsRelease": "node releaseNotesAndBuild.js"
+		"build": "cross-env APP_DEV=false npm run build:svelte && npm run build:electron"
 	},
 	"devDependencies": {
 		"@floating-ui/dom": "^1.5.1",

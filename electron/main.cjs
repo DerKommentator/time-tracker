@@ -57,6 +57,7 @@ function showNotification(title, bodyText) {
 // }
 
 let suspendAlreadyTriggered = false;
+let showNotify = false;
 let top = {}; // prevent gc to keep windows
 
 function createWindow() {
@@ -224,14 +225,14 @@ app.on('window-all-closed', () => {
 
 // powerMonitor.addListener('lock-screen', () => {});
 
-// powerMonitor.addListener('unlock-screen', () => {
-// 	if (suspendEventTriggered) {
-// 		log('unlock-screen triggered after suspend');
-// 		top.mainWindow.webContents.send('sendEvent-set-startTime');
-// 	}
-
-// suspendEventTriggered = false;
-// });
+powerMonitor.addListener('unlock-screen', () => {
+	if (suspendEventTriggered && showNotify) {
+		setTimeout(function () {
+			showNotification('Guten Morgen 😴', 'Hej! Ein neuer Arbeitstag beginnt!');
+		}, 3000);
+		showNotify = false;
+	}
+});
 
 powerMonitor.addListener('suspend', () => {
 	powerSaveBlocker.start('prevent-app-suspension');
@@ -241,6 +242,7 @@ powerMonitor.addListener('suspend', () => {
 		top.mainWindow.webContents.send('sendEvent-saveTime');
 
 		suspendAlreadyTriggered = true;
+		showNotify = true;
 	}
 });
 
@@ -249,10 +251,6 @@ powerMonitor.addListener('resume', () => {
 	top.mainWindow.webContents.send('sendEvent-set-startTime');
 
 	suspendAlreadyTriggered = false;
-
-	setTimeout(function () {
-		showNotification('Guten Morgen 😴', 'Hej! Ein neuer Arbeitstag beginnt!');
-	}, 3000);
 });
 
 // https://www.npmjs.com/package/@paymoapp/electron-shutdown-handler
