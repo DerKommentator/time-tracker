@@ -131,7 +131,7 @@
 						<!--TODO: LOGO-->
 						<span class="inline-flex lg:hidden">TT</span>
 					</a>
-					<div class="flex flex-row items-center mt-1 relative w-full" bind:this={referenceDiv}>
+					<div class="flex flex-row items-center relative w-full" bind:this={referenceDiv}>
 						<span class="text-xs text-surface-400 p-2 mx-auto">Version: {appVersion}</span>
 						<div class:hidden={!showSpinner} class="absolute right-0">
 							<ProgressRadial
@@ -165,11 +165,11 @@
 				on:click={() => drawerStore.open({ position: 'top', height: 'h-fit' })}
 				><IconMenu2 />
 			</button>
-			<a class="btn variant-ringed hidden lg:inline-flex" href="/" aria-label="Home">
+			<a class="btn variant-ringed hidden lg:inline-flex mx-2" href="/" aria-label="Home">
 				<IconHome /><span class="text-lg font-semibold">Home</span>
 			</a>
 			<a
-				class="btn variant-ringed hidden lg:inline-flex"
+				class="btn variant-ringed hidden lg:inline-flex mx-2"
 				href="/statistics"
 				aria-label="Statistics"
 			>
