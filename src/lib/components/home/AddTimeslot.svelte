@@ -128,7 +128,7 @@
 	}
 
 	if ((window as any)?.IN_DESKTOP_ENV) {
-		(window as any).ipcRenderer.on('sendEvent-saveTime', (event: any, arg: any) => {
+		(window as any).ipcRenderer.on('sendEvent-saveTime', () => {
 			const now = new Date();
 			console.log('kekl');
 			// Add 1 minute so the end time is always greater than the start time
@@ -138,7 +138,7 @@
 			//(window as any).ipcRenderer.send('trigger-close');
 		});
 
-		(window as any).ipcRenderer.on('sendEvent-exit', (event: any, arg: any) => {
+		(window as any).ipcRenderer.on('sendEvent-exit', () => {
 			(window as any).ipcRenderer.send('trigger-close');
 		});
 

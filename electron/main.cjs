@@ -14,6 +14,7 @@ const {
 } = require('electron');
 const path = require('path');
 const ws = require('electron-window-state');
+const { autoUpdater } = require('electron-updater');
 
 const serve = require('electron-serve');
 const serveURL = serve({ directory: '.' });
@@ -149,7 +150,13 @@ function createWindow() {
 
 		log('Electron running in prod mode: 🚀');
 	}
+
+	top.mainWindow.once('ready-to-show', () => {
+		autoUpdater.checkForUpdatesAndNotify();
+	});
 }
+
+// ============= IPC =============
 
 ipcMain.on('notification', (event, arg) => {
 	showNotification(arg[0], arg[1]);
@@ -164,8 +171,29 @@ ipcMain.on('trigger-close', () => {
 	// release windows
 	top = null;
 
+	top.mainWindow.tray.destroy();
+
 	app.exit();
 });
+
+// ============= Updater =============
+
+ipcMain.on('app_version', (event) => {
+	top.mainWindow.webContents.send('app_version', { version: app.getVersion() });
+});
+
+autoUpdater.on('update-available', () => {
+	top.mainWindow.webContents.send('update_available');
+});
+autoUpdater.on('update-downloaded', () => {
+	top.mainWindow.webContents.send('update_downloaded');
+});
+
+ipcMain.on('restart_app', () => {
+	autoUpdater.quitAndInstall();
+});
+
+// ============= Electron App Events =============
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -212,6 +240,8 @@ app.on('before-quit', (e) => {
 
 				app.exit();
 			}
+
+			top.mainWindow.tray.destroy();
 		});
 });
 
@@ -222,13 +252,12 @@ app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') app.quit();
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+// ============= Electron PowerMonitor Events =============
 
 // powerMonitor.addListener('lock-screen', () => {});
 
 powerMonitor.addListener('unlock-screen', () => {
-	if (suspendEventTriggered && showNotify) {
+	if (suspendAlreadyTriggered && showNotify) {
 		setTimeout(function () {
 			showNotification('Guten Morgen 😴', 'Hej! Ein neuer Arbeitstag beginnt!');
 		}, 3000);
@@ -260,6 +289,8 @@ powerMonitor.addListener('shutdown', (event) => {
 	log('shutdown');
 	//showNotification('Shutdown', 'Shutdown');
 });
+
+// ============= Electron Process Events =============
 
 process.on('exit', (event) => {
 	//event.preventDefault();
