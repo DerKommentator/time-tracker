@@ -32,5 +32,11 @@
 	},
 	"portable": {
 		"artifactName": "${productName}-${version}-${os}-portable-${arch}.${ext}"
-	}
+	},
+	"publish": [
+		{
+			"provider": "github",
+			"private": true
+		}
+	]
 }

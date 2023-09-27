@@ -19,9 +19,9 @@ const { autoUpdater } = require('electron-updater');
 const serve = require('electron-serve');
 const serveURL = serve({ directory: '.' });
 //const serve = require("electron-serve");
-try {
-	require('electron-reloader')(module);
-} catch {}
+// try {
+// 	require('electron-reloader')(module);
+// } catch {}
 
 // if (require('electron-squirrel-startup')) app.quit();
 
@@ -185,8 +185,21 @@ ipcMain.on('app_version', (event) => {
 autoUpdater.on('update-available', () => {
 	top.mainWindow.webContents.send('update_available');
 });
+
+autoUpdater.on('update-not-available', () => {
+	top.mainWindow.webContents.send('update_not_available');
+});
+
+autoUpdater.on('error', (error) => {
+	top.mainWindow.webContents.send('update_error', { error: error });
+});
+
 autoUpdater.on('update-downloaded', () => {
 	top.mainWindow.webContents.send('update_downloaded');
+});
+
+ipcMain.on('check_for_updates', () => {
+	autoUpdater.checkForUpdates();
 });
 
 ipcMain.on('restart_app', () => {

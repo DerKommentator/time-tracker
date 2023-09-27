@@ -17,6 +17,7 @@
 	let showRestartBtn: boolean = false;
 	let showSpinner: boolean = false;
 	let updateAvailable: boolean = false;
+	let activatePopup: boolean = false;
 
 	let tooltipDiv: HTMLDivElement;
 	let referenceDiv: HTMLDivElement;
@@ -56,6 +57,13 @@
 		});
 	}
 
+	function checkForUpdates() {
+		if ((window as any)?.IN_DESKTOP_ENV) {
+			(window as any).ipcRenderer.send('check_for_updates');
+			showSpinner = true;
+		}
+	}
+
 	onMount(() => {
 		if ((window as any)?.IN_DESKTOP_ENV) {
 			(window as any).ipcRenderer.send('app_version');
@@ -67,16 +75,30 @@
 
 			// TODO: change update function location
 			(window as any).ipcRenderer.on('update_available', () => {
-				(window as any).ipcRenderer.removeAllListeners('update_available');
 				message = 'A new update is available. Downloading now...';
 
 				console.log(message);
 				showSpinner = true;
-				updateAvailable = true;
+				activatePopup = true;
+			});
+
+			(window as any).ipcRenderer.on('update_not_available', () => {
+				message = 'You are up to date!';
+
+				console.log(message);
+				showSpinner = false;
+				activatePopup = true;
+			});
+
+			(window as any).ipcRenderer.on('update_error', (event: any, error: any) => {
+				message = 'Error! Could not load update info!';
+
+				console.log(message, error.error);
+				showSpinner = false;
+				activatePopup = true;
 			});
 
 			(window as any).ipcRenderer.on('update_downloaded', () => {
-				(window as any).ipcRenderer.removeAllListeners('update_downloaded');
 				message = 'Update Downloaded. It will be installed on restart. Restart now?';
 				console.log(message);
 				showSpinner = false;
@@ -85,8 +107,11 @@
 		}
 	});
 
-	$: if (updateAvailable) {
+	$: if (activatePopup) {
 		showPopup(referenceDiv, tooltipDiv, arrowDiv);
+		setTimeout(() => {
+			activatePopup = false;
+		}, 3000);
 	}
 </script>
 
@@ -132,7 +157,9 @@
 						<span class="inline-flex lg:hidden">TT</span>
 					</a>
 					<div class="flex flex-row items-center relative w-full" bind:this={referenceDiv}>
-						<span class="text-xs text-surface-400 p-2 mx-auto">Version: {appVersion}</span>
+						<button class="text-xs text-surface-400 p-2 mx-auto" on:click={checkForUpdates}
+							>Version: {appVersion}</button
+						>
 						<div class:hidden={!showSpinner} class="absolute right-0">
 							<ProgressRadial
 								width="w-4"
@@ -152,11 +179,13 @@
 				</div>
 				<div
 					id="floating"
-					class:hidden={!updateAvailable}
-					class="absolute bg-surface-400 p-2 ml-3 rounded-md"
+					class:hidden={!activatePopup}
+					class="absolute bg-surface-400 p-2 ml-3 rounded-md cursor-pointer w-1/5"
 					bind:this={tooltipDiv}
+					on:click={() => (activatePopup = false)}
+					on:keypress={() => (activatePopup = false)}
 				>
-					{message}
+					<p>Update Downloaded. It will be installed on restart. Restart now?</p>
 					<div id="arrow" class="absolute h-3 w-3 bg-surface-400" bind:this={arrowDiv} />
 				</div>
 			</svelte:fragment>

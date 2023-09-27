@@ -1,7 +1,7 @@
 {
 	"name": "timetracker",
 	"productName": "TimeTracker",
-	"version": "0.9.7",
+	"version": "0.9.8",
 	"author": {
 		"name": "Layton",
 		"email": "test@test.de"
@@ -22,7 +22,8 @@
 		"make": "npm run build && electron-forge make",
 		"test": "npx playwright test",
 		"dist": "npm run build && electron-builder -wl",
-		"build:electron": "electron-builder -wl --x64 --config build.config.json",
+		"build:electron": "electron-builder -wl --x64 --config build.config.json --publish never",
+		"deploy:electron": "electron-builder -wl --x64 --config build.config.json --publish always",
 		"build": "cross-env APP_DEV=false npm run build:svelte && npm run build:electron"
 	},
 	"devDependencies": {

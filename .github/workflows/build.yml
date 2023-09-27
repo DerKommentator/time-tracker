@@ -1,4 +1,4 @@
-# name: Build, Test and Publish
+name: 🥳 New Release is on the way
 # on:
 #   push:
 #     branches: [main]
@@ -49,7 +49,7 @@ jobs:
           retention-days: 30
 
       - name: Build electron application
-        run: npm run build:electron
+        run: npm run deploy:electron
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
