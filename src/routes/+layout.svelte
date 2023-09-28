@@ -8,6 +8,10 @@
 	import { computePosition, offset, arrow } from '@floating-ui/dom';
 	import { onMount } from 'svelte';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { LL, setLocale } from '../i18n/i18n-svelte';
+	import { detectLocale } from '../i18n/i18n-util';
+	import { localStorageDetector } from 'typesafe-i18n/detectors';
+	import { loadLocaleAsync } from '../i18n/i18n-util.async';
 
 	initializeStores();
 	const drawerStore = getDrawerStore();
@@ -65,7 +69,13 @@
 		(window as any).ipcRenderer.send('restart_app');
 	}
 
-	onMount(() => {
+	onMount(async () => {
+		// Localization
+		const detectedLocale = detectLocale(localStorageDetector);
+		await loadLocaleAsync(detectedLocale);
+		setLocale(detectedLocale);
+
+		// Electron Updater
 		if ((window as any)?.IN_DESKTOP_ENV) {
 			(window as any).ipcRenderer.send('app_version');
 
@@ -76,28 +86,28 @@
 
 			// TODO: change update function location
 			(window as any).ipcRenderer.on('update_available', () => {
-				message = 'A new update is available. Downloading now...';
+				message = $LL.UPDATE.TOOLTIP_UPDATE_AVAILABLE();
 
 				showSpinner = true;
 				activatePopup = true;
 			});
 
 			(window as any).ipcRenderer.on('update_not_available', () => {
-				message = 'You are up to date!';
+				message = $LL.UPDATE.TOOLTIP_UPDATE_NOT_AVAILABLE();
 
 				showSpinner = false;
 				activatePopup = true;
 			});
 
 			(window as any).ipcRenderer.on('update_error', (event: any, error: any) => {
-				message = 'Error! Could not load update info!';
+				message = $LL.UPDATE.TOOLTIP_UPDATE_ERROR();
 
 				showSpinner = false;
 				activatePopup = true;
 			});
 
 			(window as any).ipcRenderer.on('update_downloaded', () => {
-				message = 'Update Downloaded. It will be installed on restart. Restart now?';
+				message = $LL.UPDATE.TOOLTIP_UPDATE_DOWNLOADED();
 
 				showSpinner = false;
 				showRestartBtn = true;
@@ -120,7 +130,7 @@
 <Drawer>
 	<div class="flex flex-col items-stretch gap-y-3 p-4">
 		<a class="btn variant-ringed" href="/" on:click={() => drawerStore.close()} aria-label="Home">
-			<IconHome /><span class="text-lg font-semibold">Home</span>
+			<IconHome /><span class="text-lg font-semibold">{$LL.HOME_LABEL()}</span>
 		</a>
 		<a
 			class="btn variant-ringed"
@@ -128,7 +138,7 @@
 			on:click={() => drawerStore.close()}
 			aria-label="Statistics"
 		>
-			<IconChartPie /><span class="text-lg font-semibold">Statistics</span>
+			<IconChartPie /><span class="text-lg font-semibold">{$LL.STATISTICS_LABEL()}</span>
 		</a>
 		<a
 			class="btn variant-ringed"
@@ -136,7 +146,7 @@
 			on:click={() => drawerStore.close()}
 			aria-label="Settings"
 		>
-			<IconSettings /><span class="text-lg font-semibold">Settings</span>
+			<IconSettings /><span class="text-lg font-semibold">{$LL.SETTINGS_LABEL()}</span>
 		</a>
 	</div>
 </Drawer>
@@ -156,7 +166,7 @@
 					</a>
 					<div class="flex flex-row items-center relative w-full" bind:this={referenceDiv}>
 						<button class="text-xs text-surface-400 p-2 mx-auto" on:click={checkForUpdates}
-							>Version: {appVersion}</button
+							>{$LL.UPDATE.VERSION_LABEL({ version: appVersion })}</button
 						>
 						<div class:hidden={!showSpinner} class="absolute right-0">
 							<ProgressRadial
@@ -171,7 +181,7 @@
 							class="btn variant-filled-primary text-xs p-1.5 absolute -right-12 lg:-right-8"
 							on:click={restartApp}
 						>
-							Restart
+							{$LL.UPDATE.RESTART_LABEL()}
 						</button>
 					</div>
 				</div>
@@ -183,7 +193,7 @@
 					on:click={() => (activatePopup = false)}
 					on:keypress={() => (activatePopup = false)}
 				>
-					<p>Update Downloaded. It will be installed on restart. Restart now?</p>
+					<p>{message}</p>
 					<div id="arrow" class="absolute h-3 w-3 bg-surface-400" bind:this={arrowDiv} />
 				</div>
 			</svelte:fragment>
@@ -193,14 +203,14 @@
 				><IconMenu2 />
 			</button>
 			<a class="btn variant-ringed hidden lg:inline-flex mx-2" href="/" aria-label="Home">
-				<IconHome /><span class="text-lg font-semibold">Home</span>
+				<IconHome /><span class="text-lg font-semibold">{$LL.HOME_LABEL()}</span>
 			</a>
 			<a
 				class="btn variant-ringed hidden lg:inline-flex mx-2"
 				href="/statistics"
 				aria-label="Statistics"
 			>
-				<IconChartPie /><span class="text-lg font-semibold">Statistics</span>
+				<IconChartPie /><span class="text-lg font-semibold">{$LL.STATISTICS_LABEL()}</span>
 			</a>
 			<svelte:fragment slot="trail">
 				<a class="btn hidden md:inline-flex" href="/settings" aria-label="Settings">

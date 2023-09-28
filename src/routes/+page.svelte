@@ -17,7 +17,7 @@
 <div class="relative">
 	<Toast position="tr" />
 	<div
-		class="container min-w-full flex justify-between p-4 lg:p-8 flex-col lg:flex-row lg:max-h-screen"
+		class="container min-w-full flex justify-between p-4 lg:p-6 flex-col lg:flex-row lg:max-h-screen"
 	>
 		<div class="card p-4 flex-none self-center sm:w-3/4 lg:w-2/5 xl:w-1/3 lg:self-baseline">
 			<AddTimeslot settings={$settingsStore} statistics={$statisticsStore} />

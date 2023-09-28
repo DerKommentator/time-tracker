@@ -28,6 +28,7 @@
 	import { db } from '$lib/db/db';
 	import type { DbError } from '$lib/models/DbError';
 	import TimeInput from './TimeInput.svelte';
+	import LL from '../../../i18n/i18n-svelte';
 
 	const toastStore = getToastStore();
 
@@ -56,12 +57,15 @@
 			});
 
 			status = {
-				text: `Timeslot for ${formatDate(timeslot.date)} successfully added!`,
+				text: $LL.TIMESLOT.TOAST_ADDED_SUCCESSFULLY({ date: formatDate(timeslot.date) }),
 				cssColor: 'variant-filled-success'
 			};
 		} catch (error) {
 			status = {
-				text: `Failed to add timeslot for ${formatDate(timeslot.date)}: ${error}`,
+				text: $LL.TIMESLOT.TOAST_ADDED_FAILED({
+					date: formatDate(timeslot.date),
+					error: (error as Error).message
+				}),
 				cssColor: 'variant-filled-error'
 			};
 		}
@@ -70,7 +74,7 @@
 	async function saveTime() {
 		if (!endTime) {
 			endTimeError = true;
-			errorMessage = 'The end of work is missing!';
+			errorMessage = $LL.TIMESLOT.ERROR_END_MISSING();
 			return;
 		}
 
@@ -78,7 +82,7 @@
 
 		if (duplicates > 0) {
 			dateError = true;
-			errorMessage = 'A timeslot for this date already exist!';
+			errorMessage = $LL.TIMESLOT.ERROR_ALREADY_EXIST();
 			return;
 		}
 
@@ -88,7 +92,7 @@
 		if (start.hours > end.hours || (start.hours == end.hours && start.minutes >= end.minutes)) {
 			startTimeError = true;
 			endTimeError = true;
-			errorMessage = 'The start of work must be before the end of work!';
+			errorMessage = $LL.TIMESLOT.ERROR_END_BEFORE_START();
 			return;
 		}
 
@@ -130,7 +134,7 @@
 	if ((window as any)?.IN_DESKTOP_ENV) {
 		(window as any).ipcRenderer.on('sendEvent-saveTime', () => {
 			const now = new Date();
-			console.log('kekl');
+
 			// Add 1 minute so the end time is always greater than the start time
 			endTime = formatDateToTime(new Date(now.getTime() + 60000));
 			saveTime();
@@ -149,10 +153,10 @@
 	}
 </script>
 
-<header class="card-header text-xl"><strong>Add manually:</strong></header>
+<header class="card-header text-xl"><strong>{$LL.TIMESLOT.ADD_HEADLINE()}</strong></header>
 <section class="m-8">
 	<div>
-		<span><strong>Date:</strong></span>
+		<span><strong>{$LL.TIMESLOT.DATE_LABEL()}</strong></span>
 		<div class="flex gap-4 m-2 mb-8">
 			<input
 				class="input text-center text-lg"
@@ -167,11 +171,15 @@
 		</div>
 	</div>
 	<div>
-		<TimeInput label={'Start of Work:'} inputError={startTimeError} bind:time={startTime} />
+		<TimeInput
+			label={$LL.TIMEINPUT.START_LABEL()}
+			inputError={startTimeError}
+			bind:time={startTime}
+		/>
 	</div>
 	<div>
 		<TimeInput
-			label={'End of Work:'}
+			label={$LL.TIMEINPUT.END_LABEL()}
 			inputError={endTimeError}
 			bind:time={endTime}
 			minTimeLimit={startTime}
@@ -180,9 +188,9 @@
 </section>
 <footer class="card-footer flex items-center justify-between m-2 mt-12">
 	{#if errorMessage && (dateError || startTimeError || endTimeError)}
-		<p class="text-red-600 text-sm mr-12"><b>Error: </b>{errorMessage}</p>
+		<p class="text-red-600 text-sm mr-12"><b>{$LL.ERROR_LABEL()} </b>{errorMessage}</p>
 	{:else}
 		<p />
 	{/if}
-	<button class="btn variant-filled-primary" on:click={() => saveTime()}>Save</button>
+	<button class="btn variant-filled-primary" on:click={() => saveTime()}>{$LL.SAVE_LABEL()}</button>
 </footer>

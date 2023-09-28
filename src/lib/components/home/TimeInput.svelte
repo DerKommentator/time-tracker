@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { formatDateToTime } from '$lib/utils/HelperFunctions';
 	import { IconClock } from '@tabler/icons-svelte';
+	import LL from '../../../i18n/i18n-svelte';
 
 	export let label: string;
 	export let inputError: boolean;
@@ -27,7 +28,7 @@
 			time = formatDateToTime(new Date());
 		}}
 		><IconClock class="inline lg:hidden" /><span class="hidden lg:inline lg:!mx-0"
-			>Set current time</span
+			>{$LL.TIMEINPUT.SET_CURRENT_TIME_LABEL()}</span
 		></button
 	>
 </div>

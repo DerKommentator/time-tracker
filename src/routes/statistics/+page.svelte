@@ -23,9 +23,9 @@
 </script>
 
 <div class="h-full">
-	<a class="btn variant-filled-primary m-10" href="/" aria-label="Home">
+	<!-- <a class="btn variant-filled-primary m-10" href="/" aria-label="Home">
 		<IconArrowBack />
-	</a>
+	</a> -->
 
 	{#if $timeslotsSortByDate}
 		<DisplayGrid data={$timeslotsSortByDate} />

@@ -168,10 +168,10 @@ ipcMain.on('trigger-close', () => {
 
 	top?.mainWindow?.removeAllListeners('close');
 
+	top?.mainWindow.tray?.destroy();
+
 	// release windows
 	top = null;
-
-	top.mainWindow.tray.destroy();
 
 	app.exit();
 });
@@ -246,15 +246,15 @@ app.on('before-quit', (e) => {
 			} else {
 				// BrowserWindow "close" event spawn after quit operation,
 				// it requires to clean up listeners for "close" event
-				top.mainWindow.removeAllListeners('close');
+				top?.mainWindow?.removeAllListeners('close');
+
+				top?.mainWindow?.tray?.destroy();
 
 				// release windows
 				top = null;
 
 				app.exit();
 			}
-
-			top.mainWindow.tray.destroy();
 		});
 });
 

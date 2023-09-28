@@ -1,7 +1,7 @@
 {
 	"name": "timetracker",
 	"productName": "TimeTracker",
-	"version": "0.9.9",
+	"version": "0.9.10",
 	"author": {
 		"name": "Layton",
 		"email": "test@test.de"
@@ -24,7 +24,8 @@
 		"dist": "npm run build && electron-builder -wl",
 		"build:electron": "electron-builder -wl --x64 --config build.config.json --publish never",
 		"deploy:electron": "electron-builder -wl --x64 --config build.config.json --publish always",
-		"build": "cross-env APP_DEV=false npm run build:svelte && npm run build:electron"
+		"build": "cross-env APP_DEV=false npm run build:svelte && npm run build:electron",
+		"typesafe-i18n": "typesafe-i18n"
 	},
 	"devDependencies": {
 		"@floating-ui/dom": "^1.5.1",
@@ -61,6 +62,7 @@
 		"svelte-check": "^3.0.1",
 		"tailwindcss": "^3.3.3",
 		"tslib": "^2.4.1",
+		"typesafe-i18n": "^5.26.2",
 		"typescript": "^5.0.0",
 		"vite": "^4.3.0",
 		"vite-plugin-tailwind-purgecss": "^0.1.3"

@@ -5,6 +5,7 @@
 	import type { Time } from '$lib/models/Time';
 	import { formatOvertime, timeToMinutes } from '$lib/utils/HelperFunctions';
 	import { statisticsStore } from '../../../stores/store';
+	import LL from '../../../i18n/i18n-svelte';
 
 	export let data: Timeslot[] = [];
 
@@ -75,12 +76,12 @@
 </script>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-1 mx-5 mb-5">
-	<TimeGridCard headline="Ankunftsszeit Durchschnitt:" displayText={average.avgStart} />
-	<TimeGridCard headline="Abfahrtsszeit Durchschnitt:" displayText={average.avgEnd} />
-	<TimeGridCard headline="Ankunftszeit Median:" displayText={median.medianStart} />
-	<TimeGridCard headline="Abfahrtsszeit Median:" displayText={median.medianEnd} />
+	<TimeGridCard headline={$LL.GRIDCARD.START_AVG()} displayText={average.avgStart} />
+	<TimeGridCard headline={$LL.GRIDCARD.END_AVG()} displayText={average.avgEnd} />
+	<TimeGridCard headline={$LL.GRIDCARD.START_MEDIAN()} displayText={median.medianStart} />
+	<TimeGridCard headline={$LL.GRIDCARD.END_MEDIAN()} displayText={median.medianEnd} />
 	<TimeGridCard
-		headline="Verfügbare Überstunden:"
+		headline={$LL.GRIDCARD.AVAILABLE_OVERTIME()}
 		displayText={formatOvertime($statisticsStore.availableOvertime)}
 	/>
 </div>

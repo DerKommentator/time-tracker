@@ -1,14 +1,13 @@
 <script lang="ts">
 	import type { Timeslot } from '$lib/models/Timeslot';
 	import { IconTrash } from '@tabler/icons-svelte';
-	import { fly } from 'svelte/transition';
-	import { statisticsStore, timeslotStore } from '../../../stores/store';
+	import { statisticsStore } from '../../../stores/store';
 	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import { calcTime, formatDate, formatTime } from '$lib/utils/HelperFunctions';
 	import type { Time } from '$lib/models/Time';
 	import { db } from '$lib/db/db';
-	import { liveQuery } from 'dexie';
 	import type { DbError } from '$lib/models/DbError';
+	import LL from '../../../i18n/i18n-svelte';
 
 	const toastStore = getToastStore();
 
@@ -32,7 +31,7 @@
 					toastStore.trigger(toastSettings);
 				});
 		} catch (error) {
-			status = { text: 'Failed to delete the timeslot!', cssColor: 'variant-filled-error' };
+			status = { text: $LL.TIMECARD.ERROR_DELETED(), cssColor: 'variant-filled-error' };
 			const toastSettings: ToastSettings = {
 				message: status.text,
 				background: status.cssColor
@@ -55,11 +54,7 @@
 
 <header class="card-header text-xl flex justify-between">
 	<strong>
-		{new Date(timeslot.date).toLocaleDateString('de-DE', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit'
-		})}
+		{formatDate(new Date(timeslot.date))}
 	</strong>
 	<button
 		class="btn variant-filled-surface"
@@ -71,7 +66,7 @@
 	<div>
 		<div class="flex flex-row gap-4 m-2 mb-6">
 			<div class="w-1/2">
-				<span class="inline-block mb-4"><strong>Start of Work:</strong></span>
+				<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.START_LABEL()}</strong></span>
 				<input
 					class="input"
 					type="time"
@@ -82,7 +77,7 @@
 			</div>
 			<span class="divider-vertical h-24" />
 			<div class="w-1/2">
-				<span class="inline-block mb-4"><strong>End of Work:</strong></span>
+				<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.END_LABEL()}</strong></span>
 				<input
 					class="input"
 					type="time"

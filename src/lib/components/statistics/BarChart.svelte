@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Chart } from 'chart.js/auto';
-	import { timeslotStore } from '../../../stores/store';
-	import type { Time } from '$lib/models/Time';
 	import { modeCurrent } from '@skeletonlabs/skeleton';
-	import AddTimeslot from '../home/AddTimeslot.svelte';
-	import type { Timeslot } from '$lib/models/Timeslot';
+	import LL from '../../../i18n/i18n-svelte';
 
 	let root = document.querySelector(":root [data-theme='skeleton']")!;
 	let primaryColor = getComputedStyle(root).getPropertyValue('--color-primary-500');
@@ -30,7 +27,7 @@
 			data: {
 				datasets: [
 					{
-						label: 'Worked Hours (in Hours)',
+						label: $LL.BARCHART.LEGEND_LABEL_WORKED(),
 						data: data,
 						backgroundColor: `rgb(${primaryColor})`,
 						parsing: {
@@ -39,7 +36,7 @@
 						}
 					},
 					{
-						label: 'Available Overtime (in Hours)',
+						label: $LL.BARCHART.LEGEND_LABEL_AVAL_OVERTIME(),
 						data: data,
 						backgroundColor: function (context) {
 							if (!context.parsed) return `rgb(${tertiaryColor})`;
