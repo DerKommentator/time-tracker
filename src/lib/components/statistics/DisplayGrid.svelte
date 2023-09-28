@@ -75,7 +75,7 @@
 	}
 </script>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-1 mx-5 mb-5">
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-1 m-2 mb-7">
 	<TimeGridCard headline={$LL.GRIDCARD.START_AVG()} displayText={average.avgStart} />
 	<TimeGridCard headline={$LL.GRIDCARD.END_AVG()} displayText={average.avgEnd} />
 	<TimeGridCard headline={$LL.GRIDCARD.START_MEDIAN()} displayText={median.medianStart} />

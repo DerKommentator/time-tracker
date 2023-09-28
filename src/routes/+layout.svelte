@@ -154,7 +154,7 @@
 	<svelte:fragment slot="header">
 		<AppBar
 			gridColumns="grid-cols-3"
-			slotDefault="place-self-center text-center lg:text-left"
+			slotDefault="place-self-center text-center w-max"
 			slotTrail="place-content-end"
 		>
 			<svelte:fragment slot="lead">
@@ -188,7 +188,7 @@
 				<div
 					id="floating"
 					class:hidden={!activatePopup}
-					class="absolute bg-surface-400 p-2 ml-3 rounded-md cursor-pointer w-1/5"
+					class="absolute bg-surface-400 p-2 ml-3 rounded-md cursor-pointer w-fit"
 					bind:this={tooltipDiv}
 					on:click={() => (activatePopup = false)}
 					on:keypress={() => (activatePopup = false)}
@@ -213,7 +213,7 @@
 				<IconChartPie /><span class="text-lg font-semibold">{$LL.STATISTICS_LABEL()}</span>
 			</a>
 			<svelte:fragment slot="trail">
-				<a class="btn hidden md:inline-flex" href="/settings" aria-label="Settings">
+				<a class="btn hidden sm:inline-flex" href="/settings" aria-label="Settings">
 					<IconSettings />
 				</a>
 				<LightSwitch />

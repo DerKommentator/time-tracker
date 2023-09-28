@@ -48,12 +48,16 @@
 </script>
 
 <div>
-	<a class="btn variant-filled-primary m-10" href="/" aria-label="Home">
+	<a
+		class="btn variant-filled-primary mx-10 mt-10 lg:ml-10 lg:mt-0 lg:absolute"
+		href="/"
+		aria-label="Home"
+	>
 		<IconArrowBack />
 	</a>
 	<Toast position="tr" />
 
-	<div class="card p-4 mx-4 lg:mx-auto lg:w-1/2">
+	<div class="card p-4 mt-10 mx-5 lg:mx-auto lg:w-1/2">
 		<header class="card-header text-xl text-center"><strong>{$LL.SETTINGS_LABEL()}</strong></header>
 		<section class="m-8">
 			<div>
