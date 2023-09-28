@@ -274,6 +274,8 @@ powerMonitor.addListener('unlock-screen', () => {
 		setTimeout(function () {
 			showNotification('Guten Morgen 😴', 'Hej! Ein neuer Arbeitstag beginnt!');
 		}, 3000);
+
+		suspendAlreadyTriggered = false;
 		showNotify = false;
 	}
 });
@@ -291,8 +293,6 @@ powerMonitor.addListener('suspend', () => {
 powerMonitor.addListener('resume', () => {
 	log('resume');
 	top.mainWindow.webContents.send('sendEvent-set-startTime');
-
-	suspendAlreadyTriggered = false;
 	top.mainWindow.reload();
 });
 

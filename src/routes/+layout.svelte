@@ -109,7 +109,7 @@
 		showPopup(referenceDiv, tooltipDiv, arrowDiv);
 		setTimeout(() => {
 			activatePopup = false;
-		}, 3000);
+		}, 5000);
 	}
 </script>
 
