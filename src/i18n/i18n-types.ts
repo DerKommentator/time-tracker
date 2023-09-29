@@ -14,9 +14,20 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	// Shared
+	YES_LABEL: string,
+	NO_LABEL: string,
+	CANCEL_LABEL: string,
+
 	SAVE_LABEL: string,
 	DELETED_LABEL: string,
 	ERROR_LABEL: string,
+
+	TOAST_SAVED_SUCCESSFULLY: string,
+	TOAST_SAVED_FAILED: string,
+	TOAST_DELETED_SUCCESSFULLY: string,
+	TOAST_DELETED_FAILED: string,
+
+	DELETE_LABEL: string,
 
 	// Layout
 	HOME_LABEL: string,
@@ -87,22 +98,35 @@ type RootTranslation = {
 
 
 	// === Settings Page ===
-	TOAST_SAVED_SUCCESSFULLY: string,
 	SETTINGS: {
 		DAILY_START: string,
 		PLANNED_TIME: string,
 		USE_STARTUP_TIME: string,
 		LANGUAGE_LABEL: string,
 		CHANGES_AFTER_RESTART: string,
+		DELETE_DATA_LABEL: string,
+		DELETE_DATA_BTN: string,
+		DELETE_MODAL_TITLE: string,
+		DELETE_MODAL_BODY: string,
 	}
 }
 
 export type TranslationFunctions = {
 	// Shared
+	YES_LABEL: () => LocalizedString,
+	NO_LABEL: () => LocalizedString,
+	CANCEL_LABEL: () => LocalizedString,
+
 	SAVE_LABEL: () => LocalizedString,
 	DELETED_LABEL: () => LocalizedString,
 	ERROR_LABEL: () => LocalizedString,
 
+	TOAST_SAVED_SUCCESSFULLY: () => LocalizedString,
+	TOAST_SAVED_FAILED: () => LocalizedString,
+	TOAST_DELETED_SUCCESSFULLY: () => LocalizedString,
+	TOAST_DELETED_FAILED: () => LocalizedString,
+
+	DELETE_LABEL: () => LocalizedString,
 
 	// Layout
 	HOME_LABEL: () => LocalizedString,
@@ -178,13 +202,16 @@ export type TranslationFunctions = {
 
 
 	// === Settings Page ===
-	TOAST_SAVED_SUCCESSFULLY: () => LocalizedString,
 	SETTINGS: {
 		DAILY_START: () => LocalizedString,
 		PLANNED_TIME: () => LocalizedString,
 		USE_STARTUP_TIME: () => LocalizedString,
 		LANGUAGE_LABEL: () => LocalizedString,
 		CHANGES_AFTER_RESTART: () => LocalizedString,
+		DELETE_DATA_LABEL: () => LocalizedString,
+		DELETE_DATA_BTN: () => LocalizedString,
+		DELETE_MODAL_TITLE: () => LocalizedString,
+		DELETE_MODAL_BODY: () => LocalizedString,
 	}
 }
 

@@ -2,9 +2,20 @@ import type { BaseTranslation } from '../i18n-types'
 
 const de = {
 	// Shared
+	YES_LABEL: "JA",
+	NO_LABEL: "NEIN",
+	CANCEL_LABEL: "Abbrechen",
+
 	SAVE_LABEL: "Speichern",
 	DELETED_LABEL: "Gelöscht!",
 	ERROR_LABEL: "Fehler:",
+
+	DELETE_LABEL: "LÖSCHEN",
+
+	TOAST_SAVED_SUCCESSFULLY: "Erfolgreich gespeichert!",
+	TOAST_SAVED_FAILED: "Speichern fehlgeschlagen!",
+	TOAST_DELETED_SUCCESSFULLY: "Erfolgreich gelöscht!",
+	TOAST_DELETED_FAILED: "Löschen fehlgeschlagen!",
 
 	// Layout
 	HOME_LABEL: "Startseite",
@@ -64,13 +75,16 @@ const de = {
 	},
 
 	// === Settings Page ===
-	TOAST_SAVED_SUCCESSFULLY: "Erfolgreich gesichert!",
 	SETTINGS: {
 		DAILY_START: "Täglicher Arbeitsbeginn:",
 		PLANNED_TIME: "Geplante Arbeitszeit:",
 		USE_STARTUP_TIME: "Die Zeit beim Programmstart als Arbeitsbeginn nutzen?",
 		LANGUAGE_LABEL: "Sprache:",
-		CHANGES_AFTER_RESTART: "Einige Änderungen werden erst nach einem Neustart übernommen!"
+		CHANGES_AFTER_RESTART: "Einige Änderungen werden erst nach einem Neustart übernommen!",
+		DELETE_DATA_LABEL: "Alle Daten für <span class='text-error-500'>IMMER</span> löschen?",
+		DELETE_DATA_BTN: "ALLES LÖSCHEN",
+		DELETE_MODAL_TITLE: "Alles Löschen?",
+		DELETE_MODAL_BODY: "Bist du dir sicher, dass du <span class='text-error-500 font-bold'>ALLE</span> deine Daten löschen möchtest?"
 	}
 } satisfies BaseTranslation
 

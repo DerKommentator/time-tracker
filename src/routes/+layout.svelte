@@ -3,7 +3,7 @@
 
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
-	import { AppShell, AppBar, LightSwitch, Drawer } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, LightSwitch, Drawer, Modal, Toast } from '@skeletonlabs/skeleton';
 	import { getDrawerStore, initializeStores } from '@skeletonlabs/skeleton';
 	import { computePosition, offset, arrow } from '@floating-ui/dom';
 	import { onDestroy, onMount } from 'svelte';
@@ -65,7 +65,6 @@
 	}
 
 	function restartApp() {
-		(window as any).ipcRenderer.removeAllListeners('before-quit');
 		(window as any).ipcRenderer.send('restart_app');
 	}
 
@@ -160,6 +159,9 @@
 		</a>
 	</div>
 </Drawer>
+
+<Toast position="tr" />
+
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar

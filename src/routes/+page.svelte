@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { sineInOut } from 'svelte/easing';
-	import { settingsStore, statisticsStore, timeslotStore } from '../stores/store';
-	import { Toast, initializeStores } from '@skeletonlabs/skeleton';
+	import { settingsStore, statisticsStore } from '../stores/store';
 	import TimeslotCard from '$lib/components/home/TimeslotCard.svelte';
 	import AddTimeslot from '$lib/components/home/AddTimeslot.svelte';
 	import { fly } from 'svelte/transition';
 	import { liveQuery } from 'dexie';
 	import { db } from '$lib/db/db';
 
-	initializeStores();
+	//initializeStores();
 
 	let timeslots = liveQuery(() => db.timeslots.reverse().sortBy('date'));
 </script>
 
 <div class="relative">
-	<Toast position="tr" />
 	<div
 		class="container min-w-full flex justify-between p-4 lg:p-6 flex-col lg:flex-row lg:max-h-screen"
 	>

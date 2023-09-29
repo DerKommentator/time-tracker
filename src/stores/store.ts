@@ -5,11 +5,11 @@ import type { StatisticsStore } from "$lib/models/StatisticsStore";
 
 // -------------- Timeslot Store --------------
 
-const storedTimeslots: Array<Timeslot> = JSON.parse(localStorage.getItem("trackedTime") || "[]");
+// const storedTimeslots: Array<Timeslot> = JSON.parse(localStorage.getItem("trackedTime") || "[]");
 
-export const timeslotStore = writable(storedTimeslots);
+// export const timeslotStore = writable(storedTimeslots);
 
-timeslotStore.subscribe((value) => localStorage.setItem("trackedTime", JSON.stringify(value)));
+// timeslotStore.subscribe((value) => localStorage.setItem("trackedTime", JSON.stringify(value)));
 
 // -------------- Settings Store --------------
 

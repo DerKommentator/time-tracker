@@ -218,6 +218,7 @@ ipcMain.on('check_for_updates', () => {
 });
 
 ipcMain.on('restart_app', () => {
+	app.removeAllListeners('before-quit');
 	autoUpdater.quitAndInstall();
 });
 

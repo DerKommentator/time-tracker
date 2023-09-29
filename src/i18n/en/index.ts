@@ -2,9 +2,20 @@ import type { Translation } from '../i18n-types'
 
 const en = {
 	// Shared
+	YES_LABEL: "YES",
+	NO_LABEL: "NO",
+	CANCEL_LABEL: "Cancel",
+
 	SAVE_LABEL: "Save",
 	DELETED_LABEL: "Deleted!",
 	ERROR_LABEL: "Error:",
+
+	DELETE_LABEL: "DELETE",
+
+	TOAST_SAVED_SUCCESSFULLY: "Successfully saved!",
+	TOAST_SAVED_FAILED: "Save failed!",
+	TOAST_DELETED_SUCCESSFULLY: "Successfully deleted!",
+	TOAST_DELETED_FAILED: "Delete failed!",
 
 	// Layout
 	HOME_LABEL: "Home",
@@ -64,13 +75,16 @@ const en = {
 	},
 
 	// === Settings Page ===
-	TOAST_SAVED_SUCCESSFULLY: "Successfully saved!",
 	SETTINGS: {
 		DAILY_START: "Daily start of work:",
 		PLANNED_TIME: "Planned working hours:",
 		USE_STARTUP_TIME: "Use the time at program start as work start?",
 		LANGUAGE_LABEL: "Language:",
-		CHANGES_AFTER_RESTART: "Some changes are applied only after the restart!"
+		CHANGES_AFTER_RESTART: "Some changes are applied only after the restart!",
+		DELETE_DATA_LABEL: "Delete <span class='text-error-500'>ALL</span> data completly?",
+		DELETE_DATA_BTN: "DELETE ALL",
+		DELETE_MODAL_TITLE: "Delete Everything?",
+		DELETE_MODAL_BODY: "Are you sure you want to delete <span class='text-error-500 font-bold'>ALL</span> your data?"
 	}
 } satisfies Translation
 
