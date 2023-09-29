@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import TimeGridCard from './TimeGridCard.svelte';
 	import type { Time } from '$lib/models/Time';
-	import { formatOvertime, timeToMinutes } from '$lib/utils/HelperFunctions';
+	import { calcTime, formatOvertime, timeToMinutes } from '$lib/utils/HelperFunctions';
 	import { statisticsStore } from '../../../stores/store';
 	import LL from '../../../i18n/i18n-svelte';
 
@@ -14,6 +14,7 @@
 		medianStart: { hours: 0, minutes: 0 },
 		medianEnd: { hours: 0, minutes: 0 }
 	};
+	let availableOvertime: Time = { hours: 0, minutes: 0 };
 
 	function calcAverage(values: Timeslot[]): { avgStart: number; avgEnd: number } {
 		if (values.length == 0) {
@@ -68,10 +69,20 @@
 		return { medianStart: medianStartSlot.begin, medianEnd: medianEndSlot.end };
 	}
 
+	function calcAvailableOvertime(values: Timeslot[]): Time {
+		let sumTime: Time = { hours: 0, minutes: 0 };
+		values.forEach((timeslot) => {
+			sumTime = calcTime(sumTime, timeslot.statistics.timeDiffPlannedToWorked, true);
+		});
+		console.log(sumTime);
+		return sumTime;
+	}
+
 	$: {
 		// TODO: OPTIMIZE
 		average = calcAverage(data);
 		median = calcMedian(data);
+		//availableOvertime = calcAvailableOvertime(data);
 	}
 </script>
 

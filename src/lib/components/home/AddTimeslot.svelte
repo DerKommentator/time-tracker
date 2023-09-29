@@ -29,6 +29,7 @@
 	import type { DbError } from '$lib/models/DbError';
 	import TimeInput from './TimeInput.svelte';
 	import LL from '../../../i18n/i18n-svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	const toastStore = getToastStore();
 
@@ -38,6 +39,7 @@
 	let endTime: string;
 	let now: Date = new Date();
 	let dateString: string = now.toISOString().split('T')[0];
+	let lockSave: boolean = false;
 
 	let dateError: boolean = false;
 	let startTimeError: boolean = false;
@@ -72,6 +74,7 @@
 	}
 
 	async function saveTime() {
+		errorMessage = '';
 		if (!endTime) {
 			endTimeError = true;
 			errorMessage = $LL.TIMESLOT.ERROR_END_MISSING();
@@ -131,26 +134,36 @@
 		//(window as any).ipcRenderer.notification(['Hallo', 'TestBody']);
 	}
 
-	if ((window as any)?.IN_DESKTOP_ENV) {
-		(window as any).ipcRenderer.on('sendEvent-saveTime', () => {
-			const now = new Date();
+	onMount(() => {
+		if ((window as any)?.IN_DESKTOP_ENV) {
+			(window as any).ipcRenderer.on('sendEvent-saveTime', async () => {
+				const now = new Date();
 
-			// Add 1 minute so the end time is always greater than the start time
-			endTime = formatDateToTime(new Date(now.getTime() + 60000));
-			saveTime();
+				// Add 1 minute so the end time is always greater than the start time
+				endTime = formatDateToTime(new Date(now.getTime() + 60000));
+				await saveTime();
 
-			//(window as any).ipcRenderer.send('trigger-close');
-		});
+				//(window as any).ipcRenderer.send('trigger-close');
+			});
 
-		(window as any).ipcRenderer.on('sendEvent-exit', () => {
-			(window as any).ipcRenderer.send('trigger-close');
-		});
+			(window as any).ipcRenderer.on('sendEvent-exit', () => {
+				(window as any).ipcRenderer.send('trigger-close');
+			});
 
-		(window as any).ipcRenderer.on('sendEvent-set-startTime', () => {
-			startTime = formatDateToTime(new Date());
-			dateString = new Date().toISOString().split('T')[0];
-		});
-	}
+			(window as any).ipcRenderer.on('sendEvent-set-startTime', () => {
+				startTime = formatDateToTime(new Date());
+				dateString = new Date().toISOString().split('T')[0];
+			});
+		}
+	});
+
+	onDestroy(() => {
+		if ((window as any)?.IN_DESKTOP_ENV) {
+			(window as any).ipcRenderer.removeAllListeners('sendEvent-saveTime');
+			(window as any).ipcRenderer.removeAllListeners('sendEvent-exit');
+			(window as any).ipcRenderer.removeAllListeners('sendEvent-set-startTime');
+		}
+	});
 </script>
 
 <header class="card-header text-xl"><strong>{$LL.TIMESLOT.ADD_HEADLINE()}</strong></header>

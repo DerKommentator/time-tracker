@@ -8,7 +8,8 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 			'trigger-close',
 			'app_version',
 			'restart_app',
-			'check_for_updates'
+			'check_for_updates',
+			'change-Language'
 		]; // <-- Array of all ipcRenderer Channels used in the client
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);

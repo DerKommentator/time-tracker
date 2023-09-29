@@ -57,7 +57,18 @@ function showNotification(title, bodyText) {
 // 	});
 // }
 
-let suspendAlreadyTriggered = false;
+let language = 'de';
+let translations = {
+	en: {
+		wakeupNotifyHeadline: 'Good Morning 😴',
+		wakeupNotifyBody: 'Hej! A new working day begins!'
+	},
+	de: {
+		wakeupNotifyHeadline: 'Guten Morgen 😴',
+		wakeupNotifyBody: 'Hej! Ein neuer Arbeitstag beginnt!'
+	}
+};
+
 let showNotify = false;
 let top = {}; // prevent gc to keep windows
 
@@ -176,6 +187,10 @@ ipcMain.on('trigger-close', () => {
 	app.exit();
 });
 
+ipcMain.on('change-Language', (event, selectedLanguage) => {
+	language = selectedLanguage;
+});
+
 // ============= Updater =============
 
 ipcMain.on('app_version', (event) => {
@@ -270,30 +285,27 @@ app.on('window-all-closed', () => {
 // powerMonitor.addListener('lock-screen', () => {});
 
 powerMonitor.addListener('unlock-screen', () => {
-	if (suspendAlreadyTriggered && showNotify) {
+	if (showNotify) {
 		setTimeout(function () {
-			showNotification('Guten Morgen 😴', 'Hej! Ein neuer Arbeitstag beginnt!');
+			showNotification(
+				translations[language]?.wakeupNotifyHeadline || translations.en.wakeupNotifyHeadline,
+				translations[language]?.wakeupNotifyBody || translations.en.wakeupNotifyBody
+			);
 		}, 3000);
-
-		suspendAlreadyTriggered = false;
 		showNotify = false;
 	}
 });
 
 powerMonitor.addListener('suspend', () => {
 	log('suspend');
-	if (!suspendAlreadyTriggered) {
-		top.mainWindow.webContents.send('sendEvent-saveTime');
-
-		suspendAlreadyTriggered = true;
-		showNotify = true;
-	}
+	top.mainWindow.webContents.send('sendEvent-saveTime');
+	showNotify = true;
 });
 
 powerMonitor.addListener('resume', () => {
 	log('resume');
 	top.mainWindow.webContents.send('sendEvent-set-startTime');
-	top.mainWindow.reload();
+	top?.mainWindow?.reload();
 });
 
 // https://www.npmjs.com/package/@paymoapp/electron-shutdown-handler

@@ -37,6 +37,8 @@
 		if ($locale !== selectedLocale) {
 			await loadLocaleAsync(selectedLocale);
 			setLocale(selectedLocale);
+			localStorage.setItem('lang', selectedLocale);
+			(window as any).ipcRenderer.send('change-Language', selectedLocale);
 		}
 
 		const toastSettings: ToastSettings = {

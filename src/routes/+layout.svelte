@@ -6,12 +6,13 @@
 	import { AppShell, AppBar, LightSwitch, Drawer } from '@skeletonlabs/skeleton';
 	import { getDrawerStore, initializeStores } from '@skeletonlabs/skeleton';
 	import { computePosition, offset, arrow } from '@floating-ui/dom';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	import { LL, setLocale } from '../i18n/i18n-svelte';
 	import { detectLocale } from '../i18n/i18n-util';
 	import { localStorageDetector } from 'typesafe-i18n/detectors';
 	import { loadLocaleAsync } from '../i18n/i18n-util.async';
+	import { setInitialClassState } from '@skeletonlabs/skeleton';
 
 	initializeStores();
 	const drawerStore = getDrawerStore();
@@ -20,7 +21,6 @@
 	let message: string = '';
 	let showRestartBtn: boolean = false;
 	let showSpinner: boolean = false;
-	let updateAvailable: boolean = false;
 	let activatePopup: boolean = false;
 
 	let tooltipDiv: HTMLDivElement;
@@ -70,10 +70,14 @@
 	}
 
 	onMount(async () => {
+		// Set init dark / light mode
+		setInitialClassState();
+
 		// Localization
 		const detectedLocale = detectLocale(localStorageDetector);
 		await loadLocaleAsync(detectedLocale);
 		setLocale(detectedLocale);
+		(window as any).ipcRenderer.send('change-Language', detectedLocale);
 
 		// Electron Updater
 		if ((window as any)?.IN_DESKTOP_ENV) {
@@ -110,8 +114,18 @@
 				message = $LL.UPDATE.TOOLTIP_UPDATE_DOWNLOADED();
 
 				showSpinner = false;
+				activatePopup = true;
 				showRestartBtn = true;
 			});
+		}
+	});
+
+	onDestroy(() => {
+		if ((window as any)?.IN_DESKTOP_ENV) {
+			(window as any).ipcRenderer.removeAllListeners('update_available');
+			(window as any).ipcRenderer.removeAllListeners('update_not_available');
+			(window as any).ipcRenderer.removeAllListeners('update_error');
+			(window as any).ipcRenderer.removeAllListeners('update_downloaded');
 		}
 	});
 
@@ -122,10 +136,6 @@
 		}, 5000);
 	}
 </script>
-
-<svelte:head>
-	<title>TimeTracker</title>
-</svelte:head>
 
 <Drawer>
 	<div class="flex flex-col items-stretch gap-y-3 p-4">
@@ -178,7 +188,7 @@
 						</div>
 						<button
 							class:hidden={!showRestartBtn}
-							class="btn variant-filled-primary text-xs p-1.5 absolute -right-12 lg:-right-8"
+							class="btn variant-filled-primary text-xs p-1.5 absolute -right-14 lg:-right-10"
 							on:click={restartApp}
 						>
 							{$LL.UPDATE.RESTART_LABEL()}
