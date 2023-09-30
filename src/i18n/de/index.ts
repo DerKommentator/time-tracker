@@ -80,6 +80,7 @@ const de = {
 		PLANNED_TIME: "Geplante Arbeitszeit:",
 		USE_STARTUP_TIME: "Die Zeit beim Programmstart als Arbeitsbeginn nutzen?",
 		LANGUAGE_LABEL: "Sprache:",
+		SHOW_AFTER_STARTUP: "Das Programmfenster nach dem Hochfahren des PCs anzeigen?",
 		CHANGES_AFTER_RESTART: "Einige Änderungen werden erst nach einem Neustart übernommen!",
 		DELETE_DATA_LABEL: "Alle Daten für <span class='text-error-500'>IMMER</span> löschen?",
 		DELETE_DATA_BTN: "ALLES LÖSCHEN",

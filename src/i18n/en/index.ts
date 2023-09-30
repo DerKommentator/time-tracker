@@ -80,6 +80,7 @@ const en = {
 		PLANNED_TIME: "Planned working hours:",
 		USE_STARTUP_TIME: "Use the time at program start as work start?",
 		LANGUAGE_LABEL: "Language:",
+		SHOW_AFTER_STARTUP: "Show the program window after booting the PC?",
 		CHANGES_AFTER_RESTART: "Some changes are applied only after the restart!",
 		DELETE_DATA_LABEL: "Delete <span class='text-error-500'>ALL</span> data completly?",
 		DELETE_DATA_BTN: "DELETE ALL",

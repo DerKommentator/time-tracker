@@ -41,6 +41,7 @@
 	);
 
 	let useStartupTime: boolean = $settingsStore.useStartupTime;
+	let showAfterStartup: boolean = $settingsStore.showAfterStartup;
 	let selectedLocale: Locales = $locale || 'de';
 
 	const fullnameLocales = { de: 'German', en: 'English' };
@@ -58,7 +59,8 @@
 		settingsStore.set({
 			plannedWorkingTime: { hours: 7, minutes: 30 },
 			standardStartTime: { hours: 7, minutes: 30 },
-			useStartupTime: true
+			useStartupTime: true,
+			showAfterStartup: true
 		});
 		statisticsStore.set({ availableOvertime: { hours: 0, minutes: 0 } });
 
@@ -101,6 +103,8 @@
 			localStorage.setItem('lang', selectedLocale);
 			(window as any).ipcRenderer.send('change-Language', selectedLocale);
 		}
+
+		$settingsStore.showAfterStartup = showAfterStartup;
 
 		const toastSettings: ToastSettings = {
 			message: $LL.TOAST_SAVED_SUCCESSFULLY(),
@@ -157,6 +161,16 @@
 						aria-label="Settings: Set daily start of work"
 					/>
 				</div>
+			</div>
+			<div class="flex flex-row justify-between items-center mb-8">
+				<span><strong>{$LL.SETTINGS.SHOW_AFTER_STARTUP()}</strong></span>
+				<SlideToggle
+					name="slide"
+					active="bg-primary-500"
+					size="md"
+					class="m-2"
+					bind:checked={showAfterStartup}
+				/>
 			</div>
 			<div>
 				<span><strong>{$LL.SETTINGS.LANGUAGE_LABEL()}</strong></span>

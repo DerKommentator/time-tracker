@@ -90,7 +90,7 @@ function createWindow() {
 		height: mws.height,
 		title: 'TimeTracker',
 		darkTheme: true,
-		show: true,
+		show: false,
 		contextIsolation: true,
 		sandbox: true,
 		icon: windowIcon,
@@ -99,6 +99,8 @@ function createWindow() {
 			preload: path.join(__dirname, 'preload.js')
 		}
 	});
+
+	top.mainWindow.hide();
 
 	const tIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.ico'));
 	const trayIcon = tIcon.resize({ width: 32, height: 32 });
@@ -159,12 +161,12 @@ function createWindow() {
 		//top.mainWindow.loadFile(path.join(__dirname, 'build', 'index.html'));
 		serveURL(top.mainWindow);
 
+		top.mainWindow.once('ready-to-show', () => {
+			autoUpdater.checkForUpdatesAndNotify();
+		});
+
 		log('Electron running in prod mode: 🚀');
 	}
-
-	top.mainWindow.once('ready-to-show', () => {
-		autoUpdater.checkForUpdatesAndNotify();
-	});
 }
 
 // ============= IPC =============
@@ -189,6 +191,11 @@ ipcMain.on('trigger-close', () => {
 
 ipcMain.on('change-Language', (event, selectedLanguage) => {
 	language = selectedLanguage;
+});
+
+ipcMain.on('show-After-Startup', () => {
+	log('showProgram');
+	top.mainWindow.show();
 });
 
 // ============= Updater =============

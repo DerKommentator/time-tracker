@@ -13,6 +13,7 @@
 	import { localStorageDetector } from 'typesafe-i18n/detectors';
 	import { loadLocaleAsync } from '../i18n/i18n-util.async';
 	import { setInitialClassState } from '@skeletonlabs/skeleton';
+	import { settingsStore } from '../stores/store';
 
 	initializeStores();
 	const drawerStore = getDrawerStore();
@@ -76,10 +77,16 @@
 		const detectedLocale = detectLocale(localStorageDetector);
 		await loadLocaleAsync(detectedLocale);
 		setLocale(detectedLocale);
-		(window as any).ipcRenderer.send('change-Language', detectedLocale);
 
-		// Electron Updater
 		if ((window as any)?.IN_DESKTOP_ENV) {
+			(window as any).ipcRenderer.send('change-Language', detectedLocale);
+
+			// Show window if option is selected
+			if ($settingsStore.showAfterStartup) {
+				(window as any).ipcRenderer.send('show-After-Startup');
+			}
+
+			// Electron Updater
 			(window as any).ipcRenderer.send('app_version');
 
 			(window as any).ipcRenderer.on('app_version', (event: any, message: any) => {
@@ -125,6 +132,7 @@
 			(window as any).ipcRenderer.removeAllListeners('update_not_available');
 			(window as any).ipcRenderer.removeAllListeners('update_error');
 			(window as any).ipcRenderer.removeAllListeners('update_downloaded');
+			(window as any).ipcRenderer.removeAllListeners('show-After-Startup');
 		}
 	});
 
