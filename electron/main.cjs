@@ -194,7 +194,6 @@ ipcMain.on('change-Language', (event, selectedLanguage) => {
 });
 
 ipcMain.on('show-After-Startup', () => {
-	log('showProgram');
 	top.mainWindow.show();
 });
 

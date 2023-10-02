@@ -84,6 +84,7 @@
 			// Show window if option is selected
 			if ($settingsStore.showAfterStartup) {
 				(window as any).ipcRenderer.send('show-After-Startup');
+				(window as any).ipcRenderer.removeAllListeners('show-After-Startup');
 			}
 
 			// Electron Updater
