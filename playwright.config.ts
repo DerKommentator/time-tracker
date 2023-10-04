@@ -30,10 +30,13 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-  webServer: {
-    command: 'npm run preview',
-    timeout: 60 * 1000, // time to launch server, 60 by default
-    url: 'http://localhost:4173', // app url
+  // webServer: {
+  //   command: 'npm run preview',
+  //   timeout: 60 * 1000, // time to launch server, 60 by default
+  //   url: 'http://localhost:4173', // app url
+  // },
+  expect: {
+    toMatchSnapshot: { threshold: 0.2 },
   },
 
   /* Configure projects for major browsers */

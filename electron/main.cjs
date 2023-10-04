@@ -32,7 +32,7 @@ if (process.platform === 'win32') {
 }
 
 const isDevEnvironment = process.env.APP_DEV === 'true';
-const port = process.env.PORT || 5173;
+const isTestingEnvironment = process.env.APP_TESTING === 'true';
 
 function showNotification(title, bodyText) {
 	const notification = new Notification({
@@ -60,12 +60,28 @@ function showNotification(title, bodyText) {
 let language = 'de';
 let translations = {
 	en: {
-		wakeupNotifyHeadline: 'Good Morning 😴',
-		wakeupNotifyBody: 'Hej! A new working day begins!'
+		yesText: 'Yes',
+		noText: 'No',
+		notify: {
+			wakeupHeadline: 'Good Morning 😴',
+			wakeupBody: 'Hej! A new working day begins!'
+		},
+		msgBox: {
+			quitTitle: 'Save current time?',
+			quitBodyText: 'Do you want to save the current time as work of end time?'
+		}
 	},
 	de: {
-		wakeupNotifyHeadline: 'Guten Morgen 😴',
-		wakeupNotifyBody: 'Hej! Ein neuer Arbeitstag beginnt!'
+		yesText: 'Ja',
+		noText: 'Nein',
+		notify: {
+			wakeupHeadline: 'Guten Morgen 😴',
+			wakeupBody: 'Hej! Ein neuer Arbeitstag beginnt!'
+		},
+		msgBox: {
+			quitTitle: 'Aktuelle Zeit sichern?',
+			quitBodyText: 'Möchtest du noch die aktuelle Zeit als Arbeitsende speichern?'
+		}
 	}
 };
 
@@ -106,11 +122,13 @@ function createWindow() {
 	const trayIcon = tIcon.resize({ width: 32, height: 32 });
 	trayIcon.setTemplateImage(true);
 
-	top.mainWindow.on('close', (event) => {
-		//mainWindow = null;
-		top.mainWindow.hide();
-		event.preventDefault(); // prevent quit process
-	});
+	if (!isTestingEnvironment) {
+		top.mainWindow.on('close', (event) => {
+			//mainWindow = null;
+			top.mainWindow.hide();
+			event.preventDefault(); // prevent quit process
+		});
+	}
 
 	top.mainWindow.tray = new Tray(trayIcon);
 	const menu = Menu.buildFromTemplate([
@@ -249,36 +267,41 @@ app.on('activate', () => {
 	if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-app.on('before-quit', (e) => {
-	e.preventDefault();
-	dialog
-		.showMessageBox({
-			type: 'info',
-			buttons: ['Yes', 'No'],
-			cancelId: 1,
-			defaultId: 0,
-			title: 'Warning',
-			detail: 'Do you want to save the current time as work of end time?'
-		})
-		.then(({ response }) => {
-			if (response == 0) {
-				// trigger save of time in app
-				top.mainWindow.webContents.send('sendEvent-saveTime');
-				top.mainWindow.webContents.send('sendEvent-exit');
-			} else {
-				// BrowserWindow "close" event spawn after quit operation,
-				// it requires to clean up listeners for "close" event
-				top?.mainWindow?.removeAllListeners('close');
+if (!isTestingEnvironment) {
+	app.on('before-quit', (e) => {
+		e.preventDefault();
+		dialog
+			.showMessageBox({
+				type: 'info',
+				buttons: [
+					translations[language]?.yesText || translations.en.yesText,
+					translations[language]?.noText || translations.en.noText
+				],
+				cancelId: 1,
+				defaultId: 0,
+				title: translations[language]?.msgBox.quitTitle || translations.en.msgBox.quitTitle,
+				detail: translations[language]?.msgBox.quitBodyText || translations.en.msgBox.quitBodyText
+			})
+			.then(({ response }) => {
+				if (response == 0) {
+					// trigger save of time in app
+					top.mainWindow.webContents.send('sendEvent-saveTime');
+					top.mainWindow.webContents.send('sendEvent-exit');
+				} else {
+					// BrowserWindow "close" event spawn after quit operation,
+					// it requires to clean up listeners for "close" event
+					top?.mainWindow?.removeAllListeners('close');
 
-				top?.mainWindow?.tray?.destroy();
+					top?.mainWindow?.tray?.destroy();
 
-				// release windows
-				top = null;
+					// release windows
+					top = null;
 
-				app.exit();
-			}
-		});
-});
+					app.exit();
+				}
+			});
+	});
+}
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -295,8 +318,8 @@ powerMonitor.addListener('unlock-screen', () => {
 	if (showNotify) {
 		setTimeout(function () {
 			showNotification(
-				translations[language]?.wakeupNotifyHeadline || translations.en.wakeupNotifyHeadline,
-				translations[language]?.wakeupNotifyBody || translations.en.wakeupNotifyBody
+				translations[language]?.notify.wakeupHeadline || translations.en.notify.wakeupHeadline,
+				translations[language]?.notify.wakeupBody || translations.en.notify.wakeupBody
 			);
 		}, 3000);
 		showNotify = false;

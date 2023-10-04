@@ -20,7 +20,7 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"package": "npm run build && electron-forge package",
 		"make": "npm run build && electron-forge make",
-		"test": "npx playwright test",
+		"test": "cross-env APP_TESTING=true npx playwright test",
 		"dist": "npm run build && electron-builder -wl",
 		"build:electron": "electron-builder -wl --x64 --config build.config.json --publish never",
 		"deploy:electron": "electron-builder -wl --x64 --config build.config.json --publish always",
