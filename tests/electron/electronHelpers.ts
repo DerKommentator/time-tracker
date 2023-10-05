@@ -28,9 +28,13 @@ export async function startApp(): Promise<StartAppResponse> {
         recordVideo: {
             dir: "screenshots",
             size: {
-                width: 1200,
-                height: 800,
+                width: 1080,
+                height: 720,
             },
+        },
+        env: {
+            ...process.env,
+            NODE_ENV: 'development',
         },
     });
 

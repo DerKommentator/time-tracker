@@ -42,7 +42,7 @@ jobs:
       - name: 🧪 Run svelte component tests
         run: npm run test:sveltecomp
       - name: 🧪 Run e2e electron tests
-        run: npm run test:electron
+        run: npm run testlinux:electron
       - name: 📁 Upload test results
         uses: actions/upload-artifact@v3
         if: always()
