@@ -20,7 +20,7 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"package": "npm run build && electron-forge package",
 		"make": "npm run build && electron-forge make",
-		"test:electron": "cross-env APP_TESTING=true npx playwright test",
+		"test:electron": "cross-env APP_TESTING=true xvfb-maybe -- playwright test",
 		"test:sveltecomp": "vitest",
 		"coverage": "vitest run --coverage",
 		"dist": "npm run build && electron-builder -wl",
