@@ -27,7 +27,7 @@
 		"testbuild:electron": "electron-builder -w --x64 --config build.config.json --publish never",
 		"build:electron": "electron-builder -wl --x64 --config build.config.json --publish never",
 		"deploy:electron": "electron-builder -wl --x64 --config build.config.json --publish always",
-		"testbuild": "cross-env APP_DEV=false APP_TESTING=false npm run build:svelte && npm run prebuild:electron",
+		"testbuild": "cross-env APP_DEV=false APP_TESTING=false npm run build:svelte && npm run testbuild:electron",
 		"build": "cross-env APP_DEV=false APP_TESTING=false npm run build:svelte && npm run build:electron",
 		"typesafe-i18n": "typesafe-i18n"
 	},
