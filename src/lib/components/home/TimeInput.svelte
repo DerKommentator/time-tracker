@@ -3,6 +3,7 @@
 	import { IconClock } from '@tabler/icons-svelte';
 	import LL from '../../../i18n/i18n-svelte';
 
+	export let dataTestId: string;
 	export let label: string;
 	export let inputError: boolean;
 	export let time: string;
@@ -12,6 +13,7 @@
 <span><strong>{label}</strong></span>
 <div class="flex gap-4 m-2 mb-8">
 	<input
+		data-testid={dataTestId}
 		class="input text-center text-lg"
 		class:input-error={inputError}
 		aria-label="Enter {label}"
@@ -23,6 +25,7 @@
 		}}
 	/>
 	<button
+		data-testid="set-current-time-btn"
 		class="btn variant-filled-primary"
 		on:click={() => {
 			time = formatDateToTime(new Date());

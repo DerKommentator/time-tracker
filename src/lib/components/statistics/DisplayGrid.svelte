@@ -74,7 +74,6 @@
 		values.forEach((timeslot) => {
 			sumTime = calcTime(sumTime, timeslot.statistics.timeDiffPlannedToWorked, true);
 		});
-		console.log(sumTime);
 		return sumTime;
 	}
 
@@ -82,17 +81,34 @@
 		// TODO: OPTIMIZE
 		average = calcAverage(data);
 		median = calcMedian(data);
-		//availableOvertime = calcAvailableOvertime(data);
+		availableOvertime = calcAvailableOvertime(data);
 	}
 </script>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-1 m-2 mb-7">
-	<TimeGridCard headline={$LL.GRIDCARD.START_AVG()} displayText={average.avgStart} />
-	<TimeGridCard headline={$LL.GRIDCARD.END_AVG()} displayText={average.avgEnd} />
-	<TimeGridCard headline={$LL.GRIDCARD.START_MEDIAN()} displayText={median.medianStart} />
-	<TimeGridCard headline={$LL.GRIDCARD.END_MEDIAN()} displayText={median.medianEnd} />
+	<TimeGridCard
+		headline={$LL.GRIDCARD.START_AVG()}
+		displayText={average.avgStart}
+		dataTestId="start-avg-card"
+	/>
+	<TimeGridCard
+		headline={$LL.GRIDCARD.END_AVG()}
+		displayText={average.avgEnd}
+		dataTestId="end-avg-card"
+	/>
+	<TimeGridCard
+		headline={$LL.GRIDCARD.START_MEDIAN()}
+		displayText={median.medianStart}
+		dataTestId="start-median-card"
+	/>
+	<TimeGridCard
+		headline={$LL.GRIDCARD.END_MEDIAN()}
+		displayText={median.medianEnd}
+		dataTestId="end-median-card"
+	/>
 	<TimeGridCard
 		headline={$LL.GRIDCARD.AVAILABLE_OVERTIME()}
-		displayText={formatOvertime($statisticsStore.availableOvertime)}
+		displayText={formatOvertime(availableOvertime)}
+		dataTestId="aval-ot-card"
 	/>
 </div>

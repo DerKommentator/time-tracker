@@ -3,6 +3,7 @@
 	import { formatTime, minutesToTime } from '$lib/utils/HelperFunctions';
 	import { onMount } from 'svelte';
 
+	export let dataTestId: string = '';
 	export let headline: string;
 	export let displayText: string | number | Time = '00:00';
 
@@ -19,7 +20,7 @@
 	});
 </script>
 
-<div class="card p-4">
-	<p class="font-bold text-center">{headline}</p>
-	<p class="text-2xl text-center">{formattedText}</p>
+<div class="card p-4" data-testid={dataTestId}>
+	<p class="font-bold text-center" data-testid="headline">{headline}</p>
+	<p class="text-2xl text-center" data-testid="displayText">{formattedText}</p>
 </div>

@@ -20,7 +20,7 @@
 		stringToTime
 	} from '$lib/utils/HelperFunctions';
 	import { statisticsStore } from '../../../stores/store';
-	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { getToastStore, initializeStores, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { Time } from '$lib/models/Time';
 	import type { Timeslot } from '$lib/models/Timeslot';
 	import type { Settings } from '$lib/models/Settings';
@@ -31,6 +31,8 @@
 	import LL from '../../../i18n/i18n-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
+	// Has to be initilized in every component for component testing
+	initializeStores();
 	const toastStore = getToastStore();
 
 	//export let timeslots: Timeslot[];
@@ -172,6 +174,7 @@
 		<span><strong>{$LL.TIMESLOT.DATE_LABEL()}</strong></span>
 		<div class="flex gap-4 m-2 mb-8">
 			<input
+				data-testid="timeslot-datepicker"
 				class="input text-center text-lg"
 				class:input-error={errorMessage && dateError}
 				aria-label="Enter Date"
@@ -185,6 +188,7 @@
 	</div>
 	<div>
 		<TimeInput
+			dataTestId="start-time-input"
 			label={$LL.TIMEINPUT.START_LABEL()}
 			inputError={startTimeError}
 			bind:time={startTime}
@@ -192,6 +196,7 @@
 	</div>
 	<div>
 		<TimeInput
+			dataTestId="end-time-input"
 			label={$LL.TIMEINPUT.END_LABEL()}
 			inputError={endTimeError}
 			bind:time={endTime}
@@ -205,5 +210,9 @@
 	{:else}
 		<p />
 	{/if}
-	<button class="btn variant-filled-primary" on:click={() => saveTime()}>{$LL.SAVE_LABEL()}</button>
+	<button
+		class="btn variant-filled-primary"
+		data-testid="timeslot-save-btn"
+		on:click={() => saveTime()}>{$LL.SAVE_LABEL()}</button
+	>
 </footer>

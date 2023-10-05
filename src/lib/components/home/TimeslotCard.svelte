@@ -2,12 +2,14 @@
 	import type { Timeslot } from '$lib/models/Timeslot';
 	import { IconTrash } from '@tabler/icons-svelte';
 	import { statisticsStore } from '../../../stores/store';
-	import { getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { getToastStore, initializeStores, type ToastSettings } from '@skeletonlabs/skeleton';
 	import { calcTime, formatDate, formatTime } from '$lib/utils/HelperFunctions';
 	import type { Time } from '$lib/models/Time';
 	import { db } from '$lib/db/db';
 	import type { DbError } from '$lib/models/DbError';
 	import LL from '../../../i18n/i18n-svelte';
+
+	initializeStores();
 
 	const toastStore = getToastStore();
 
@@ -53,7 +55,7 @@
 </script>
 
 <header class="card-header text-xl flex justify-between">
-	<strong>
+	<strong data-testid="timeslot-item-card-date">
 		{formatDate(new Date(timeslot.date))}
 	</strong>
 	<button
@@ -68,6 +70,7 @@
 			<div class="w-1/2">
 				<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.START_LABEL()}</strong></span>
 				<input
+					data-testid="timeslot-item-card-start-time"
 					class="input"
 					type="time"
 					value={formatTime(timeslot.begin)}
@@ -79,6 +82,7 @@
 			<div class="w-1/2">
 				<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.END_LABEL()}</strong></span>
 				<input
+					data-testid="timeslot-item-card-end-time"
 					class="input"
 					type="time"
 					value={formatTime(timeslot.end)}

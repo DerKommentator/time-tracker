@@ -20,7 +20,9 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"package": "npm run build && electron-forge package",
 		"make": "npm run build && electron-forge make",
-		"test": "cross-env APP_TESTING=true npx playwright test",
+		"test:electron": "cross-env APP_TESTING=true npx playwright test",
+		"test:sveltecomp": "vitest",
+		"coverage": "vitest run --coverage",
 		"dist": "npm run build && electron-builder -wl",
 		"build:electron": "electron-builder -wl --x64 --config build.config.json --publish never",
 		"deploy:electron": "electron-builder -wl --x64 --config build.config.json --publish always",
@@ -29,6 +31,7 @@
 	},
 	"devDependencies": {
 		"@floating-ui/dom": "^1.5.1",
+		"@juggle/resize-observer": "^3.4.0",
 		"@playwright/test": "^1.38.0",
 		"@skeletonlabs/skeleton": "^2.0.0",
 		"@skeletonlabs/tw-plugin": "^0.1.0",
@@ -38,6 +41,8 @@
 		"@tabler/icons-svelte": "2.30.0",
 		"@tailwindcss/forms": "^0.5.4",
 		"@tailwindcss/typography": "^0.5.9",
+		"@testing-library/svelte": "^4.0.3",
+		"@testing-library/user-event": "^14.5.1",
 		"@types/node": "^20.6.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
@@ -54,6 +59,8 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.26.0",
 		"highlight.js": "^11.8.0",
+		"jsdom": "^22.1.0",
+		"loglevel": "^1.8.1",
 		"playwright": "^1.38.0",
 		"postcss": "^8.4.28",
 		"prettier": "^2.8.0",
@@ -65,7 +72,8 @@
 		"typesafe-i18n": "^5.26.2",
 		"typescript": "^5.0.0",
 		"vite": "^4.3.0",
-		"vite-plugin-tailwind-purgecss": "^0.1.3"
+		"vite-plugin-tailwind-purgecss": "^0.1.3",
+		"vitest": "^0.34.6"
 	},
 	"type": "module",
 	"dependencies": {

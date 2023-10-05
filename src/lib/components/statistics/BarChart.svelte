@@ -3,13 +3,22 @@
 	import { Chart } from 'chart.js/auto';
 	import { modeCurrent } from '@skeletonlabs/skeleton';
 	import LL from '../../../i18n/i18n-svelte';
+	import { ResizeObserver as ResizeObserverPolyfill } from '@juggle/resize-observer';
 
-	let root = document.querySelector(":root [data-theme='skeleton']")!;
-	let primaryColor = getComputedStyle(root).getPropertyValue('--color-primary-500');
-	let tertiaryColor = getComputedStyle(root).getPropertyValue('--color-tertiary-500');
-	// let errorColor = getComputedStyle(root).getPropertyValue('--color-error-700');
-	let fontBase = getComputedStyle(root).getPropertyValue('--theme-font-color-base');
-	let fontBaseDark = getComputedStyle(root).getPropertyValue('--theme-font-color-dark');
+	if (typeof window !== 'undefined') {
+		window.ResizeObserver = window.ResizeObserver || ResizeObserverPolyfill;
+	}
+
+	// let root = document.querySelector(":root [data-theme='skeleton']")!;
+	// let primaryColor = getComputedStyle(root).getPropertyValue('--color-primary-500');
+	// let tertiaryColor = getComputedStyle(root).getPropertyValue('--color-tertiary-500');
+	// // let errorColor = getComputedStyle(root).getPropertyValue('--color-error-700');
+	// let fontBase = getComputedStyle(root).getPropertyValue('--theme-font-color-base');
+	// let fontBaseDark = getComputedStyle(root).getPropertyValue('--theme-font-color-dark');
+	let primaryColor = '15, 186, 129';
+	let tertiaryColor = '14, 165, 233';
+	let fontBase = '0, 0, 0';
+	let fontBaseDark = '255, 255, 255';
 	let colorRed = '255, 43, 43';
 
 	export let data: { date: string; worked: number; avalOt: number }[] = [];
@@ -110,4 +119,4 @@
 </script>
 
 <svelte:window bind:innerWidth />
-<canvas bind:this={canvas}>{chart}</canvas>
+<canvas bind:this={canvas} data-testid="barchart-canvas">{chart}</canvas>
