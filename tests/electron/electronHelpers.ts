@@ -66,7 +66,16 @@ export function findLatestBuild(): string {
     const outDir = path.join(rootDir, 'dist');
     // list of files in the out directory
     const builds = fs.readdirSync(outDir);
-    const platforms = ['win32', 'win', 'windows', 'darwin', 'mac', 'macos', 'osx', 'linux', 'ubuntu'];
+
+    let platforms: string[] = [];
+
+    if (process.platform === "win32") {
+        platforms = ['win32', 'win', 'windows'];
+    } else if (process.platform === "linux") {
+        platforms = ['linux', 'ubuntu'];
+    } else {
+        platforms = ['darwin', 'mac', 'macos'];
+    }
 
     const latestBuild = builds
         // eslint-disable-next-line array-callback-return
@@ -111,21 +120,23 @@ export interface ElectronAppInfo {
     /** True if the app is using asar */
     asar: boolean;
     /** OS platform */
-    platform: 'darwin' | 'win32' | 'linux';
+    platform: NodeJS.Platform;
     arch: Architecture;
 }
 
 export function parseElectronApp(buildDir: string): ElectronAppInfo {
     log.info(`Parsing Electron app in ${buildDir}`);
-    let platform: string | undefined;
-    if (buildDir.endsWith('.app')) {
-        buildDir = path.dirname(buildDir);
-        platform = 'darwin';
-    }
-    if (buildDir.endsWith('.exe')) {
-        buildDir = path.dirname(buildDir);
-        platform = 'win32';
-    }
+    let platform: string = process.platform;
+    // if (buildDir.endsWith('.app')) {
+    //     buildDir = path.dirname(buildDir);
+    //     platform = 'darwin';
+    // } else if (buildDir.endsWith('.exe')) {
+    //     buildDir = path.dirname(buildDir);
+    //     platform = 'win32';
+    // } else {
+    //     buildDir = path.dirname(buildDir);
+    //     platform = "linux";
+    // }
 
     const baseName = path.basename(buildDir).toLowerCase();
     if (!platform) {
@@ -228,6 +239,37 @@ export function parseElectronApp(buildDir: string): ElectronAppInfo {
 
         if (asar) {
             const asarPath = path.join(resourcesDir, 'app.asar');
+            packageJson = JSON.parse(ASAR.extractFile(asarPath, 'package.json').toString("utf8"));
+            main = path.join(asarPath, packageJson.main);
+        } else {
+            packageJson = JSON.parse(fs.readFileSync(path.join(resourcesDir, 'app', 'package.json'), 'utf8'));
+            main = path.join(resourcesDir, 'app', packageJson.main);
+        }
+        name = packageJson.name;
+    } else if (platform === "linux") {
+        // Linux Structure
+        // <buildDir>/
+        //   <appName> (executable)
+        //   resources/
+        //     app.asar (asar bundle) - or -
+        //     app
+        //       package.json
+        //       (your app structure)
+        const list = fs.readdirSync(buildDir);
+        const exe = list.find(fileName => {
+            return fileName.includes("timetracker");
+        });
+        // @ts-ignore
+        executable = path.join(buildDir, exe);
+
+        resourcesDir = path.join(buildDir, 'resources');
+        const resourcesList = fs.readdirSync(resourcesDir);
+        asar = resourcesList.includes('app.asar');
+
+        let packageJson: { main: string; name: string };
+
+        if (asar) {
+            const asarPath = path.join(resourcesDir, 'app.asar');
             packageJson = JSON.parse(ASAR.extractFile(asarPath, 'package.json').toString('utf8'));
             main = path.join(asarPath, packageJson.main);
         } else {
@@ -236,9 +278,9 @@ export function parseElectronApp(buildDir: string): ElectronAppInfo {
         }
         name = packageJson.name;
     } else {
-        /**  @todo add support for linux */
         throw new Error(`Platform not supported: ${platform}`);
     }
+
     return {
         executable,
         main,
