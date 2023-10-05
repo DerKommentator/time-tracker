@@ -50,9 +50,15 @@
 
 	let status: DbError = { text: '', cssColor: '' };
 
+	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
+
+	if ((window as any)?.APP_TESTING) {
+		databaseName = 'testTableTimeslots';
+	}
+
 	async function addTimeslotToDb(timeslot: Timeslot) {
 		try {
-			const id = await db.timeslots.add({
+			const id = await db[databaseName].add({
 				uuid: timeslot.uuid,
 				begin: timeslot.begin,
 				end: timeslot.end,
@@ -83,7 +89,7 @@
 			return;
 		}
 
-		let duplicates = await db.timeslots.where('date').equals(new Date(dateString)).count();
+		let duplicates = await db[databaseName].where('date').equals(new Date(dateString)).count();
 
 		if (duplicates > 0) {
 			dateError = true;

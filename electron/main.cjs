@@ -91,8 +91,8 @@ let top = {}; // prevent gc to keep windows
 function createWindow() {
 	// Create the browser window.
 	let mws = ws({
-		defaultWidth: 1300,
-		defaultHeight: 1000
+		defaultWidth: 1080,
+		defaultHeight: 720
 	});
 
 	const wIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.ico'));

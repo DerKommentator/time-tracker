@@ -7,10 +7,21 @@
 	import { fly } from 'svelte/transition';
 	import { liveQuery } from 'dexie';
 	import { db } from '$lib/db/db';
+	import { tryPersistWithoutPromtingUser } from '$lib/db/persistStorage';
+	import { onMount } from 'svelte';
 
 	//initializeStores();
+	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
 
-	let timeslots = liveQuery(() => db.timeslots.reverse().sortBy('date'));
+	if ((window as any)?.APP_TESTING) {
+		databaseName = 'testTableTimeslots';
+	}
+
+	onMount(async () => {
+		await tryPersistWithoutPromtingUser();
+	});
+
+	let timeslots = liveQuery(() => db[databaseName].reverse().sortBy('date'));
 </script>
 
 <div class="relative">

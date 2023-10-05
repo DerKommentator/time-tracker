@@ -23,6 +23,12 @@
 	const toastStore = getToastStore();
 	const modalStore = getModalStore();
 
+	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
+
+	if ((window as any)?.APP_TESTING) {
+		databaseName = 'testTableTimeslots';
+	}
+
 	const askToDeleteDataModal: ModalSettings = {
 		type: 'confirm',
 		title: $LL.SETTINGS.DELETE_MODAL_TITLE(),
@@ -68,7 +74,7 @@
 		setLocale('de');
 
 		// Clear timeslot table
-		db.table('timeslots')
+		db.table(databaseName)
 			.clear()
 			.then(() => {
 				toastStore.trigger(toastSettings);
@@ -184,6 +190,7 @@
 			<div class="flex flex-row justify-between items-center my-8">
 				<span><strong>{@html $LL.SETTINGS.DELETE_DATA_LABEL()}</strong></span>
 				<button
+					data-testid="settings-del-all-data-btn"
 					class="btn variant-filled-error"
 					on:click={() => modalStore.trigger(askToDeleteDataModal)}
 					>{$LL.SETTINGS.DELETE_DATA_BTN()}</button

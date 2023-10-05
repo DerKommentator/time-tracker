@@ -3,11 +3,13 @@ import Dexie, { type Table } from 'dexie';
 
 export class MySubClassedDexie extends Dexie {
     timeslots!: Table<Timeslot>;
+    testTableTimeslots!: Table<Timeslot>;
 
     constructor() {
         super('timeslotsDb');
-        this.version(1).stores({
-            timeslots: '++uuid, begin, end, date, statistics'
+        this.version(2).stores({
+            timeslots: '++uuid, begin, end, date, statistics',
+            testTableTimeslots: '++uuid, begin, end, date, statistics'
         });
     }
 }

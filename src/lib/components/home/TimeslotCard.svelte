@@ -17,9 +17,15 @@
 	export let id: string;
 	let status: DbError = { text: '', cssColor: '' };
 
+	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
+
+	if ((window as any)?.APP_TESTING) {
+		databaseName = 'testTableTimeslots';
+	}
+
 	function deleteTimeslot(timeToRemove: Time): void {
 		try {
-			db.timeslots
+			db[databaseName]
 				.where('uuid')
 				.equals(id)
 				.delete()

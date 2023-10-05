@@ -9,7 +9,13 @@
 
 	let data: { date: string; worked: number; avalOt: number }[];
 
-	let timeslotsSortByDate = liveQuery(() => db.timeslots.toCollection().sortBy('date'));
+	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
+
+	if ((window as any)?.APP_TESTING) {
+		databaseName = 'testTableTimeslots';
+	}
+
+	let timeslotsSortByDate = liveQuery(() => db[databaseName].toCollection().sortBy('date'));
 
 	$: {
 		if ($timeslotsSortByDate) {

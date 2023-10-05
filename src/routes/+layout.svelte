@@ -159,6 +159,7 @@
 			<IconChartPie /><span class="text-lg font-semibold">{$LL.STATISTICS_LABEL()}</span>
 		</a>
 		<a
+			data-testid="layout-settings-link"
 			class="btn variant-ringed"
 			href="/settings"
 			on:click={() => drawerStore.close()}
@@ -234,7 +235,12 @@
 				<IconChartPie /><span class="text-lg font-semibold">{$LL.STATISTICS_LABEL()}</span>
 			</a>
 			<svelte:fragment slot="trail">
-				<a class="btn hidden sm:inline-flex" href="/settings" aria-label="Settings">
+				<a
+					class="btn hidden sm:inline-flex"
+					href="/settings"
+					aria-label="Settings"
+					data-testid="layout-settings-link"
+				>
 					<IconSettings />
 				</a>
 				<LightSwitch />

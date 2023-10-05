@@ -40,5 +40,5 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 	// }
 });
 
-contextBridge.exposeInMainWorld('IN_DESKTOP_ENV', true);
+// contextBridge.exposeInMainWorld('IN_DESKTOP_ENV', true);
 contextBridge.exposeInMainWorld('CURRENT_TIME', new Date());

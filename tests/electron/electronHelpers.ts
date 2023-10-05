@@ -34,6 +34,9 @@ export async function startApp(): Promise<StartAppResponse> {
         },
     });
 
+    // electronApp.process().stdout?.on('data', (data) => console.log(`stdout: ${data}`));
+    // electronApp.process().stderr?.on('data', (error) => console.log(`stderr: ${error}`));
+
     // wait for splash-screen to pass
     await electronApp.firstWindow();
     while (electronApp.windows().length === 2) {
