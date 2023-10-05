@@ -24,7 +24,7 @@ jobs:
       - name: 🔧 Dpkg changes
         run: sudo dpkg --add-architecture i386 && sudo apt-get update
 
-      - name: 🪟 Install wine for building for windows
+      - name: 🍷 Install wine for building for windows
         run: sudo apt-get install -y wine32
 
       - name: 🔧 Setup Node.js
@@ -35,8 +35,8 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 🏗️ Run build
-        run: npm run testbuild
+      - name: 🏗️ Run test build
+        run: npm run build
       # - name: Install browser for tests
       #   run: npx playwright install chromium
       - name: 🧪 Run svelte component tests
