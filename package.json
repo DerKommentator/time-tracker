@@ -1,10 +1,10 @@
 {
 	"name": "timetracker",
 	"productName": "TimeTracker",
-	"version": "0.9.12",
+	"version": "0.9.13",
 	"author": {
 		"name": "Layton",
-		"email": "test@test.de"
+		"email": "layton.prof@proton.me"
 	},
 	"description": "Electron Project to track your work time",
 	"private": true,
@@ -24,9 +24,11 @@
 		"test:sveltecomp": "vitest",
 		"coverage": "vitest run --coverage",
 		"dist": "npm run build && electron-builder -wl",
+		"prebuild:electron": "electron-builder -w --x64 --config build.config.json --publish never",
 		"build:electron": "electron-builder -wl --x64 --config build.config.json --publish never",
 		"deploy:electron": "electron-builder -wl --x64 --config build.config.json --publish always",
-		"build": "cross-env APP_DEV=false npm run build:svelte && npm run build:electron",
+		"prebuild": "cross-env APP_DEV=false APP_TESTING=false npm run build:svelte && npm run prebuild:electron",
+		"build": "cross-env APP_DEV=false APP_TESTING=false npm run build:svelte && npm run build:electron",
 		"typesafe-i18n": "typesafe-i18n"
 	},
 	"devDependencies": {

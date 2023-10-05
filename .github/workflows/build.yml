@@ -10,6 +10,7 @@ on:
 
 env:
   APP_DEV: false
+  APP_TESTING: false
 
 jobs:
   build:
@@ -34,12 +35,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run svelte build
-        run: npm run build:svelte
-      - name: Install browser for tests
-        run: npx playwright install chromium
-      - name: Run tests
-        run: npm run test
+      - name: 🏗️ Run build
+        run: npm run prebuild
+      # - name: Install browser for tests
+      #   run: npx playwright install chromium
+      - name: 🧪 Run svelte component tests
+        run: npm run test:sveltecomp
+      - name: 🧪 Run e2e electron tests
+        run: npm run test:electron
       - name: Upload test results
         uses: actions/upload-artifact@v3
         if: always()
@@ -52,25 +55,3 @@ jobs:
         run: npm run deploy:electron
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
-
-      # - name: Read release.md and use it as a body of new release
-      #   id: read_release
-      #   shell: bash
-      #   run: |
-      #     r=$(cat RELEASE.md)
-      #     r="${r//'%'/'%25'}"
-      #     r="${r//$'\n'/'%0A'}"
-      #     r="${r//$'\r'/'%0D'}"
-      #     echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
-
-      # - name: Upload Binaries to Release
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     tag: ${{ github.ref }}
-      #     file: |
-      #       dist/TimeTracker-${{github.ref_name}}-linux-x64.tar.gz
-      #       dist/TimeTracker-${{github.ref_name}}-win-installer-x64.exe
-      #       dist/TimeTracker-${{github.ref_name}}-win-portable-x64.exe
-      #     body: |
-      #       ${{ steps.read_release.outputs.RELEASE_BODY }}
