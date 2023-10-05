@@ -12,20 +12,24 @@ env:
   APP_DEV: false
   APP_TESTING: false
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build, test and publish binaries
-    runs-on: ubuntu-latest
+    # exec e2e tests do not work on linux
+    runs-on: windows-latest
 
     steps:
       - name: ⬇️ Check out repository code
         uses: actions/checkout@v4
 
-      - name: 🔧 Dpkg changes
-        run: sudo dpkg --add-architecture i386 && sudo apt-get update
+      # - name: 🔧 Dpkg changes
+      #   run: sudo dpkg --add-architecture i386 && sudo apt-get update
 
-      - name: 🍷 Install wine for building for windows
-        run: sudo apt-get install -y wine32
+      # - name: 🍷 Install wine for building for windows
+      #   run: sudo apt-get install -y wine32
 
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v3
@@ -42,7 +46,7 @@ jobs:
       - name: 🧪 Run svelte component tests
         run: npm run test:sveltecomp
       - name: 🧪 Run e2e electron tests
-        run: npm run testlinux:electron
+        run: npm run test:electron
       - name: 📁 Upload test results
         uses: actions/upload-artifact@v3
         if: always()
@@ -51,7 +55,22 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: 🏗️ Build electron application
-        run: npm run deploy:electron
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
+      # - name: 🏗️ Build electron application
+      #   run: npm run deploy:electron
+      #   env:
+      #     GH_TOKEN: ${{ secrets.REPO_KEY }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            dist/latest.yml
+            dist/TimeTracker-${{github.ref_name}}-linux-x64.tar.gz
+            dist/TimeTracker-${{github.ref_name}}-win-installer-x64.exe
+            dist/TimeTracker-${{github.ref_name}}-win-installer-x64.exe.blockmap
+            dist/TimeTracker-${{github.ref_name}}-win-portable-x64.exe
+          body_path: ${{ github.workspace }}/CHANGELOG.md
+          # note you'll typically need to create a personal access token
+          # with permissions to create releases in the other repo
+          token: ${{ secrets.REPO_KEY }}

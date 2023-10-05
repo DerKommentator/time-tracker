@@ -32,10 +32,6 @@ export async function startApp(): Promise<StartAppResponse> {
                 height: 720,
             },
         },
-        env: {
-            ...process.env,
-            NODE_ENV: 'development',
-        },
     });
 
     // electronApp.process().stdout?.on('data', (data) => console.log(`stdout: ${data}`));
