@@ -74,13 +74,25 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: playwright-report/
+          path: |
+            playwright-report/
+            screenshots/
           retention-days: 30
 
       # - name: 🏗️ Build electron application
       #   run: npm run deploy:electron
       #   env:
       #     GH_TOKEN: ${{ secrets.REPO_KEY }}
+
+      - name: 📝 Read CHANGELOG.md and use it as a body of new release
+        id: read_release
+        shell: bash
+        run: |
+          text=$(grep -o '# Release: [^#]*' CHANGELOG.md)
+          text="${text//'%'/'%25'}"
+          text="${text//$'\n'/'%0A'}"
+          text="${text//$'\r'/'%0D'}"
+          echo "RELEASE_BODY=$text" >> $GITHUB_OUTPUT
 
       - name: 🎉 Release electron application
         uses: softprops/action-gh-release@v1
@@ -92,7 +104,9 @@ jobs:
             dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe
             dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe.blockmap
             dist/TimeTracker-${{env.VERSION}}-win-portable-x64.exe
-          body_path: ${{ github.workspace }}/CHANGELOG.md
+          # body_path: ${{ github.workspace }}/CHANGELOG.md
+          body_path: |
+            ${{ steps.read_release.outputs.RELEASE_BODY }}
           # note you'll typically need to create a personal access token
           # with permissions to create releases in the other repo
           token: ${{ secrets.REPO_KEY }}

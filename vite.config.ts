@@ -5,9 +5,6 @@ import { purgeCss } from 'vite-plugin-tailwind-purgecss'
 
 export default defineConfig({
 	plugins: [sveltekit(), purgeCss()],
-	define: {
-		APP_TESTING: process.env.APP_TESTING
-	},
 	test: {
 		alias: [{ find: /^svelte$/, replacement: 'svelte/internal' }],
 		environment: 'jsdom',

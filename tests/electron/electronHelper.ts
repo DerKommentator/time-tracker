@@ -1,3 +1,5 @@
+// Edited Code by https://github.com/spaceagetv/electron-playwright-helpers/blob/main/src/find_parse_builds.ts - v1.6.0 - 06.10.2023 - MIT License
+
 import path from 'path'
 import fs from 'fs'
 import * as ASAR from '@electron/asar'

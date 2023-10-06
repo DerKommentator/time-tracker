@@ -33,7 +33,14 @@ test.describe("Test E2E Electron App", async () => {
         process.env.CI = 'e2e'
         electronApp = await electron.launch({
             args: [appInfo.main],
-            executablePath: appInfo.executable
+            executablePath: appInfo.executable,
+            recordVideo: {
+                dir: "screenshots",
+                size: {
+                    height: 720,
+                    width: 1080
+                }
+            }
         });
 
         electronApp.on('window', async (page) => {
@@ -69,6 +76,7 @@ test.describe("Test E2E Electron App", async () => {
 
     test('check if window is visible', async () => {
         page = await electronApp.firstWindow()
+        await page.screenshot({ path: 'screenshots/init-screen.png' });
         const bwHandle = await electronApp.browserWindow(page);
 
         // const visible = await bwHandle.evaluate((win) => win.isVisible());

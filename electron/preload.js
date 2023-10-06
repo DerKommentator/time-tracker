@@ -40,5 +40,6 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 	// }
 });
 
-// contextBridge.exposeInMainWorld('IN_DESKTOP_ENV', true);
+contextBridge.exposeInMainWorld('APP_TESTING', process.env.APP_TESTING);
+contextBridge.exposeInMainWorld('IN_DESKTOP_ENV', true);
 contextBridge.exposeInMainWorld('CURRENT_TIME', new Date());

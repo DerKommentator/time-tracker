@@ -26,7 +26,7 @@ const de = {
 		VERSION_LABEL: "Version: {version}",
 		TOOLTIP_UPDATE_AVAILABLE: "Ein neues Update ist verfügbar. Wird heruntergeladen...",
 		TOOLTIP_UPDATE_NOT_AVAILABLE: "Du bist auf dem neuesten Stand!",
-		TOOLTIP_UPDATE_ERROR: "Ein Fehler ist aufgetreten! Update Infos konnten nicht gekaden werden!",
+		TOOLTIP_UPDATE_ERROR: "Ein Fehler ist aufgetreten! Update Infos konnten nicht geladen werden!",
 		TOOLTIP_UPDATE_DOWNLOADED: "Update heruntergeladen. Es wird nach dem Neustart installiert. Jetzt neustarten?",
 	},
 
