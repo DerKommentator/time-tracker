@@ -11,6 +11,7 @@ on:
 env:
   APP_DEV: false
   APP_TESTING: false
+  CI: true
 
 permissions:
   contents: write
@@ -60,7 +61,7 @@ jobs:
       #   env:
       #     GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      - name: Release
+      - name: 🎉 Release electron application
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
