@@ -26,6 +26,12 @@ jobs:
       - name: ⬇️ Check out repository code
         uses: actions/checkout@v4
 
+      - name: 🔖 Get Version
+        shell: bash
+        run: |
+          TAG=${{ github.ref_name }}
+          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+
       - name: '🔧 Linux: Dpkg changes'
         if: runner.os == 'Linux'
         run: sudo dpkg --add-architecture i386 && sudo apt-get update
@@ -48,8 +54,8 @@ jobs:
           cache: 'npm'
       - name: 📦 Install dependencies
         run: npm ci
-      - name: 📦 Install Playwright deps
-        run: npx playwright install-deps
+      # - name: 📦 Install Playwright deps
+      #   run: npx playwright install-deps
 
       - name: 🏗️ Run build
         run: npm run build
@@ -82,10 +88,10 @@ jobs:
         with:
           files: |
             dist/latest.yml
-            dist/TimeTracker-${{github.ref_name}}-linux-x64.tar.gz
-            dist/TimeTracker-${{github.ref_name}}-win-installer-x64.exe
-            dist/TimeTracker-${{github.ref_name}}-win-installer-x64.exe.blockmap
-            dist/TimeTracker-${{github.ref_name}}-win-portable-x64.exe
+            dist/TimeTracker-${{env.VERSION}}-linux-x64.tar.gz
+            dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe
+            dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe.blockmap
+            dist/TimeTracker-${{env.VERSION}}-win-portable-x64.exe
           body_path: ${{ github.workspace }}/CHANGELOG.md
           # note you'll typically need to create a personal access token
           # with permissions to create releases in the other repo
