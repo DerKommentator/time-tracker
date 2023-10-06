@@ -13,6 +13,7 @@ env:
   APP_TESTING: false
   CI: true
   DEBUG: pw:browser*
+  ELECTRON_SKIP_BINARY_DOWNLOAD: 1
 
 permissions:
   contents: write
@@ -21,17 +22,26 @@ jobs:
   build:
     name: Build, test and publish binaries
     # exec e2e tests do not work on linux
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: ⬇️ Check out repository code
         uses: actions/checkout@v4
 
       - name: 🔧 Dpkg changes
+        if: runner.os == 'Linux'
         run: sudo dpkg --add-architecture i386 && sudo apt-get update
 
-      - name: 🍷 Install wine for building for windows on linux and xvfb
-        run: sudo apt-get install -y wine32 xvfb
+      - name: 🍷 Install wine for building for windows on linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y wine32
+
+      - name: Setup xvfb (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-xfixes0
+          # start xvfb on (default) display :0
+          sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24 &
 
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v3
@@ -40,12 +50,18 @@ jobs:
           cache: 'npm'
       - name: 📦 Install dependencies
         run: npm ci
+      - name: 📦 Install Playwright deps
+        run: npx playwright install-deps
 
       - name: 🏗️ Run build
         run: npm run build
       # - name: Install browser for tests
       #   run: npx playwright install chromium
-      - name: 🧪 Run e2e electron tests
+      - name: '🧪 Linux: Run e2e electron tests'
+        if: runner.os == 'Linux'
+        run: npm run testlinux:electron
+      - name: '🧪 Windows: Run e2e electron tests'
+        if: runner.os == 'Windows'
         run: npm run test:electron
       - name: 🧪 Run svelte component tests
         run: npm run test:sveltecomp

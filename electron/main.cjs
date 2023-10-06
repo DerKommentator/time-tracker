@@ -161,7 +161,7 @@ function createWindow() {
 
 	mws.manage(top.mainWindow);
 	// define how electron will load the app
-	if (isDevEnvironment) {
+	if (isDevEnvironment && !isTestingEnvironment) {
 		// if your vite app is running on a different port, change it here
 		top.mainWindow.loadURL('http://localhost:5173/');
 		//loadVite(port);

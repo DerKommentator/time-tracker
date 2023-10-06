@@ -78,7 +78,7 @@
 		await loadLocaleAsync(detectedLocale);
 		setLocale(detectedLocale);
 
-		if ((window as any)?.IN_DESKTOP_ENV) {
+		if ((window as any)?.IN_DESKTOP_ENV && !(window as any)?.APP_TESTING) {
 			(window as any).ipcRenderer.send('change-Language', detectedLocale);
 
 			// Show window if option is selected
