@@ -32,6 +32,18 @@ jobs:
           TAG=${{ github.ref_name }}
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
 
+      - name: 📝 Read CHANGELOG.md and use it as a body of new release
+        id: read_release
+        shell: bash
+        run: |
+          release_lines=($(grep -n '# Release:' CHANGELOG.md | cut -d: -f1))
+
+          start_line="${release_lines[0]}"
+          end_line="${release_lines[1]}"
+
+          text_between_releases=$(sed -n "${start_line},${end_line}p" CHANGELOG.md | sed '$d')
+          echo "RELEASE_BODY=$(echo $text_between_releases)" >> $GITHUB_ENV
+
       - name: '🔧 Linux: Dpkg changes'
         if: runner.os == 'Linux'
         run: sudo dpkg --add-architecture i386 && sudo apt-get update
@@ -54,8 +66,8 @@ jobs:
           cache: 'npm'
       - name: 📦 Install dependencies
         run: npm ci
-      # - name: 📦 Install Playwright deps
-      #   run: npx playwright install-deps
+      - name: 📦 Install Playwright deps
+        run: npx playwright install-deps
 
       - name: 🏗️ Run build
         run: npm run build
@@ -83,16 +95,6 @@ jobs:
       #   run: npm run deploy:electron
       #   env:
       #     GH_TOKEN: ${{ secrets.REPO_KEY }}
-
-      - name: 📝 Read CHANGELOG.md and use it as a body of new release
-        id: read_release
-        shell: bash
-        run: |
-          text=$(grep -o '# Release: [^#]*' CHANGELOG.md)
-          text="${text//'%'/'%25'}"
-          text="${text//$'\n'/'%0A'}"
-          text="${text//$'\r'/'%0D'}"
-          echo "RELEASE_BODY=$text" >> $GITHUB_OUTPUT
 
       - name: 🎉 Release electron application
         uses: softprops/action-gh-release@v1

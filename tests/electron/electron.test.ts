@@ -30,7 +30,7 @@ test.describe("Test E2E Electron App", async () => {
         // parse the directory and find paths and other info
         const appInfo = parseElectronApp(platformPath);
         // set the CI environment variable to true
-        process.env.CI = 'e2e'
+        process.env.CI = "true";
         electronApp = await electron.launch({
             args: [appInfo.main],
             executablePath: appInfo.executable,
@@ -42,6 +42,8 @@ test.describe("Test E2E Electron App", async () => {
                 }
             }
         });
+
+        page = await electronApp.firstWindow();
 
         electronApp.on('window', async (page) => {
             const filename = page.url()?.split('/').pop();
@@ -55,11 +57,11 @@ test.describe("Test E2E Electron App", async () => {
             page.on('console', (msg) => {
                 console.log(msg.text());
             });
-        })
-
-    })
+        });
+    });
 
     test.afterAll(async () => {
+        page = await electronApp.firstWindow();
         await page.screenshot({ path: 'screenshots/final-screen.png' });
 
         // Workaround: Goto Settings and delete data
@@ -72,7 +74,7 @@ test.describe("Test E2E Electron App", async () => {
         await page.context().close();
         await page.close();
         await electronApp.close();
-    })
+    });
 
     test('check if window is visible', async () => {
         page = await electronApp.firstWindow()
@@ -89,8 +91,11 @@ test.describe("Test E2E Electron App", async () => {
     });
 
     test("add timeslot", async () => {
-        let now: Date = new Date();
         page = await electronApp.firstWindow()
+
+        let now: Date = new Date();
+        now.setHours(7, 30);
+
         const tomorrow = addDays(now, 1);
         const dateString: string = tomorrow.toISOString().split('T')[0];
         const endTime = addMinutes(now, 30);
