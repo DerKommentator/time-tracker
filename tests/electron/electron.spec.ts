@@ -10,8 +10,6 @@ let page: Page;
 // let appWindow: Page;
 // let appInfo: ElectronAppInfo;
 
-let now: Date = new Date();
-
 function addDays(date: Date, days: number): Date {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -83,6 +81,7 @@ test.describe("Test E2E Electron App", async () => {
     });
 
     test("add timeslot", async () => {
+        let now: Date = new Date();
         page = await electronApp.firstWindow()
         const tomorrow = addDays(now, 1);
         const dateString: string = tomorrow.toISOString().split('T')[0];

@@ -1,7 +1,7 @@
 {
 	"name": "timetracker",
 	"productName": "TimeTracker",
-	"version": "0.9.13",
+	"version": "0.9.14",
 	"author": {
 		"name": "Layton",
 		"email": "layton.prof@proton.me"
@@ -20,7 +20,7 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"package": "npm run build && electron-forge package",
 		"make": "npm run build && electron-forge make",
-		"test:electron": "cross-env APP_DEV=true APP_TESTING=true DEBUG=pw:browser* CI=true xvfb-maybe -- npx playwright test",
+		"test:electron": "cross-env APP_DEV=true APP_TESTING=true CI=true xvfb-maybe -- npx playwright test",
 		"testlinux:electron": "cross-env APP_DEV=true APP_TESTING=true DEBUG=pw:browser* CI=true xvfb-run --auto-servernum npx playwright test",
 		"test:sveltecomp": "vitest",
 		"coverage": "vitest run --coverage",
