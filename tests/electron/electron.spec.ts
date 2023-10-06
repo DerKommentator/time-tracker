@@ -83,6 +83,7 @@ test.describe("Test E2E Electron App", async () => {
     });
 
     test("add timeslot", async () => {
+        page = await electronApp.firstWindow()
         const tomorrow = addDays(now, 1);
         const dateString: string = tomorrow.toISOString().split('T')[0];
         const endTime = addMinutes(now, 30);

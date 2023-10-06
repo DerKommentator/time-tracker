@@ -14,6 +14,7 @@ env:
   CI: true
   DEBUG: pw:browser*
   ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+  GH_TOKEN: ${{ secrets.REPO_KEY }}
 
 permissions:
   contents: write
@@ -28,15 +29,15 @@ jobs:
       - name: ⬇️ Check out repository code
         uses: actions/checkout@v4
 
-      - name: 🔧 Dpkg changes
+      - name: '🔧 Linux: Dpkg changes'
         if: runner.os == 'Linux'
         run: sudo dpkg --add-architecture i386 && sudo apt-get update
 
-      - name: 🍷 Install wine for building for windows on linux
+      - name: '🍷 Linux: Install wine for building for windows on linux'
         if: runner.os == 'Linux'
         run: sudo apt-get install -y wine32
 
-      - name: Setup xvfb (Linux)
+      - name: '🐧 Linux: Setup xvfb (Linux)'
         if: runner.os == 'Linux'
         run: |
           sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-xfixes0
