@@ -1,17 +1,18 @@
 name: 🥳 New Release is on the way
-# on:
-#   push:
-#     branches: [main]
-
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches: [main]
+
+# on:
+#   push:
+#     tags:
+#       - 'v*.*.*'
 
 env:
   APP_DEV: false
   APP_TESTING: false
   CI: true
+  DEBUG: pw:browser*
 
 permissions:
   contents: write
@@ -20,17 +21,17 @@ jobs:
   build:
     name: Build, test and publish binaries
     # exec e2e tests do not work on linux
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: ⬇️ Check out repository code
         uses: actions/checkout@v4
 
-      # - name: 🔧 Dpkg changes
-      #   run: sudo dpkg --add-architecture i386 && sudo apt-get update
+      - name: 🔧 Dpkg changes
+        run: sudo dpkg --add-architecture i386 && sudo apt-get update
 
-      # - name: 🍷 Install wine for building for windows
-      #   run: sudo apt-get install -y wine32
+      - name: 🍷 Install wine for building for windows on linux and xvfb
+        run: sudo apt-get install -y wine32 xvfb
 
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v3
@@ -44,10 +45,10 @@ jobs:
         run: npm run build
       # - name: Install browser for tests
       #   run: npx playwright install chromium
-      - name: 🧪 Run svelte component tests
-        run: npm run test:sveltecomp
       - name: 🧪 Run e2e electron tests
         run: npm run test:electron
+      - name: 🧪 Run svelte component tests
+        run: npm run test:sveltecomp
       - name: 📁 Upload test results
         uses: actions/upload-artifact@v3
         if: always()

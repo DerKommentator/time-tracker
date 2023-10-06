@@ -2,15 +2,18 @@ import type { ElectronApplication, Page, JSHandle } from '@playwright/test';
 import { test, expect } from '@playwright/test';
 import { startApp, type ElectronAppInfo } from './electronHelpers';
 import { formatDate, formatDateToTime } from '../../src/lib/utils/HelperFunctions';
+import { _electron as electron } from 'playwright-core';
 
-// let electronApp: ElectronApplication;
-// let page: Page;
+let electronApp: ElectronApplication;
+let page: Page;
 // let bwHandle: JSHandle<Electron.BrowserWindow>;
 
 // let appWindow: Page;
 // let appInfo: ElectronAppInfo;
 
 let now: Date = new Date();
+const exeWinPath = "./dist/win-unpacked/TimeTracker.exe";
+const exeLinuxPath = "./dist/linux-unpacked/timetracker";
 
 function addDays(date: Date, days: number): Date {
     var result = new Date(date);
@@ -23,9 +26,33 @@ function addMinutes(date: Date, minutes: number) {
 }
 
 test.describe("Test E2E Electron App", () => {
+    test.beforeAll(async () => {
+        //const startAppResponse = await startApp();
+        const exeWinPath = "./dist/win-unpacked/TimeTracker.exe";
+        const exeLinuxPath = "./dist/linux-unpacked/timetracker";
+        electronApp = await electron.launch({
+            args: ["electron/main.cjs", "--no-sandbox"],
+            executablePath: process.platform === "win32" ? exeWinPath : exeLinuxPath,
+            recordVideo: {
+                dir: "screenshots",
+                size: {
+                    width: 1080,
+                    height: 720,
+                },
+            },
+        });
+        page = await electronApp.firstWindow();
+        await page.screenshot({
+            path: 'screenshots/initial-screen.png'
+        });
+        // appWindow = startAppResponse.appWindow;
+        // appInfo = startAppResponse.appInfo;
+        // electronApp = startAppResponse.electronApp;
+        // page = await electronApp.firstWindow();
+        // bwHandle = await electronApp.browserWindow(page);
+    });
+
     test('check if window is visible', async () => {
-        const { appWindow, electronApp } = await startApp();
-        const page = await electronApp.firstWindow();
         const bwHandle = await electronApp.browserWindow(page);
 
         // const visible = await bwHandle.evaluate((win) => win.isVisible());
@@ -35,17 +62,9 @@ test.describe("Test E2E Electron App", () => {
         // expect(visible).toBeTruthy();
         expect(devToolsOpened).toBeFalsy();
         expect(crashed).toBeFalsy();
-
-        // Exit app.
-        await appWindow.context().close();
-        await appWindow.close();
-        await electronApp.close();
     });
 
     test("add timeslot", async () => {
-        const { appWindow, electronApp } = await startApp();
-        const page = await electronApp.firstWindow();
-
         const tomorrow = addDays(now, 1);
         const dateString: string = tomorrow.toISOString().split('T')[0];
         const endTime = addMinutes(now, 30);
@@ -82,6 +101,10 @@ test.describe("Test E2E Electron App", () => {
         // await expect(timeslotStartTime).toBeVisible();
         await expect(timeslotStartTime).toHaveValue("07:30");
         await expect(timeslotEndTime).toHaveValue(formatDateToTime(endTime));
+    });
+
+    test.afterAll(async () => {
+        await page.screenshot({ path: 'screenshots/final-screen.png' });
 
         // Workaround: Goto Settings and delete data
         await page.getByTestId("layout-settings-link").click();
@@ -90,10 +113,8 @@ test.describe("Test E2E Electron App", () => {
         const delBtn = modal.locator(".variant-filled-error").first();
         await delBtn.click();
 
-        // exit app
-        await appWindow.screenshot({ path: 'screenshots/add-timeslot.png' });
-        await appWindow.context().close();
-        await appWindow.close();
+        await page.context().close();
+        await page.close();
         await electronApp.close();
     });
 });
