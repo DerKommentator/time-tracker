@@ -23,7 +23,7 @@ export async function startApp(): Promise<StartAppResponse> {
     // parse the directory and find paths and other info
     const appInfo = parseElectronApp(latestBuild);
     const electronApp = await electron.launch({
-        args: [appInfo.main],
+        args: [appInfo.main, "--no-sandbox"],
         executablePath: appInfo.executable,
         recordVideo: {
             dir: "screenshots",

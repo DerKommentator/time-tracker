@@ -3,11 +3,11 @@ import { test, expect } from '@playwright/test';
 import { startApp, type ElectronAppInfo } from './electronHelpers';
 import { formatDate, formatDateToTime } from '../../src/lib/utils/HelperFunctions';
 
-let electronApp: ElectronApplication;
+// let electronApp: ElectronApplication;
 // let page: Page;
 // let bwHandle: JSHandle<Electron.BrowserWindow>;
 
-let appWindow: Page;
+// let appWindow: Page;
 // let appInfo: ElectronAppInfo;
 
 let now: Date = new Date();
@@ -23,30 +23,29 @@ function addMinutes(date: Date, minutes: number) {
 }
 
 test.describe("Test E2E Electron App", () => {
-    test.beforeAll(async () => {
-        const startAppResponse = await startApp();
-        appWindow = startAppResponse.appWindow;
-        // appInfo = startAppResponse.appInfo;
-        electronApp = startAppResponse.electronApp;
-        // bwHandle = await electronApp.browserWindow(page);
+    test('check if window is visible', async () => {
+        const { appWindow, electronApp } = await startApp();
+        const page = await electronApp.firstWindow();
+        const bwHandle = await electronApp.browserWindow(page);
+
+        // const visible = await bwHandle.evaluate((win) => win.isVisible());
+        const devToolsOpened = await bwHandle.evaluate((win) => win.webContents.isDevToolsOpened());
+        const crashed = await bwHandle.evaluate((win) => win.webContents.isCrashed());
+
+        // expect(visible).toBeTruthy();
+        expect(devToolsOpened).toBeFalsy();
+        expect(crashed).toBeFalsy();
+
+        // Exit app.
+        await appWindow.context().close();
+        await appWindow.close();
+        await electronApp.close();
     });
 
-
-    // test('check if window is visible', async () => {
-    //     // const visible = await bwHandle.evaluate((win) => win.isVisible());
-    //     const devToolsOpened = await bwHandle.evaluate((win) => win.webContents.isDevToolsOpened());
-    //     const crashed = await bwHandle.evaluate((win) => win.webContents.isCrashed());
-
-    //     // expect(visible).toBeTruthy();
-    //     expect(devToolsOpened).toBeFalsy();
-    //     expect(crashed).toBeFalsy();
-
-    //     // Exit app.
-    //     // await electronApp.close();
-    // });
-
     test("add timeslot", async () => {
+        const { appWindow, electronApp } = await startApp();
         const page = await electronApp.firstWindow();
+
         const tomorrow = addDays(now, 1);
         const dateString: string = tomorrow.toISOString().split('T')[0];
         const endTime = addMinutes(now, 30);
@@ -83,11 +82,6 @@ test.describe("Test E2E Electron App", () => {
         // await expect(timeslotStartTime).toBeVisible();
         await expect(timeslotStartTime).toHaveValue("07:30");
         await expect(timeslotEndTime).toHaveValue(formatDateToTime(endTime));
-    });
-
-    test.afterAll(async () => {
-        const page = await electronApp.firstWindow();
-        await appWindow.screenshot({ path: 'screenshots/final-screen.png' });
 
         // Workaround: Goto Settings and delete data
         await page.getByTestId("layout-settings-link").click();
@@ -96,6 +90,8 @@ test.describe("Test E2E Electron App", () => {
         const delBtn = modal.locator(".variant-filled-error").first();
         await delBtn.click();
 
+        // exit app
+        await appWindow.screenshot({ path: 'screenshots/add-timeslot.png' });
         await appWindow.context().close();
         await appWindow.close();
         await electronApp.close();
