@@ -2,19 +2,15 @@ name: 🥳 New Release is on the way
 
 on:
   push:
-    branches: [main]
-
-# on:
-#   push:
-#     tags:
-#       - 'v*.*.*'
+    tags:
+      - 'v*.*.*'
 
 env:
   APP_DEV: false
-  APP_TESTING: false
-  CI: true
-  DEBUG: pw:browser*
-  ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+  # APP_TESTING: false
+  # CI: true
+  # DEBUG: pw:browser*
+  # ELECTRON_SKIP_BINARY_DOWNLOAD: 1
   GH_TOKEN: ${{ secrets.REPO_KEY }}
 
 permissions:
@@ -36,7 +32,7 @@ jobs:
           TAG=${{ github.ref_name }}
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
 
-      - name: 📝 Read CHANGELOG.md and use it as a body of new release
+      - name: 📝 Read CHANGELOG.md and use it as body of new release
         id: read_release
         shell: bash
         run: |
@@ -111,8 +107,6 @@ jobs:
             dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe.blockmap
             dist/TimeTracker-${{env.VERSION}}-win-portable-x64.exe
           # body_path: ${{ github.workspace }}/CHANGELOG.md
-          body_path: |
-            ${{ steps.read_release.outputs.RELEASE_BODY }}
-          # note you'll typically need to create a personal access token
-          # with permissions to create releases in the other repo
+          body: |
+            ${{ env.RELEASE_BODY }}
           token: ${{ secrets.REPO_KEY }}

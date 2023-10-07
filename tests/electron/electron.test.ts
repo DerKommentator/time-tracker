@@ -22,50 +22,28 @@ function addMinutes(date: Date, minutes: number) {
 
 test.describe("Test E2E Electron App", async () => {
     test.beforeAll(async () => {
-        // find the latest build in the out directory
         const winPath = "./dist/win-unpacked/TimeTracker.exe";
         const linuxPath = "./dist/linux-unpacked/timetracker";
         const platformPath = process.platform === "win32" ? winPath : linuxPath;
-        //const latestBuild = findLatestBuild(platformPath);
         // parse the directory and find paths and other info
         const appInfo = parseElectronApp(platformPath);
         // set the CI environment variable to true
         process.env.CI = "true";
+
+        // videos takes to much time on github actions
         electronApp = await electron.launch({
             args: [appInfo.main],
             executablePath: appInfo.executable,
-            // recordVideo: {
-            //     dir: "screenshots",
-            //     size: {
-            //         height: 720,
-            //         width: 1080
-            //     }
-            // }
-        });
-
-        // page = await electronApp.firstWindow();
-        // page = electronApp.windows()[0];
-        // if (!page)
-        //     page = await electronApp.waitForEvent('window', { timeout: 10000 });
-
-        electronApp.on('window', async (page) => {
-            const filename = page.url()?.split('/').pop();
-            console.log(`Window opened: ${filename}`);
-
-            // capture errors
-            page.on('pageerror', (error) => {
-                console.error(error);
-            });
-            // capture console messages
-            page.on('console', (msg) => {
-                console.log(msg.text());
-            });
+            recordVideo: !process.env.CI ? { dir: "screenshots", size: { height: 720, width: 1080 } } : undefined
         });
     });
 
     test.afterAll(async () => {
         const page = await electronApp.firstWindow();
-        await page.screenshot({ path: 'screenshots/final-screen.png' });
+
+        if (!process.env.CI) {
+            await page.screenshot({ path: 'screenshots/final-screen.png' });
+        }
 
         // Workaround: Goto Settings and delete data
         await page.getByTestId("layout-settings-link").click();
@@ -81,7 +59,9 @@ test.describe("Test E2E Electron App", async () => {
 
     test('check if window is visible', async () => {
         const page = await electronApp.firstWindow()
-        await page.screenshot({ path: 'screenshots/init-screen.png' });
+        if (!process.env.CI) {
+            await page.screenshot({ path: 'screenshots/init-screen.png' });
+        }
         const bwHandle = await electronApp.browserWindow(page);
 
         // const visible = await bwHandle.evaluate((win) => win.isVisible());
