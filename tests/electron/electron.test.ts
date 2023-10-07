@@ -34,13 +34,13 @@ test.describe("Test E2E Electron App", async () => {
         electronApp = await electron.launch({
             args: [appInfo.main],
             executablePath: appInfo.executable,
-            recordVideo: {
-                dir: "screenshots",
-                size: {
-                    height: 720,
-                    width: 1080
-                }
-            }
+            // recordVideo: {
+            //     dir: "screenshots",
+            //     size: {
+            //         height: 720,
+            //         width: 1080
+            //     }
+            // }
         });
 
         // page = await electronApp.firstWindow();

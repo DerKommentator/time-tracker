@@ -71,31 +71,29 @@
 	>
 </header>
 <section class="m-4">
-	<div>
-		<div class="flex flex-row gap-4 m-2 mb-6">
-			<div class="w-1/2">
-				<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.START_LABEL()}</strong></span>
-				<input
-					data-testid="timeslot-item-card-start-time"
-					class="input"
-					type="time"
-					value={formatTime(timeslot.begin)}
-					disabled
-					aria-label="View: Start of Work"
-				/>
-			</div>
-			<span class="divider-vertical h-24" />
-			<div class="w-1/2">
-				<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.END_LABEL()}</strong></span>
-				<input
-					data-testid="timeslot-item-card-end-time"
-					class="input"
-					type="time"
-					value={formatTime(timeslot.end)}
-					disabled
-					aria-label="View: End of Work"
-				/>
-			</div>
+	<div class="flex flex-row justify-around m-2 mb-6">
+		<div class="w-1/2 mr-4">
+			<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.START_LABEL()}</strong></span>
+			<input
+				data-testid="timeslot-item-card-start-time"
+				class="input"
+				type="time"
+				value={formatTime(timeslot.begin)}
+				disabled
+				aria-label="View: Start of Work"
+			/>
+		</div>
+		<span class="divider-vertical h-24" />
+		<div class="w-1/2 ml-4">
+			<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.END_LABEL()}</strong></span>
+			<input
+				data-testid="timeslot-item-card-end-time"
+				class="input"
+				type="time"
+				value={formatTime(timeslot.end)}
+				disabled
+				aria-label="View: End of Work"
+			/>
 		</div>
 	</div>
 </section>
