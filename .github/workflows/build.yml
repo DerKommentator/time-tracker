@@ -42,7 +42,12 @@ jobs:
           end_line="${release_lines[1]}"
 
           text_between_releases=$(sed -n "${start_line},${end_line}p" CHANGELOG.md | sed '$d')
-          echo "RELEASE_BODY=$(echo $text_between_releases)" >> $GITHUB_ENV
+
+          echo $text_between_releases >> ${{ github.workspace }}/release-notes.md
+          text="${text_between_releases//'%'/'%25'}"
+          text="${text//$'\n'/'%0A'}"
+          text="${text//$'\r'/'%0D'}"
+          echo "RELEASE_BODY=$(echo $text)" >> $GITHUB_ENV
 
       - name: '🔧 Linux: Dpkg changes'
         if: runner.os == 'Linux'
@@ -91,22 +96,21 @@ jobs:
             screenshots/
           retention-days: 30
 
-      # - name: 🏗️ Build electron application
-      #   run: npm run deploy:electron
-      #   env:
-      #     GH_TOKEN: ${{ secrets.REPO_KEY }}
+      - name: 🎉 Build and Release electron application
+        run: npm run deploy:electron
+        env:
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      - name: 🎉 Release electron application
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            dist/latest.yml
-            dist/TimeTracker-${{env.VERSION}}-linux-x64.tar.gz
-            dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe
-            dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe.blockmap
-            dist/TimeTracker-${{env.VERSION}}-win-portable-x64.exe
-          # body_path: ${{ github.workspace }}/CHANGELOG.md
-          body: |
-            ${{ env.RELEASE_BODY }}
-          token: ${{ secrets.REPO_KEY }}
+      # - name: 🎉 Release electron application
+      #   uses: softprops/action-gh-release@v1
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     files: |
+      #       dist/latest.yml
+      #       dist/TimeTracker-${{env.VERSION}}-linux-x64.tar.gz
+      #       dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe
+      #       dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe.blockmap
+      #       dist/TimeTracker-${{env.VERSION}}-win-portable-x64.exe
+      #     # body_path: ${{ github.workspace }}/CHANGELOG.md
+      #     body: |
+      #       ${{ env.RELEASE_BODY }}

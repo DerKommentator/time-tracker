@@ -36,7 +36,8 @@
 	"publish": [
 		{
 			"provider": "github",
-			"private": true
+			"private": true,
+			"releaseType": "release"
 		}
 	]
 }
