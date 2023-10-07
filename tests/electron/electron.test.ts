@@ -4,7 +4,7 @@ import { formatDate, formatDateToTime } from '../../src/lib/utils/HelperFunction
 import { type ElectronApplication, type Page, _electron as electron } from 'playwright'
 
 let electronApp: ElectronApplication;
-let page: Page;
+// let page: Page;
 // let bwHandle: JSHandle<Electron.BrowserWindow>;
 
 // let appWindow: Page;
@@ -43,7 +43,10 @@ test.describe("Test E2E Electron App", async () => {
             }
         });
 
-        page = await electronApp.firstWindow();
+        // page = await electronApp.firstWindow();
+        // page = electronApp.windows()[0];
+        // if (!page)
+        //     page = await electronApp.waitForEvent('window', { timeout: 10000 });
 
         electronApp.on('window', async (page) => {
             const filename = page.url()?.split('/').pop();
@@ -61,7 +64,7 @@ test.describe("Test E2E Electron App", async () => {
     });
 
     test.afterAll(async () => {
-        page = await electronApp.firstWindow();
+        const page = await electronApp.firstWindow();
         await page.screenshot({ path: 'screenshots/final-screen.png' });
 
         // Workaround: Goto Settings and delete data
@@ -77,7 +80,7 @@ test.describe("Test E2E Electron App", async () => {
     });
 
     test('check if window is visible', async () => {
-        page = await electronApp.firstWindow()
+        const page = await electronApp.firstWindow()
         await page.screenshot({ path: 'screenshots/init-screen.png' });
         const bwHandle = await electronApp.browserWindow(page);
 
@@ -91,7 +94,7 @@ test.describe("Test E2E Electron App", async () => {
     });
 
     test("add timeslot", async () => {
-        page = await electronApp.firstWindow()
+        const page = await electronApp.firstWindow()
 
         let now: Date = new Date();
         now.setHours(7, 30);

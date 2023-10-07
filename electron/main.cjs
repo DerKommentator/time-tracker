@@ -107,14 +107,14 @@ function createWindow() {
 		title: 'TimeTracker',
 		darkTheme: true,
 		show: false,
-		// contextIsolation: true,
+		contextIsolation: true,
 		sandbox: true,
 		icon: windowIcon,
 
 		webPreferences: {
-			preload: path.join(__dirname, 'preload.js'),
-			nodeIntegration: isTestingEnvironment ? true : false,
-			contextIsolation: isTestingEnvironment ? false : true
+			preload: path.join(__dirname, 'preload.js')
+			// nodeIntegration: isTestingEnvironment ? true : false,
+			// contextIsolation: isTestingEnvironment ? false : true
 		}
 	});
 
