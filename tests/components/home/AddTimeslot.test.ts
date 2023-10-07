@@ -18,7 +18,7 @@ describe("AddTimeslot Component", () => {
     });
 
     beforeEach(() => {
-        component = render(AddTimeslot, { props: { settings: defaultSettings, statistics: defaultStats } });
+        component = render(AddTimeslot, { props: { settings: defaultSettings, statistics: defaultStats, isTestingMode: true } });
         expect(component).toBeTruthy();
     });
 

@@ -31,8 +31,16 @@
 	import LL from '../../../i18n/i18n-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
-	// Has to be initilized in every component for component testing
-	initializeStores();
+	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
+
+	export let isTestingMode: boolean = false;
+
+	if ((window as any)?.APP_TESTING || isTestingMode) {
+		// Has to be initilized in every component for component testing
+		initializeStores();
+		databaseName = 'testTableTimeslots';
+	}
+
 	const toastStore = getToastStore();
 
 	//export let timeslots: Timeslot[];
@@ -49,12 +57,6 @@
 	let errorMessage: string = '';
 
 	let status: DbError = { text: '', cssColor: '' };
-
-	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
-
-	if ((window as any)?.APP_TESTING) {
-		databaseName = 'testTableTimeslots';
-	}
 
 	async function addTimeslotToDb(timeslot: Timeslot) {
 		try {

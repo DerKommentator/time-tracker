@@ -9,19 +9,19 @@
 	import type { DbError } from '$lib/models/DbError';
 	import LL from '../../../i18n/i18n-svelte';
 
-	initializeStores();
+	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
+	export let isTestingMode: boolean = false;
 
-	const toastStore = getToastStore();
+	if ((window as any)?.APP_TESTING || isTestingMode) {
+		initializeStores();
+		databaseName = 'testTableTimeslots';
+	}
 
 	export let timeslot: Timeslot;
 	export let id: string;
 	let status: DbError = { text: '', cssColor: '' };
 
-	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
-
-	if ((window as any)?.APP_TESTING) {
-		databaseName = 'testTableTimeslots';
-	}
+	const toastStore = getToastStore();
 
 	function deleteTimeslot(timeToRemove: Time): void {
 		try {

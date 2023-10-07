@@ -36,18 +36,18 @@ jobs:
         id: read_release
         shell: bash
         run: |
+          touch release-notes.md
           release_lines=($(grep -n '# Release:' CHANGELOG.md | cut -d: -f1))
 
           start_line="${release_lines[0]}"
           end_line="${release_lines[1]}"
 
           text_between_releases=$(sed -n "${start_line},${end_line}p" CHANGELOG.md | sed '$d')
-
-          echo $text_between_releases >> ${{ github.workspace }}/release-notes.md
+          echo $text_between_releases >> release-notes.md
           text="${text_between_releases//'%'/'%25'}"
           text="${text//$'\n'/'%0A'}"
           text="${text//$'\r'/'%0D'}"
-          echo "RELEASE_BODY=$(echo $text)" >> $GITHUB_ENV
+          echo "RELEASE_BODY=$text" >> $GITHUB_ENV
 
       - name: '🔧 Linux: Dpkg changes'
         if: runner.os == 'Linux'

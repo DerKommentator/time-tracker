@@ -31,7 +31,8 @@ describe("TimeslotCard Component", () => {
         component = render(TimeslotCard, {
             props: {
                 id: uuid,
-                timeslot: timeslot
+                timeslot: timeslot,
+                isTestingMode: true
             }
         });
 
