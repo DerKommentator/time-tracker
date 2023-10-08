@@ -43,7 +43,7 @@ jobs:
           end_line="${release_lines[1]}"
 
           text_between_releases=$(sed -n "${start_line},${end_line}p" CHANGELOG.md | sed '$d')
-          echo $text_between_releases >> release-notes.md
+          echo "$text_between_releases" >> release-notes.md
           text="${text_between_releases//'%'/'%25'}"
           text="${text//$'\n'/'%0A'}"
           text="${text//$'\r'/'%0D'}"
