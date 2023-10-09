@@ -2,6 +2,7 @@
 const { log } = require('console');
 const {
 	app,
+	crashReporter,
 	BrowserWindow,
 	nativeImage,
 	Tray,
@@ -30,6 +31,9 @@ app.commandLine.appendSwitch('lang', 'de-DE');
 if (process.platform === 'win32') {
 	app.setAppUserModelId('TimeTracker' || app.name);
 }
+
+console.log(app.getPath('crashDumps'));
+crashReporter.start({ submitURL: '', uploadToServer: false });
 
 const isDevEnvironment = process.env.APP_DEV === 'true';
 const isTestingEnvironment = process.env.APP_TESTING === 'true';
@@ -316,35 +320,38 @@ app.on('window-all-closed', () => {
 
 // powerMonitor.addListener('lock-screen', () => {});
 
-powerMonitor.addListener('unlock-screen', () => {
-	if (showNotify) {
-		setTimeout(function () {
-			showNotification(
-				translations[language]?.notify.wakeupHeadline || translations.en.notify.wakeupHeadline,
-				translations[language]?.notify.wakeupBody || translations.en.notify.wakeupBody
-			);
-		}, 3000);
-		showNotify = false;
-	}
-});
+app.whenReady().then(() => {
 
-powerMonitor.addListener('suspend', () => {
-	log('suspend');
-	top.mainWindow.webContents.send('sendEvent-saveTime');
-	showNotify = true;
-});
+	powerMonitor.on('unlock-screen', () => {
+		if (showNotify) {
+			setTimeout(function () {
+				showNotification(
+					translations[language]?.notify.wakeupHeadline || translations.en.notify.wakeupHeadline,
+					translations[language]?.notify.wakeupBody || translations.en.notify.wakeupBody
+				);
+			}, 3000);
+			showNotify = false;
+		}
+	});
 
-powerMonitor.addListener('resume', () => {
-	log('resume');
-	top.mainWindow.webContents.send('sendEvent-set-startTime');
-	top?.mainWindow?.reload();
-});
+	powerMonitor.on('suspend', () => {
+		log('suspend');
+		top.mainWindow.webContents.send('sendEvent-saveTime');
+		showNotify = true;
+	});
 
-// https://www.npmjs.com/package/@paymoapp/electron-shutdown-handler
-// shutdown only works on linux / macOS
-powerMonitor.addListener('shutdown', (event) => {
-	log('shutdown');
-	//showNotification('Shutdown', 'Shutdown');
+	powerMonitor.on('resume', () => {
+		log('resume');
+		top.mainWindow.webContents.send('sendEvent-set-startTime');
+		top?.mainWindow?.reload();
+	});
+
+	// https://www.npmjs.com/package/@paymoapp/electron-shutdown-handler
+	// shutdown only works on linux / macOS
+	powerMonitor.on('shutdown', (event) => {
+		log('shutdown');
+		//showNotification('Shutdown', 'Shutdown');
+	});
 });
 
 // ============= Electron Process Events =============

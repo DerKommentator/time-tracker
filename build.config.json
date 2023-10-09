@@ -22,8 +22,9 @@
 		"icon": "build/icon.png"
 	},
 	"linux": {
-		"target": "tar.gz",
-		"icon": "build/icon.png"
+		"target": ["tar.gz", "AppImage"],
+		"icon": "build/icon.png",
+		"category": "Utility"
 	},
 	"win": {
 		"target": ["NSIS", "portable"],
