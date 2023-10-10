@@ -19,7 +19,7 @@
 		formatTime,
 		stringToTime
 	} from '$lib/utils/HelperFunctions';
-	import { statisticsStore } from '../../../stores/store';
+	// import { statisticsStore } from '../../../stores/store';
 	import { getToastStore, initializeStores, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { Time } from '$lib/models/Time';
 	import type { Timeslot } from '$lib/models/Timeslot';
@@ -45,7 +45,7 @@
 
 	//export let timeslots: Timeslot[];
 	export let settings: Settings;
-	export let statistics: StatisticsStore;
+	// export let statistics: StatisticsStore;
 	let endTime: string;
 	let now: Date = new Date();
 	let dateString: string = now.toISOString().split('T')[0];
@@ -115,11 +115,11 @@
 			hoursWorked
 		);
 
-		$statisticsStore.availableOvertime = calcTime(
-			statistics.availableOvertime || { hours: 0, minutes: 0 },
-			overtime,
-			true
-		);
+		// $statisticsStore.availableOvertime = calcTime(
+		// 	statistics.availableOvertime || { hours: 0, minutes: 0 },
+		// 	overtime,
+		// 	true
+		// );
 
 		let newTimeslot: Timeslot = {
 			uuid: crypto.randomUUID(),
@@ -129,7 +129,7 @@
 			statistics: {
 				hoursWorked: hoursWorked,
 				timeDiffPlannedToWorked: overtime,
-				availableOvertime: $statisticsStore.availableOvertime
+				// availableOvertime: $statisticsStore.availableOvertime
 			}
 		};
 

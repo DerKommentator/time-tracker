@@ -2,10 +2,11 @@
 	import { IconArrowBack } from '@tabler/icons-svelte';
 	import { onMount } from 'svelte';
 	import BarChart from '$lib/components/statistics/BarChart.svelte';
-	import { timeToHours } from '$lib/utils/HelperFunctions';
+	import { calcTime, timeToHours } from '$lib/utils/HelperFunctions';
 	import DisplayGrid from '$lib/components/statistics/DisplayGrid.svelte';
 	import Dexie, { liveQuery } from 'dexie';
 	import { db } from '$lib/db/db';
+	import type { Time } from '$lib/models/Time';
 
 	let data: { date: string; worked: number; avalOt: number }[];
 
@@ -19,11 +20,15 @@
 
 	$: {
 		if ($timeslotsSortByDate) {
-			data = $timeslotsSortByDate.map((timeslot) => ({
-				date: new Date(timeslot.date).toLocaleDateString(),
-				worked: timeToHours(timeslot.statistics.hoursWorked),
-				avalOt: timeToHours(timeslot.statistics.availableOvertime)
-			}));
+			let overtimeSum: Time = { hours: 0, minutes: 0 };
+			data = $timeslotsSortByDate.map((timeslot) => {
+				overtimeSum = calcTime(overtimeSum, timeslot.statistics.timeDiffPlannedToWorked, true);
+				return {
+					date: new Date(timeslot.date).toLocaleDateString(),
+					worked: timeToHours(timeslot.statistics.hoursWorked),
+					avalOt: timeToHours(overtimeSum)
+				};
+			});
 		}
 	}
 </script>

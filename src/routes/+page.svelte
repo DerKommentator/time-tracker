@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { sineInOut } from 'svelte/easing';
-	import { settingsStore, statisticsStore } from '../stores/store';
+	import { settingsStore } from '../stores/store';
 	import TimeslotCard from '$lib/components/home/TimeslotCard.svelte';
 	import AddTimeslot from '$lib/components/home/AddTimeslot.svelte';
 	import { fly } from 'svelte/transition';
@@ -29,7 +29,7 @@
 		class="container min-w-full flex justify-between p-4 lg:p-6 flex-col lg:flex-row lg:max-h-screen"
 	>
 		<div class="card p-4 flex-none self-center sm:w-3/4 lg:w-2/5 xl:w-1/3 lg:self-baseline">
-			<AddTimeslot settings={$settingsStore} statistics={$statisticsStore} />
+			<AddTimeslot settings={$settingsStore} />
 		</div>
 		<div
 			class="flex flex-col overflow-y-scroll h-[calc(100vh-9rem)] rounded self-center lg:self-auto sm:w-3/5 lg:w-3/5 justify-around lg:justify-between mt-5 lg:mt-0"

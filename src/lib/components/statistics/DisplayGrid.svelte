@@ -4,7 +4,7 @@
 	import TimeGridCard from './TimeGridCard.svelte';
 	import type { Time } from '$lib/models/Time';
 	import { calcTime, formatOvertime, timeToMinutes } from '$lib/utils/HelperFunctions';
-	import { statisticsStore } from '../../../stores/store';
+	// import { statisticsStore } from '../../../stores/store';
 	import LL from '../../../i18n/i18n-svelte';
 
 	export let data: Timeslot[] = [];

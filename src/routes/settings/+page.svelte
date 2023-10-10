@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Time } from '$lib/models/Time';
 	import { IconArrowBack } from '@tabler/icons-svelte';
-	import { settingsStore, statisticsStore } from '../../stores/store';
+	import { settingsStore } from '../../stores/store';
 	import {
 		Toast,
 		getToastStore,
@@ -68,7 +68,7 @@
 			useStartupTime: true,
 			showAfterStartup: true
 		});
-		statisticsStore.set({ availableOvertime: { hours: 0, minutes: 0 } });
+		// statisticsStore.set({ availableOvertime: { hours: 0, minutes: 0 } });
 
 		// Reset Language
 		setLocale('de');

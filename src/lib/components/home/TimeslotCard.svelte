@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Timeslot } from '$lib/models/Timeslot';
 	import { IconTrash } from '@tabler/icons-svelte';
-	import { statisticsStore } from '../../../stores/store';
+	// import { statisticsStore } from '../../../stores/store';
 	import { getToastStore, initializeStores, type ToastSettings } from '@skeletonlabs/skeleton';
 	import { calcTime, formatDate, formatTime } from '$lib/utils/HelperFunctions';
 	import type { Time } from '$lib/models/Time';
@@ -49,7 +49,7 @@
 		}
 		// $timeslotStore = [...$timeslotStore.slice(0, index), ...$timeslotStore.slice(index + 1)];
 
-		$statisticsStore.availableOvertime = calcTime(timeToRemove, $statisticsStore.availableOvertime);
+		// $statisticsStore.availableOvertime = calcTime(timeToRemove, $statisticsStore.availableOvertime);
 
 		// const toastSettings: ToastSettings = {
 		// 	message: status.text,
