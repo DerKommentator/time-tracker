@@ -101,24 +101,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      - name: 🔄 Update release
-        id: update_release
-        uses: tubone24/update_release@v1.3.1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: 🔄 Update release with release notes
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           body_path: ./release-notes.md
-
-      # - name: 🎉 Release electron application
-      #   uses: softprops/action-gh-release@v1
-      #   if: startsWith(github.ref, 'refs/tags/')
-      #   with:
-      #     files: |
-      #       dist/latest.yml
-      #       dist/TimeTracker-${{env.VERSION}}-linux-x64.tar.gz
-      #       dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe
-      #       dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe.blockmap
-      #       dist/TimeTracker-${{env.VERSION}}-win-portable-x64.exe
-      #     # body_path: ${{ github.workspace }}/CHANGELOG.md
-      #     body: |
-      #       ${{ env.RELEASE_BODY }}
