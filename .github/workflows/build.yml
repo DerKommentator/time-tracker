@@ -20,7 +20,7 @@ jobs:
   build:
     name: Build, test and publish binaries
     # exec e2e tests do not work on linux
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: ⬇️ Check out repository code
