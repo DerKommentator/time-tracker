@@ -16,7 +16,7 @@ const timeslot: Timeslot = {
     end: { hours: 16, minutes: 0 },
     date: now,
     statistics: {
-        availableOvertime: { hours: 1, minutes: 0 },
+        // availableOvertime: { hours: 1, minutes: 0 },
         hoursWorked: { hours: 8, minutes: 30 },
         timeDiffPlannedToWorked: { hours: 1, minutes: 0 }
     }

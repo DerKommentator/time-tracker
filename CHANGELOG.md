@@ -1,3 +1,8 @@
+# Release: v0.9.16
+
+- Fix: Linux: Not showing tray icon
+- Fix: Overtime visualization bug that occurred when adding new timeslots from the past
+
 # Release: v0.9.15
 
 - Removed unused npm package

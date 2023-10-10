@@ -17,7 +17,7 @@ const timeslots: Timeslot[] = [
         end: { hours: 16, minutes: 0 },
         date: now,
         statistics: {
-            availableOvertime: { hours: 1, minutes: 0 },
+            // availableOvertime: { hours: 1, minutes: 0 },
             hoursWorked: { hours: 8, minutes: 30 },
             timeDiffPlannedToWorked: { hours: 1, minutes: 0 }
         }
@@ -28,7 +28,7 @@ const timeslots: Timeslot[] = [
         end: { hours: 14, minutes: 30 },
         date: now,
         statistics: {
-            availableOvertime: { hours: 0, minutes: 30 },
+            // availableOvertime: { hours: 0, minutes: 30 },
             hoursWorked: { hours: 7, minutes: 0 },
             timeDiffPlannedToWorked: { hours: 0, minutes: -30 }
         }
@@ -39,7 +39,7 @@ const timeslots: Timeslot[] = [
         end: { hours: 9, minutes: 30 },
         date: now,
         statistics: {
-            availableOvertime: { hours: -5, minutes: 0 },
+            // availableOvertime: { hours: -5, minutes: 0 },
             hoursWorked: { hours: 2, minutes: 0 },
             timeDiffPlannedToWorked: { hours: -5, minutes: -30 }
         }
@@ -50,7 +50,7 @@ const timeslots: Timeslot[] = [
         end: { hours: 16, minutes: 10 },
         date: now,
         statistics: {
-            availableOvertime: { hours: -4, minutes: -35 },
+            // availableOvertime: { hours: -4, minutes: -35 },
             hoursWorked: { hours: 7, minutes: 55 },
             timeDiffPlannedToWorked: { hours: 0, minutes: 25 }
         }

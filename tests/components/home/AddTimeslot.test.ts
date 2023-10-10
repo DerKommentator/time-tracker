@@ -8,7 +8,7 @@ import { formatDate, formatDateToTime } from '../../../src/lib/utils/HelperFunct
 import type { queries } from '@testing-library/svelte';
 
 let defaultSettings: Settings = { plannedWorkingTime: { hours: 7, minutes: 30 }, standardStartTime: { hours: 7, minutes: 30 }, useStartupTime: true, showAfterStartup: true };
-let defaultStats: StatisticsStore = { availableOvertime: { hours: 0, minutes: 0 } };
+// let defaultStats: StatisticsStore = { availableOvertime: { hours: 0, minutes: 0 } };
 let component: RenderResult<AddTimeslot, typeof queries>;
 let user: UserEvent;
 
@@ -18,7 +18,7 @@ describe("AddTimeslot Component", () => {
     });
 
     beforeEach(() => {
-        component = render(AddTimeslot, { props: { settings: defaultSettings, statistics: defaultStats, isTestingMode: true } });
+        component = render(AddTimeslot, { props: { settings: defaultSettings,isTestingMode: true } });
         expect(component).toBeTruthy();
     });
 
@@ -46,7 +46,7 @@ describe("AddTimeslot Component", () => {
         await userEvent.click(saveBtn);
         // expect(saveBtn).toHaveBeenCalled();
 
-        expect(defaultStats.availableOvertime).not.toBe({ hours: 0, minutes: 0 });
+        // expect(defaultStats.availableOvertime).not.toBe({ hours: 0, minutes: 0 });
     });
 
 })
