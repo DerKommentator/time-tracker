@@ -99,9 +99,8 @@ function createWindow() {
 		defaultHeight: 720
 	});
 
-	const wIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.ico'));
+	const wIcon = nativeImage.createFromPath(path.join(__dirname, 'logoPng/icon.png'));
 	const windowIcon = wIcon.resize({ width: 32, height: 32 });
-	windowIcon.setTemplateImage(true);
 
 	top.mainWindow = new BrowserWindow({
 		x: mws.x,
@@ -124,9 +123,8 @@ function createWindow() {
 
 	top.mainWindow.hide();
 
-	const tIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.ico'));
-	const trayIcon = tIcon.resize({ width: 32, height: 32 });
-	trayIcon.setTemplateImage(true);
+	// const tIcon = nativeImage.createFromPath(path.join(__dirname, 'logoPng/icon.png'));
+	// const trayIcon = tIcon.resize({ width: 32, height: 32 });
 
 	if (!isTestingEnvironment) {
 		top.mainWindow.on('close', (event) => {
@@ -136,7 +134,7 @@ function createWindow() {
 		});
 	}
 
-	top.mainWindow.tray = new Tray(trayIcon);
+	top.mainWindow.tray = new Tray(windowIcon);
 	const menu = Menu.buildFromTemplate([
 		// {
 		// 	label: 'Actions',
