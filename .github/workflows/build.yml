@@ -7,8 +7,8 @@ on:
 
 env:
   APP_DEV: false
+  CI: true
   # APP_TESTING: false
-  # CI: true
   # DEBUG: pw:browser*
   # ELECTRON_SKIP_BINARY_DOWNLOAD: 1
   GH_TOKEN: ${{ secrets.REPO_KEY }}

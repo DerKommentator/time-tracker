@@ -50,7 +50,7 @@
 	let showAfterStartup: boolean = $settingsStore.showAfterStartup;
 	let selectedLocale: Locales = $locale || 'de';
 
-	const fullnameLocales = { de: 'German', en: 'English' };
+	const fullnameLocales = { de: 'Deutsch', en: 'English' };
 
 	function deleteAllData() {
 		const toastSettings: ToastSettings = {
@@ -131,7 +131,7 @@
 	</a>
 
 	<div class="card p-4 mt-10 mx-5 lg:mx-auto lg:w-1/2">
-		<header class="card-header text-xl text-center"><strong>{$LL.SETTINGS_LABEL()}</strong></header>
+		<header class="card-header text-xl text-center"><strong data-testid="settings-label">{$LL.SETTINGS_LABEL()}</strong></header>
 		<section class="m-8">
 			<div>
 				<span><strong>{$LL.SETTINGS.PLANNED_TIME()}</strong></span>
@@ -180,7 +180,7 @@
 			</div>
 			<div>
 				<span><strong>{$LL.SETTINGS.LANGUAGE_LABEL()}</strong></span>
-				<select class="select m-2 mb-8" bind:value={selectedLocale}>
+				<select class="select m-2 mb-8" data-testid="settings-lang-select" bind:value={selectedLocale}>
 					{#each locales as locale}
 						<option value={locale}>{fullnameLocales[locale]}</option>
 					{/each}
@@ -200,7 +200,7 @@
 		<hr />
 		<footer class="card-footer flex flex-row justify-between items-center mt-8">
 			<span class="text-surface-200 text-sm w-2/3">{$LL.SETTINGS.CHANGES_AFTER_RESTART()}</span>
-			<button class="btn variant-filled-primary" on:click={() => saveSettings()}
+			<button class="btn variant-filled-primary" data-testid="settings-save-btn" on:click={() => saveSettings()}
 				>{$LL.SAVE_LABEL()}</button
 			>
 		</footer>

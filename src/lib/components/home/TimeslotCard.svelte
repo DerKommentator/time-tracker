@@ -65,6 +65,7 @@
 		{formatDate(new Date(timeslot.date))}
 	</strong>
 	<button
+		data-testid="timeslot-delete-btn"
 		class="btn variant-filled-surface"
 		on:click={() => deleteTimeslot(timeslot.statistics.timeDiffPlannedToWorked)}
 		><IconTrash /></button
