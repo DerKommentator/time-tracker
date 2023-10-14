@@ -1,9 +1,9 @@
 {
 	"name": "timetracker",
 	"productName": "TimeTracker",
-	"version": "0.9.16",
+	"version": "0.9.17",
 	"author": {
-		"name": "Layton",
+		"name": "DerKommentator",
 		"email": "layton.prof@proton.me"
 	},
 	"description": "Electron Project to track your work time",

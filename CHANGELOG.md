@@ -1,3 +1,8 @@
+# Release: v0.9.17
+
+- New Electron E2E Tests
+- Readme file changes
+
 # Release: v0.9.16
 
 - Fix: Linux: Not showing tray icon

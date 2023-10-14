@@ -11,7 +11,6 @@ env:
   # APP_TESTING: false
   # DEBUG: pw:browser*
   # ELECTRON_SKIP_BINARY_DOWNLOAD: 1
-  GH_TOKEN: ${{ secrets.REPO_KEY }}
 
 permissions:
   contents: write
@@ -78,11 +77,10 @@ jobs:
         run: npm run build
       # - name: Install browser for tests
       #   run: npx playwright install chromium
-      - name: '🧪 Linux: Run e2e electron tests'
-        if: runner.os == 'Linux'
-        run: npm run testlinux:electron
-      - name: '🧪 Windows: Run e2e electron tests'
-        if: runner.os == 'Windows'
+      # - name: '🧪 Linux: Run e2e electron tests'
+      #   if: runner.os == 'Linux'
+      #   run: npm run testlinux:electron
+      - name: 🧪 Run e2e electron tests
         run: npm run test:electron
       - name: 🧪 Run svelte component tests
         run: npm run test:sveltecomp
