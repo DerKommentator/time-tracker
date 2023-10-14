@@ -94,13 +94,29 @@ jobs:
             screenshots/
           retention-days: 30
 
-      - name: 🎉 Build and Release electron application
-        run: npm run deploy:electron
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
+      # - name: 🎉 Build and Release electron application
+      #   run: npm run deploy:electron
+      #   env:
+      #     GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      - name: 🔄 Update release with release notes
+      # - name: 🔄 Update release with release notes
+      #   uses: softprops/action-gh-release@v1
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     body_path: ./release-notes.md
+
+      - name: 🎉 Release electron application
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          files: |
+            dist/latest.yml
+            dist/latest-linux.yml
+            dist/TimeTracker-${{env.VERSION}}-linux-x64.tar.gz
+            dist/TimeTracker-${{env.VERSION}}-linux-x86_64.AppImage
+            dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe
+            dist/TimeTracker-${{env.VERSION}}-win-installer-x64.exe.blockmap
+            dist/TimeTracker-${{env.VERSION}}-win-portable-x64.exe
           body_path: ./release-notes.md
+          # body: |
+          #   ${{ env.RELEASE_BODY }}
