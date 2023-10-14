@@ -2,6 +2,21 @@
 
 An application to track your work time ⏰
 
+### Dashboard
+<p float="left">
+  <img src="docs/images/dashboard.png">
+</p>
+
+### Statistics
+<p align="center">
+  <img src="docs/images/stats.png">
+</p>
+
+### Settings
+<p align="center">
+  <img src="docs/images/settings.png">
+</p>
+
 ## 🏭 Developing
 
 👥 Clone the repository
@@ -18,7 +33,7 @@ npm ci
 npm install
 ```
 
-💹 Start local developement server as electron program
+💹 Start the svelte and electron application
 
 ```bash
 npm run dev:electron
