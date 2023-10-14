@@ -6,7 +6,7 @@ const config = {
 	// for more information about preprocessors
 	preprocess: vitePreprocess(),
 	compilerOptions: {
-		accessors: process.env.APP_TESTING,
+		accessors: process.env.APP_TESTING
 	},
 
 	kit: {

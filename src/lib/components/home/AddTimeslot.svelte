@@ -128,7 +128,7 @@
 			date: new Date(dateString),
 			statistics: {
 				hoursWorked: hoursWorked,
-				timeDiffPlannedToWorked: overtime,
+				timeDiffPlannedToWorked: overtime
 				// availableOvertime: $statisticsStore.availableOvertime
 			}
 		};

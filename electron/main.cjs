@@ -319,7 +319,6 @@ app.on('window-all-closed', () => {
 // powerMonitor.addListener('lock-screen', () => {});
 
 app.whenReady().then(() => {
-
 	powerMonitor.on('unlock-screen', () => {
 		if (showNotify) {
 			setTimeout(function () {

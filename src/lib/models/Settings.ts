@@ -1,8 +1,8 @@
-import type { Time } from "./Time";
+import type { Time } from './Time';
 
 export type Settings = {
-    standardStartTime: Time;
-    plannedWorkingTime: Time;
-    useStartupTime: boolean;
-    showAfterStartup: boolean;
-}
+	standardStartTime: Time;
+	plannedWorkingTime: Time;
+	useStartupTime: boolean;
+	showAfterStartup: boolean;
+};

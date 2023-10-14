@@ -1,4 +1,4 @@
 export type DbError = {
-    text: string;
-    cssColor: string;
-}
+	text: string;
+	cssColor: string;
+};

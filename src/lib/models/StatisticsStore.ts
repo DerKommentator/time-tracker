@@ -1,5 +1,5 @@
-import type { Time } from "./Time";
+import type { Time } from './Time';
 
 export type StatisticsStore = {
-    availableOvertime: Time
-}
+	availableOvertime: Time;
+};

@@ -3,16 +3,19 @@
 An application to track your work time ⏰
 
 ### Dashboard
+
 <p float="left">
   <img src="docs/images/dashboard.png">
 </p>
 
 ### Statistics
+
 <p align="center">
   <img src="docs/images/stats.png">
 </p>
 
 ### Settings
+
 <p align="center">
   <img src="docs/images/settings.png">
 </p>

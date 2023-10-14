@@ -1,7 +1,7 @@
-import type { Timeslot } from "$lib/models/Timeslot";
+import type { Timeslot } from '$lib/models/Timeslot';
 import { writable, type Writable } from 'svelte/store';
-import type { Settings } from "$lib/models/Settings";
-import type { StatisticsStore } from "$lib/models/StatisticsStore";
+import type { Settings } from '$lib/models/Settings';
+import type { StatisticsStore } from '$lib/models/StatisticsStore';
 
 // -------------- Timeslot Store --------------
 
@@ -13,13 +13,20 @@ import type { StatisticsStore } from "$lib/models/StatisticsStore";
 
 // -------------- Settings Store --------------
 
-let defaultSettings: Settings = { plannedWorkingTime: { hours: 7, minutes: 30 }, standardStartTime: { hours: 7, minutes: 30 }, useStartupTime: true, showAfterStartup: true };
+let defaultSettings: Settings = {
+	plannedWorkingTime: { hours: 7, minutes: 30 },
+	standardStartTime: { hours: 7, minutes: 30 },
+	useStartupTime: true,
+	showAfterStartup: true
+};
 
-const storedSettings: Settings = JSON.parse(localStorage.getItem("settings") || JSON.stringify(defaultSettings));
+const storedSettings: Settings = JSON.parse(
+	localStorage.getItem('settings') || JSON.stringify(defaultSettings)
+);
 
 export const settingsStore = writable(storedSettings);
 
-settingsStore.subscribe((value) => localStorage.setItem("settings", JSON.stringify(value)));
+settingsStore.subscribe((value) => localStorage.setItem('settings', JSON.stringify(value)));
 
 // -------------- Statistics Store --------------
 

@@ -1,5 +1,5 @@
 export type Time = {
-    hours: number;
-    minutes: number;
-    seconds?: number;
-}
+	hours: number;
+	minutes: number;
+	seconds?: number;
+};
