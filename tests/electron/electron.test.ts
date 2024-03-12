@@ -1,6 +1,6 @@
 import { test, expect, type JSHandle } from '@playwright/test';
 import { parseElectronApp } from './electronHelper';
-import { formatDate, formatDateToTime } from '../../src/lib/utils/HelperFunctions';
+import { formatDate, formatDateToTime, formatTime } from '../../src/lib/utils/HelperFunctions';
 import { type ElectronApplication, type Page, _electron as electron } from 'playwright';
 import type { BrowserWindow } from 'electron';
 import type { Time } from '$lib/models/Time';
@@ -108,6 +108,11 @@ test.describe('Test E2E Electron App', async () => {
 		expect(startInput).toBeTruthy();
 		await startInput.fill(formatDateToTime(start));
 		await expect(startInput).toHaveValue(formatDateToTime(start));
+
+		const breaktimeInput = page.getByTestId('breaktime-input');
+		expect(breaktimeInput).toBeTruthy();
+		await breaktimeInput.fill(formatTime(breaktimePeriod));
+		await expect(breaktimeInput).toHaveValue(formatTime(breaktimePeriod));
 
 		const end = new Date();
 		end.setHours(endTime.hours, endTime.minutes);
