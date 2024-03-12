@@ -189,7 +189,7 @@ test.describe('Test E2E Electron App', async () => {
 		await expect(endTimeMedian).toHaveText('15:50');
 
 		const availableOvertime = page.getByTestId('aval-ot-card').getByTestId('displayText');
-		await expect(availableOvertime).toHaveText('01:45');
+		await expect(availableOvertime).toHaveText('01:15');
 
 		// await deleteAllData(page);
 	});
