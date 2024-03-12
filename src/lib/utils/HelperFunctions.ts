@@ -20,6 +20,10 @@ export function formatTime(time: Time): string {
 	return String(time.hours).padStart(2, '0') + ':' + String(time.minutes).padStart(2, '0');
 }
 
+export function formatTimeWithLabels(time: Time, hourLabel: string, minLabel: string): string {
+	return `${String(time.hours)} ${hourLabel} ${String(time.minutes)} ${minLabel}`;
+}
+
 export function formatDateToTime(date: Date): string {
 	return new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 }

@@ -5,7 +5,7 @@
 
 	export let dataTestId: string;
 	export let label: string;
-	export let inputError: boolean;
+	export let inputError: boolean = false;
 	export let time: string;
 	export let minTimeLimit: string = '';
 </script>

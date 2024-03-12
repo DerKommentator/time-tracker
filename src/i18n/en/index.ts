@@ -10,6 +10,11 @@ const en = {
 	DELETED_LABEL: 'Deleted!',
 	ERROR_LABEL: 'Error:',
 
+	HOURS_LABEL: 'hours',
+	MINUTES_LABEL: 'minutes',
+	SHORT_HOURS_LABEL: 'h',
+	SHORT_MINUTES_LABEL: 'min',
+
 	DELETE_LABEL: 'DELETE',
 
 	TOAST_SAVED_SUCCESSFULLY: 'Successfully saved!',
@@ -45,7 +50,11 @@ const en = {
 
 	TIMEINPUT: {
 		START_LABEL: 'Start of Work:',
+		BREAKTIME_LABEL: 'Breaktime:',
+		BREAKTIME_PERIOD_LABEL: 'Period of your Breaktime:',
 		END_LABEL: 'End of Work:',
+		BREAKTIME_START: 'Breaktime Start',
+		BREAKTIME_END: 'Breaktime End',
 
 		// TimeInput Component
 		SET_CURRENT_TIME_LABEL: 'Set current time'
@@ -60,8 +69,10 @@ const en = {
 	// -- DisplayGrid Component
 	GRIDCARD: {
 		START_AVG: 'Average - Start of Work:',
+		BREAKTIME_AVG: 'Average - Breaktime:',
 		END_AVG: 'Average - End of Work:',
 		START_MEDIAN: 'Median - Start of Work:',
+		BREAKTIME_MEDIAN: 'Median - Breaktime:',
 		END_MEDIAN: 'Median - End of Work:',
 		AVAILABLE_OVERTIME: 'Available Overtime:'
 	},
@@ -69,7 +80,8 @@ const en = {
 	// -- BarChart Component
 	BARCHART: {
 		LEGEND_LABEL_WORKED: 'Working Hours (in Hours)',
-		LEGEND_LABEL_AVAL_OVERTIME: 'Available Overtime (in Hours)'
+		LEGEND_LABEL_AVAL_OVERTIME: 'Available Overtime (in Hours)',
+		LEGEND_LABEL_BREAKTIME: 'Breaktime (in Hours)'
 	},
 
 	// === Settings Page ===
@@ -77,6 +89,7 @@ const en = {
 		DAILY_START: 'Daily start of work:',
 		PLANNED_TIME: 'Planned working hours:',
 		USE_STARTUP_TIME: 'Use the time at program start as work start?',
+		STANDARD_BREAKTIME: 'Regular breaktime:',
 		LANGUAGE_LABEL: 'Language:',
 		START_AFTER_BOOT: 'The program opens automatically after PC login?',
 		SHOW_AFTER_STARTUP: 'Display the program window maximized after PC login?',

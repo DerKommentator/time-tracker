@@ -3,7 +3,7 @@
 	import { IconTrash } from '@tabler/icons-svelte';
 	// import { statisticsStore } from '../../../stores/store';
 	import { getToastStore, initializeStores, type ToastSettings } from '@skeletonlabs/skeleton';
-	import { calcTime, formatDate, formatTime } from '$lib/utils/HelperFunctions';
+	import { formatTimeWithLabels, formatDate, formatTime } from '$lib/utils/HelperFunctions';
 	import type { Time } from '$lib/models/Time';
 	import { db } from '$lib/db/db';
 	import type { DbError } from '$lib/models/DbError';
@@ -60,7 +60,7 @@
 	}
 </script>
 
-<header class="card-header text-xl flex justify-between">
+<header class="card-header text-xl flex justify-between items-center">
 	<strong data-testid="timeslot-item-card-date">
 		{formatDate(new Date(timeslot.date))}
 	</strong>
@@ -71,8 +71,8 @@
 		><IconTrash /></button
 	>
 </header>
-<section class="m-4">
-	<div class="flex flex-row justify-around m-2 mb-6">
+<section class="mx-4 my-3">
+	<div class="flex flex-row justify-around m-2">
 		<div class="w-1/2 mr-4">
 			<span class="inline-block mb-4"><strong>{$LL.TIMEINPUT.START_LABEL()}</strong></span>
 			<input
@@ -96,5 +96,14 @@
 				aria-label="View: End of Work"
 			/>
 		</div>
+	</div>
+
+	<div class="text-center text-sm font-semibold text-gray-200/80 mt-2">
+		{$LL.TIMEINPUT.BREAKTIME_LABEL()}
+		{formatTimeWithLabels(
+			timeslot.breaktimePeriod,
+			$LL.SHORT_HOURS_LABEL(),
+			$LL.SHORT_MINUTES_LABEL()
+		)}
 	</div>
 </section>

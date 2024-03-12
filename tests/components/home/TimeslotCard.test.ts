@@ -13,12 +13,13 @@ const now = new Date();
 const timeslot: Timeslot = {
 	uuid: crypto.randomUUID(),
 	begin: { hours: 7, minutes: 30 },
+	breaktimePeriod: { hours: 0, minutes: 30 },
 	end: { hours: 16, minutes: 0 },
 	date: now,
 	statistics: {
 		// availableOvertime: { hours: 1, minutes: 0 },
-		hoursWorked: { hours: 8, minutes: 30 },
-		timeDiffPlannedToWorked: { hours: 1, minutes: 0 }
+		hoursWorked: { hours: 8, minutes: 0 },
+		timeDiffPlannedToWorked: { hours: 0, minutes: 30 }
 	}
 };
 

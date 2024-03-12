@@ -39,7 +39,7 @@
 					{#each $timeslots as tt (tt.uuid)}
 						<div animate:flip={{ delay: 100, duration: 200, easing: sineInOut }}>
 							<div
-								class="card p-4 flex-none ml-auto mr-0 w-full lg:w-1/2"
+								class="card p-2 flex-none ml-auto mr-0 w-full lg:w-1/2"
 								in:fly|local={{ x: -1000, duration: 200, delay: 200 }}
 								out:fly|local={{ y: -100, duration: 100, delay: 50 }}
 							>

@@ -28,6 +28,7 @@
 	import { db } from '$lib/db/db';
 	import type { DbError } from '$lib/models/DbError';
 	import TimeInput from './TimeInput.svelte';
+	import BreaktimeInput from './BreaktimeInput.svelte';
 	import LL from '../../../i18n/i18n-svelte';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -50,9 +51,11 @@
 	let now: Date = new Date();
 	let dateString: string = now.toISOString().split('T')[0];
 	let lockSave: boolean = false;
+	let breaktimePeriod: string = '00:40';
 
 	let dateError: boolean = false;
 	let startTimeError: boolean = false;
+	let breaktimeError: boolean = false;
 	let endTimeError: boolean = false;
 	let errorMessage: string = '';
 
@@ -63,6 +66,7 @@
 			const id = await db[databaseName].add({
 				uuid: timeslot.uuid,
 				begin: timeslot.begin,
+				breaktimePeriod: timeslot.breaktimePeriod,
 				end: timeslot.end,
 				date: timeslot.date,
 				statistics: timeslot.statistics
@@ -109,7 +113,9 @@
 			return;
 		}
 
+		const breaktime: Time = stringToTime(breaktimePeriod);
 		let hoursWorked: Time = calcTime(start, end);
+		hoursWorked = calcTime(breaktime, hoursWorked);
 		let overtime: Time = calcTime(
 			settings.plannedWorkingTime || { hours: 7, minutes: 30 },
 			hoursWorked
@@ -125,6 +131,7 @@
 			uuid: crypto.randomUUID(),
 			begin: { hours: start.hours, minutes: start.minutes },
 			end: { hours: end.hours, minutes: end.minutes },
+			breaktimePeriod: { hours: breaktime.hours, minutes: breaktime.minutes },
 			date: new Date(dateString),
 			statistics: {
 				hoursWorked: hoursWorked,
@@ -203,6 +210,14 @@
 		/>
 	</div>
 	<div>
+		<BreaktimeInput
+			dataTestId="breaktime-input"
+			label={$LL.TIMEINPUT.BREAKTIME_PERIOD_LABEL()}
+			inputError={breaktimeError}
+			bind:time={breaktimePeriod}
+		/>
+	</div>
+	<div>
 		<TimeInput
 			dataTestId="end-time-input"
 			label={$LL.TIMEINPUT.END_LABEL()}
@@ -213,7 +228,7 @@
 	</div>
 </section>
 <footer class="card-footer flex items-center justify-between m-2 mt-12">
-	{#if errorMessage && (dateError || startTimeError || endTimeError)}
+	{#if errorMessage && (dateError || startTimeError || endTimeError || breaktimeError)}
 		<p class="text-red-600 text-sm mr-12"><b>{$LL.ERROR_LABEL()} </b>{errorMessage}</p>
 	{:else}
 		<p />

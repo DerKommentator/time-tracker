@@ -6,4 +6,5 @@ export type Settings = {
 	useStartupTime: boolean;
 	showAfterStartup: boolean;
 	startAfterBoot: boolean;
+	standardBreaktime: Time;
 };

@@ -14,45 +14,49 @@ const timeslots: Timeslot[] = [
 	{
 		uuid: uuid,
 		begin: { hours: 7, minutes: 30 },
+		breaktimePeriod: { hours: 0, minutes: 30 },
 		end: { hours: 16, minutes: 0 },
 		date: now,
 		statistics: {
 			// availableOvertime: { hours: 1, minutes: 0 },
-			hoursWorked: { hours: 8, minutes: 30 },
-			timeDiffPlannedToWorked: { hours: 1, minutes: 0 }
+			hoursWorked: { hours: 8, minutes: 0 },
+			timeDiffPlannedToWorked: { hours: 0, minutes: 30 }
 		}
 	},
 	{
 		uuid: uuid,
 		begin: { hours: 7, minutes: 30 },
+		breaktimePeriod: { hours: 1, minutes: 0 },
 		end: { hours: 14, minutes: 30 },
 		date: now,
 		statistics: {
 			// availableOvertime: { hours: 0, minutes: 30 },
-			hoursWorked: { hours: 7, minutes: 0 },
-			timeDiffPlannedToWorked: { hours: 0, minutes: -30 }
+			hoursWorked: { hours: 6, minutes: 0 },
+			timeDiffPlannedToWorked: { hours: -1, minutes: -30 }
 		}
 	},
 	{
 		uuid: uuid,
 		begin: { hours: 7, minutes: 30 },
+		breaktimePeriod: { hours: 0, minutes: 40 },
 		end: { hours: 9, minutes: 30 },
 		date: now,
 		statistics: {
 			// availableOvertime: { hours: -5, minutes: 0 },
-			hoursWorked: { hours: 2, minutes: 0 },
-			timeDiffPlannedToWorked: { hours: -5, minutes: -30 }
+			hoursWorked: { hours: 1, minutes: 20 },
+			timeDiffPlannedToWorked: { hours: -6, minutes: -10 }
 		}
 	},
 	{
 		uuid: uuid,
 		begin: { hours: 8, minutes: 15 },
+		breaktimePeriod: { hours: 0, minutes: 20 },
 		end: { hours: 16, minutes: 10 },
 		date: now,
 		statistics: {
 			// availableOvertime: { hours: -4, minutes: -35 },
-			hoursWorked: { hours: 7, minutes: 55 },
-			timeDiffPlannedToWorked: { hours: 0, minutes: 25 }
+			hoursWorked: { hours: 7, minutes: 35 },
+			timeDiffPlannedToWorked: { hours: 0, minutes: 5 }
 		}
 	}
 ];
@@ -81,24 +85,36 @@ describe('DisplayGrid Component', () => {
 		const startAvg = startAvgCard.getElementsByTagName('p')[1];
 		expect(startAvg.innerHTML).toBe('07:41');
 
+		const breaktimeAvgCard = component.getByTestId('breaktime-avg-card');
+		expect(breaktimeAvgCard).toBeTruthy();
+		const breaktimeAvg = breaktimeAvgCard.getElementsByTagName('p')[1];
+		expect(breaktimeAvg.innerHTML).toBe('00:38');
+
 		const endAvgCard = component.getByTestId('end-avg-card');
 		expect(endAvgCard).toBeTruthy();
 		const endAvg = endAvgCard.getElementsByTagName('p')[1];
 		expect(endAvg.innerHTML).toBe('14:02');
+
 
 		const startMedianCard = component.getByTestId('start-median-card');
 		expect(startMedianCard).toBeTruthy();
 		const startMedian = startMedianCard.getElementsByTagName('p')[1];
 		expect(startMedian.innerHTML).toBe('07:30');
 
+		const breaktimeMedianCard = component.getByTestId('breaktime-median-card');
+		expect(breaktimeMedianCard).toBeTruthy();
+		const breaktimeMedian = breaktimeMedianCard.getElementsByTagName('p')[1];
+		expect(breaktimeMedian.innerHTML).toBe('00:40');
+
 		const endMedianCard = component.getByTestId('end-median-card');
 		expect(endMedianCard).toBeTruthy();
 		const endMedian = endMedianCard.getElementsByTagName('p')[1];
 		expect(endMedian.innerHTML).toBe('16:00');
 
+
 		const avalOtCard = component.getByTestId('aval-ot-card');
 		expect(avalOtCard).toBeTruthy();
 		const avalOt = avalOtCard.getElementsByTagName('p')[1];
-		expect(avalOt.innerHTML).toBe('-04:35');
+		expect(avalOt.innerHTML).toBe('-07:05');
 	});
 });

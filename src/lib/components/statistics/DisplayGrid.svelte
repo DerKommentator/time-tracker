@@ -9,27 +9,38 @@
 
 	export let data: Timeslot[] = [];
 
-	let average = { avgStart: 0, avgEnd: 0 };
-	let median: { medianStart: Time; medianEnd: Time } = {
+	let average = { avgStart: 0, avgEnd: 0, avgBreaktime: 0 };
+	let median: { medianStart: Time; medianEnd: Time; medianBreaktime: Time } = {
 		medianStart: { hours: 0, minutes: 0 },
-		medianEnd: { hours: 0, minutes: 0 }
+		medianEnd: { hours: 0, minutes: 0 },
+		medianBreaktime: { hours: 0, minutes: 0 }
 	};
 	let availableOvertime: Time = { hours: 0, minutes: 0 };
 
-	function calcAverage(values: Timeslot[]): { avgStart: number; avgEnd: number } {
+	function calcAverage(values: Timeslot[]): {
+		avgStart: number;
+		avgEnd: number;
+		avgBreaktime: number;
+	} {
 		if (values.length == 0) {
-			return { avgStart: 0, avgEnd: 0 };
+			return { avgStart: 0, avgEnd: 0, avgBreaktime: 0 };
 		}
 
 		let sumStart: number = 0;
 		let sumEnd: number = 0;
+		let sumBreaktime: number = 0;
 
 		values.forEach((timeslot) => {
 			sumStart += timeToMinutes(timeslot.begin);
 			sumEnd += timeToMinutes(timeslot.end);
+			sumBreaktime += timeToMinutes(timeslot.breaktimePeriod);
 		});
 
-		return { avgStart: sumStart / values.length, avgEnd: sumEnd / values.length };
+		return {
+			avgStart: sumStart / values.length,
+			avgEnd: sumEnd / values.length,
+			avgBreaktime: sumBreaktime / values.length
+		};
 	}
 
 	// TODO: OPTIMIZE
@@ -46,11 +57,16 @@
 	}
 
 	// TODO: OPTIMIZE
-	function calcMedian(values: Timeslot[]): { medianStart: Time; medianEnd: Time } {
+	function calcMedian(values: Timeslot[]): {
+		medianStart: Time;
+		medianEnd: Time;
+		medianBreaktime: Time;
+	} {
 		if (values.length === 0) {
 			return {
 				medianStart: { hours: 0, minutes: 0 },
-				medianEnd: { hours: 0, minutes: 0 }
+				medianEnd: { hours: 0, minutes: 0 },
+				medianBreaktime: { hours: 0, minutes: 0 }
 			};
 		}
 
@@ -66,7 +82,17 @@
 		});
 		const medianEndSlot: Timeslot = values[Math.floor(values.length / 2)];
 
-		return { medianStart: medianStartSlot.begin, medianEnd: medianEndSlot.end };
+		// Sort by breaktime
+		values.sort((lhs: Timeslot, rhs: Timeslot) => {
+			return timeLGreaterR(lhs.breaktimePeriod, rhs.breaktimePeriod);
+		});
+		const medianBreaktimeSlot: Timeslot = values[Math.floor(values.length / 2)];
+
+		return {
+			medianStart: medianStartSlot.begin,
+			medianEnd: medianEndSlot.end,
+			medianBreaktime: medianBreaktimeSlot.breaktimePeriod
+		};
 	}
 
 	function calcAvailableOvertime(values: Timeslot[]): Time {
@@ -92,6 +118,11 @@
 		dataTestId="start-avg-card"
 	/>
 	<TimeGridCard
+		headline={$LL.GRIDCARD.BREAKTIME_AVG()}
+		displayText={average.avgBreaktime}
+		dataTestId="breaktime-avg-card"
+	/>
+	<TimeGridCard
 		headline={$LL.GRIDCARD.END_AVG()}
 		displayText={average.avgEnd}
 		dataTestId="end-avg-card"
@@ -100,6 +131,11 @@
 		headline={$LL.GRIDCARD.START_MEDIAN()}
 		displayText={median.medianStart}
 		dataTestId="start-median-card"
+	/>
+	<TimeGridCard
+		headline={$LL.GRIDCARD.BREAKTIME_MEDIAN()}
+		displayText={median.medianBreaktime}
+		dataTestId="breaktime-median-card"
 	/>
 	<TimeGridCard
 		headline={$LL.GRIDCARD.END_MEDIAN()}

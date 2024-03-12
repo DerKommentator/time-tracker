@@ -10,6 +10,11 @@ const de = {
 	DELETED_LABEL: 'Gelöscht!',
 	ERROR_LABEL: 'Fehler:',
 
+	HOURS_LABEL: 'Stunden',
+	MINUTES_LABEL: 'Minuten',
+	SHORT_HOURS_LABEL: 'h',
+	SHORT_MINUTES_LABEL: 'min',
+
 	DELETE_LABEL: 'LÖSCHEN',
 
 	TOAST_SAVED_SUCCESSFULLY: 'Erfolgreich gespeichert!',
@@ -46,7 +51,11 @@ const de = {
 
 	TIMEINPUT: {
 		START_LABEL: 'Arbeitsbeginn:',
+		BREAKTIME_LABEL: 'Pausenzeit:',
+		BREAKTIME_PERIOD_LABEL: 'Länge deiner Pause:',
 		END_LABEL: 'Arbeitsende:',
+		BREAKTIME_START: 'Pausenstart',
+		BREAKTIME_END: 'Pausenende',
 
 		// TimeInput Component
 		SET_CURRENT_TIME_LABEL: 'Aktuelle Zeit setzen'
@@ -61,8 +70,10 @@ const de = {
 	// -- DisplayGrid Component
 	GRIDCARD: {
 		START_AVG: 'Arbeitsbeginn Durchschnitt:',
+		BREAKTIME_AVG: 'Pausenzeit Durchschnitt:',
 		END_AVG: 'Arbeitsende Durchschnitt:',
 		START_MEDIAN: 'Arbeitsbeginn Median:',
+		BREAKTIME_MEDIAN: 'Pausenzeit Median:',
 		END_MEDIAN: 'Arbeitsende Median:',
 		AVAILABLE_OVERTIME: 'Verfügbare Überstunden:'
 	},
@@ -70,7 +81,8 @@ const de = {
 	// -- BarChart Component
 	BARCHART: {
 		LEGEND_LABEL_WORKED: 'Arbeitszeit (in Stunden)',
-		LEGEND_LABEL_AVAL_OVERTIME: 'Verfügbare Überstunden (in Stunden)'
+		LEGEND_LABEL_AVAL_OVERTIME: 'Verfügbare Überstunden (in Stunden)',
+		LEGEND_LABEL_BREAKTIME: 'Pausenzeit (in Stunden)'
 	},
 
 	// === Settings Page ===
@@ -78,6 +90,7 @@ const de = {
 		DAILY_START: 'Täglicher Arbeitsbeginn:',
 		PLANNED_TIME: 'Geplante Arbeitszeit:',
 		USE_STARTUP_TIME: 'Die Zeit beim Programmstart als Arbeitsbeginn nutzen?',
+		STANDARD_BREAKTIME: 'Reguläre Pausenzeit:',
 		LANGUAGE_LABEL: 'Sprache:',
 		START_AFTER_BOOT: 'Das Programm startet automatisch nach der PC-Anmeldung?',
 		SHOW_AFTER_STARTUP: 'Das Programmfenster nach der PC-Anmeldung maximiert anzeigen?',

@@ -10,25 +10,29 @@ let user: UserEvent;
 
 const now = new Date();
 
-let data: { date: string; worked: number; avalOt: number }[] = [
+let data: { date: string; worked: number; avalOt: number, breaktimePeriod: number }[] = [
 	{
 		date: formatDate(now),
 		worked: 8.5,
+		breaktimePeriod: 0.67,
 		avalOt: 1
 	},
 	{
 		date: formatDate(addDays(now, 1)),
 		worked: 7,
+		breaktimePeriod: 0.83,
 		avalOt: 0.5
 	},
 	{
 		date: formatDate(addDays(now, 2)),
 		worked: 2,
+		breaktimePeriod: 0.2,
 		avalOt: -5
 	},
 	{
 		date: formatDate(addDays(now, 3)),
 		worked: 7.92,
+		breaktimePeriod: 0,
 		avalOt: -4.58
 	}
 ];

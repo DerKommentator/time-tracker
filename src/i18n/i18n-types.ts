@@ -24,6 +24,11 @@ type RootTranslation = {
 	DELETED_LABEL: string;
 	ERROR_LABEL: string;
 
+	HOURS_LABEL: string;
+	SHORT_HOURS_LABEL: string;
+	MINUTES_LABEL: string;
+	SHORT_MINUTES_LABEL: string;
+
 	TOAST_SAVED_SUCCESSFULLY: string;
 	TOAST_SAVED_FAILED: string;
 	TOAST_DELETED_SUCCESSFULLY: string;
@@ -69,8 +74,11 @@ type RootTranslation = {
 
 	TIMEINPUT: {
 		START_LABEL: string;
+		BREAKTIME_LABEL: string;
+		BREAKTIME_PERIOD_LABEL: string;
 		END_LABEL: string;
-
+		BREAKTIME_START: string;
+		BREAKTIME_END: string;
 		// TimeInput Component
 		SET_CURRENT_TIME_LABEL: string;
 	};
@@ -84,8 +92,10 @@ type RootTranslation = {
 	// -- DisplayGrid Component
 	GRIDCARD: {
 		START_AVG: string;
+		BREAKTIME_AVG: string;
 		END_AVG: string;
 		START_MEDIAN: string;
+		BREAKTIME_MEDIAN: string;
 		END_MEDIAN: string;
 		AVAILABLE_OVERTIME: string;
 	};
@@ -94,6 +104,7 @@ type RootTranslation = {
 	BARCHART: {
 		LEGEND_LABEL_WORKED: string;
 		LEGEND_LABEL_AVAL_OVERTIME: string;
+		LEGEND_LABEL_BREAKTIME: string;
 	};
 
 	// === Settings Page ===
@@ -101,6 +112,7 @@ type RootTranslation = {
 		DAILY_START: string;
 		PLANNED_TIME: string;
 		USE_STARTUP_TIME: string;
+		STANDARD_BREAKTIME: string;
 		START_AFTER_BOOT: string;
 		SHOW_AFTER_STARTUP: string;
 		LANGUAGE_LABEL: string;
@@ -121,6 +133,11 @@ export type TranslationFunctions = {
 	SAVE_LABEL: () => LocalizedString;
 	DELETED_LABEL: () => LocalizedString;
 	ERROR_LABEL: () => LocalizedString;
+
+	HOURS_LABEL: () => LocalizedString;
+	MINUTES_LABEL: () => LocalizedString;
+	SHORT_HOURS_LABEL: () => LocalizedString;
+	SHORT_MINUTES_LABEL: () => LocalizedString;
 
 	TOAST_SAVED_SUCCESSFULLY: () => LocalizedString;
 	TOAST_SAVED_FAILED: () => LocalizedString;
@@ -172,7 +189,11 @@ export type TranslationFunctions = {
 
 	TIMEINPUT: {
 		START_LABEL: () => LocalizedString;
+		BREAKTIME_LABEL: () => LocalizedString;
+		BREAKTIME_PERIOD_LABEL: () => LocalizedString;
 		END_LABEL: () => LocalizedString;
+		BREAKTIME_START: () => LocalizedString;
+		BREAKTIME_END: () => LocalizedString;
 
 		// TimeInput Component
 		SET_CURRENT_TIME_LABEL: () => LocalizedString;
@@ -187,8 +208,10 @@ export type TranslationFunctions = {
 	// -- DisplayGrid Component
 	GRIDCARD: {
 		START_AVG: () => LocalizedString;
+		BREAKTIME_AVG: () => LocalizedString;
 		END_AVG: () => LocalizedString;
 		START_MEDIAN: () => LocalizedString;
+		BREAKTIME_MEDIAN: () => LocalizedString;
 		END_MEDIAN: () => LocalizedString;
 		AVAILABLE_OVERTIME: () => LocalizedString;
 	};
@@ -197,6 +220,7 @@ export type TranslationFunctions = {
 	BARCHART: {
 		LEGEND_LABEL_WORKED: () => LocalizedString;
 		LEGEND_LABEL_AVAL_OVERTIME: () => LocalizedString;
+		LEGEND_LABEL_BREAKTIME: () => LocalizedString;
 	};
 
 	// === Settings Page ===
@@ -204,6 +228,7 @@ export type TranslationFunctions = {
 		DAILY_START: () => LocalizedString;
 		PLANNED_TIME: () => LocalizedString;
 		USE_STARTUP_TIME: () => LocalizedString;
+		STANDARD_BREAKTIME: () => LocalizedString;
 		LANGUAGE_LABEL: () => LocalizedString;
 		START_AFTER_BOOT: () => LocalizedString;
 		SHOW_AFTER_STARTUP: () => LocalizedString;

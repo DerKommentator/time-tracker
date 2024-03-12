@@ -1,7 +1,5 @@
-import type { Timeslot } from '$lib/models/Timeslot';
-import { writable, type Writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import type { Settings } from '$lib/models/Settings';
-import type { StatisticsStore } from '$lib/models/StatisticsStore';
 
 // -------------- Timeslot Store --------------
 
@@ -18,7 +16,8 @@ let defaultSettings: Settings = {
 	standardStartTime: { hours: 7, minutes: 30 },
 	useStartupTime: true,
 	showAfterStartup: true,
-	startAfterBoot: true
+	startAfterBoot: true,
+	standardBreaktime: { hours: 0, minutes: 40 }
 };
 
 const storedSettings: Settings = JSON.parse(

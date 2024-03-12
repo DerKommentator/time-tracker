@@ -26,6 +26,7 @@
 				return {
 					date: new Date(timeslot.date).toLocaleDateString(),
 					worked: timeToHours(timeslot.statistics.hoursWorked),
+					breaktimePeriod: timeToHours(timeslot.breaktimePeriod),
 					avalOt: timeToHours(overtimeSum)
 				};
 			});

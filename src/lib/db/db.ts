@@ -7,9 +7,9 @@ export class MySubClassedDexie extends Dexie {
 
 	constructor() {
 		super('timeslotsDb');
-		this.version(2).stores({
-			timeslots: '++uuid, begin, end, date, statistics',
-			testTableTimeslots: '++uuid, begin, end, date, statistics'
+		this.version(3).stores({
+			timeslots: '++uuid, begin, breaktimePeriod, end, date, statistics',
+			testTableTimeslots: '++uuid, begin, breaktimePeriod, end, date, statistics'
 		});
 	}
 }

@@ -3,6 +3,7 @@ import { parseElectronApp } from './electronHelper';
 import { formatDate, formatDateToTime } from '../../src/lib/utils/HelperFunctions';
 import { type ElectronApplication, type Page, _electron as electron } from 'playwright';
 import type { BrowserWindow } from 'electron';
+import type { Time } from '$lib/models/Time';
 
 let electronApp: ElectronApplication;
 // let page: Page;
@@ -84,13 +85,14 @@ test.describe('Test E2E Electron App', async () => {
 	async function addTimeslotAndTest(
 		page: Page,
 		date: Date,
-		startTime: { hour: number; min: number },
-		endTime: { hour: number; min: number }
+		startTime: Time,
+		breaktimePeriod: Time,
+		endTime: Time
 	) {
-		let returnValues: { start: Date; end: Date } = { start: date, end: date };
+		let returnValues: { start: Date; breaktime: Time, end: Date } = { start: date, breaktime: breaktimePeriod, end: date };
 
 		const start = new Date();
-		start.setHours(startTime.hour, startTime.min);
+		start.setHours(startTime.hours, startTime.minutes);
 		returnValues.start = start;
 		const offset = date.getTimezoneOffset();
 		date = new Date(date.getTime() - offset * 60 * 1000);
@@ -108,7 +110,7 @@ test.describe('Test E2E Electron App', async () => {
 		await expect(startInput).toHaveValue(formatDateToTime(start));
 
 		const end = new Date();
-		end.setHours(endTime.hour, endTime.min);
+		end.setHours(endTime.hours, endTime.minutes);
 		returnValues.end = end;
 		const endInput = page.getByTestId('end-time-input');
 		expect(endInput).toBeTruthy();
@@ -128,7 +130,7 @@ test.describe('Test E2E Electron App', async () => {
 
 		let now: Date = new Date();
 		// page.waitForTimeout(1000);
-		const times = await addTimeslotAndTest(page, now, { hour: 7, min: 30 }, { hour: 15, min: 50 });
+		const times = await addTimeslotAndTest(page, now, { hours: 7, minutes: 30 }, { hours: 0, minutes: 30 }, { hours: 15, minutes: 50 });
 
 		const newTimeslot = page.getByTestId('timeslot-item-card-date');
 		await expect(newTimeslot).toBeVisible();
@@ -152,25 +154,34 @@ test.describe('Test E2E Electron App', async () => {
 		let date = new Date();
 
 		// Add data for test
-		await addTimeslotAndTest(page, date, { hour: 7, min: 0 }, { hour: 15, min: 50 });
-		await addTimeslotAndTest(page, addDays(date, 1), { hour: 7, min: 45 }, { hour: 15, min: 30 });
-		await addTimeslotAndTest(page, addDays(date, 2), { hour: 8, min: 10 }, { hour: 16, min: 50 });
+		await addTimeslotAndTest(page, date, { hours: 7, minutes: 0 }, { hours: 0, minutes: 20 }, { hours: 15, minutes: 50 });
+		await addTimeslotAndTest(page, addDays(date, 1), { hours: 7, minutes: 45 }, { hours: 0, minutes: 0 }, { hours: 15, minutes: 30 });
+		await addTimeslotAndTest(page, addDays(date, 2), { hours: 8, minutes: 10 }, { hours: 0, minutes: 40 }, { hours: 16, minutes: 50 });
 
 		// await page.screenshot({ path: "screenshots/stats.png", fullPage: true });
 
 		await page.goto('app://-/statistics');
+
 		const startTimeAvg = page.getByTestId('start-avg-card').getByTestId('displayText');
-		const endTimeAvg = page.getByTestId('end-avg-card').getByTestId('displayText');
-		const startTimeMedian = page.getByTestId('start-median-card').getByTestId('displayText');
-		const endTimeMedian = page.getByTestId('end-median-card').getByTestId('displayText');
-		const availableOvertime = page.getByTestId('aval-ot-card').getByTestId('displayText');
-
 		await expect(startTimeAvg).toHaveText('07:38');
-		await expect(endTimeAvg).toHaveText('16:04');
-		await expect(startTimeMedian).toHaveText('07:45');
-		await expect(endTimeMedian).toHaveText('15:50');
-		await expect(availableOvertime).toHaveText('02:45');
 
+		const breaktimeAvg = page.getByTestId('breaktime-avg-card').getByTestId('displayText');
+		await expect(breaktimeAvg).toHaveText('00:20');
+
+		const endTimeAvg = page.getByTestId('end-avg-card').getByTestId('displayText');
+		await expect(endTimeAvg).toHaveText('16:04');
+
+		const startTimeMedian = page.getByTestId('start-median-card').getByTestId('displayText');
+		await expect(startTimeMedian).toHaveText('07:45');
+
+		const breaktimeMedian = page.getByTestId('breaktime-median-card').getByTestId('displayText');
+		await expect(breaktimeMedian).toHaveText('00:20');
+
+		const endTimeMedian = page.getByTestId('end-median-card').getByTestId('displayText');
+		await expect(endTimeMedian).toHaveText('15:50');
+
+		const availableOvertime = page.getByTestId('aval-ot-card').getByTestId('displayText');
+		await expect(availableOvertime).toHaveText('01:45');
 		// await deleteAllData(page);
 	});
 

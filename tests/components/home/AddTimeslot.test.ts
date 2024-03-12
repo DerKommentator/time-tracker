@@ -10,6 +10,8 @@ import type { queries } from '@testing-library/svelte';
 let defaultSettings: Settings = {
 	plannedWorkingTime: { hours: 7, minutes: 30 },
 	standardStartTime: { hours: 7, minutes: 30 },
+	standardBreaktime: { hours: 0, minutes: 40 },
+	startAfterBoot: true,
 	useStartupTime: true,
 	showAfterStartup: true
 };

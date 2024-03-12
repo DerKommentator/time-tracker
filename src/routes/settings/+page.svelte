@@ -50,6 +50,9 @@
 	let showAfterStartup: boolean = $settingsStore.showAfterStartup;
 	let selectedLocale: Locales = $locale || 'de';
 	let startAfterBoot: boolean = $settingsStore.startAfterBoot;
+	let standardBreaktime: string = formatTime(
+		$settingsStore.standardBreaktime || { hours: 0, minutes: 40 }
+	);
 
 	const fullnameLocales = { de: 'Deutsch', en: 'English' };
 
@@ -68,7 +71,8 @@
 			standardStartTime: { hours: 7, minutes: 30 },
 			useStartupTime: true,
 			showAfterStartup: true,
-			startAfterBoot: true
+			startAfterBoot: true,
+			standardBreaktime: { hours: 0, minutes: 40 }
 		});
 		// statisticsStore.set({ availableOvertime: { hours: 0, minutes: 0 } });
 
@@ -104,6 +108,13 @@
 			$settingsStore.standardStartTime = start;
 		}
 		$settingsStore.useStartupTime = useStartupTime;
+
+		const breaktimeSplitted = startTime.split(':');
+		const breaktime: Time = {
+			hours: parseInt(breaktimeSplitted[0]),
+			minutes: parseInt(breaktimeSplitted[1])
+		};
+		$settingsStore.standardBreaktime = breaktime;
 
 		if ($locale !== selectedLocale) {
 			await loadLocaleAsync(selectedLocale);
@@ -167,6 +178,17 @@
 						type="time"
 						bind:value={plannedWorkingTime}
 						aria-label="Settings: Set planned working time"
+					/>
+				</div>
+			</div>
+			<div class="flex flex-row justify-between items-center my-6">
+				<span class="basis-3/4"><strong>{$LL.SETTINGS.STANDARD_BREAKTIME()}</strong></span>
+				<div class="w-full">
+					<input
+						class="input text-center text-lg"
+						type="time"
+						bind:value={standardBreaktime}
+						aria-label="Settings: Set regular breaktime"
 					/>
 				</div>
 			</div>
