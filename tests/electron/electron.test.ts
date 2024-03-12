@@ -1,6 +1,6 @@
 import { test, expect, type JSHandle } from '@playwright/test';
 import { parseElectronApp } from './electronHelper';
-import { formatDate, formatDateToTime, formatTime } from '../../src/lib/utils/HelperFunctions';
+import { formatDate, formatDateToTime, formatTime, formatTimeWithLabels } from '../../src/lib/utils/HelperFunctions';
 import { type ElectronApplication, type Page, _electron as electron } from 'playwright';
 import type { BrowserWindow } from 'electron';
 import type { Time } from '$lib/models/Time';
@@ -148,7 +148,7 @@ test.describe('Test E2E Electron App', async () => {
 
 		// await expect(timeslotStartTime).toBeVisible();
 		await expect(timeslotStartTime).toHaveValue(formatDateToTime(times.start));
-		await expect(timeslotBreaktime).toContainText(formatTime(times.breaktime));
+		await expect(timeslotBreaktime).toContainText(formatTimeWithLabels(times.breaktime, "h", "min"));
 		await expect(timeslotEndTime).toHaveValue(formatDateToTime(times.end));
 
 		const delBtn = page.getByTestId('timeslot-delete-btn');
