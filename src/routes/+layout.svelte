@@ -87,6 +87,8 @@
 				(window as any).ipcRenderer.removeAllListeners('show-After-Startup');
 			}
 
+			(window as any).ipcRenderer.send('change-AutoStart', $settingsStore.startAfterBoot);
+
 			// Electron Updater
 			(window as any).ipcRenderer.send('app_version');
 

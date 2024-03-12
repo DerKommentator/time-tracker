@@ -101,6 +101,7 @@ type RootTranslation = {
 		DAILY_START: string;
 		PLANNED_TIME: string;
 		USE_STARTUP_TIME: string;
+		START_AFTER_BOOT: string;
 		SHOW_AFTER_STARTUP: string;
 		LANGUAGE_LABEL: string;
 		CHANGES_AFTER_RESTART: string;
@@ -204,6 +205,7 @@ export type TranslationFunctions = {
 		PLANNED_TIME: () => LocalizedString;
 		USE_STARTUP_TIME: () => LocalizedString;
 		LANGUAGE_LABEL: () => LocalizedString;
+		START_AFTER_BOOT: () => LocalizedString;
 		SHOW_AFTER_STARTUP: () => LocalizedString;
 		CHANGES_AFTER_RESTART: () => LocalizedString;
 		DELETE_DATA_LABEL: () => LocalizedString;

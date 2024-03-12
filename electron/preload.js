@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 			'restart_app',
 			'check_for_updates',
 			'change-Language',
+			'change-AutoStart',
 			'show-After-Startup'
 		]; // <-- Array of all ipcRenderer Channels used in the client
 		if (validChannels.includes(channel)) {

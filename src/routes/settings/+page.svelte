@@ -49,6 +49,7 @@
 	let useStartupTime: boolean = $settingsStore.useStartupTime;
 	let showAfterStartup: boolean = $settingsStore.showAfterStartup;
 	let selectedLocale: Locales = $locale || 'de';
+	let startAfterBoot: boolean = $settingsStore.startAfterBoot;
 
 	const fullnameLocales = { de: 'Deutsch', en: 'English' };
 
@@ -66,7 +67,8 @@
 			plannedWorkingTime: { hours: 7, minutes: 30 },
 			standardStartTime: { hours: 7, minutes: 30 },
 			useStartupTime: true,
-			showAfterStartup: true
+			showAfterStartup: true,
+			startAfterBoot: true
 		});
 		// statisticsStore.set({ availableOvertime: { hours: 0, minutes: 0 } });
 
@@ -112,6 +114,9 @@
 
 		$settingsStore.showAfterStartup = showAfterStartup;
 
+		$settingsStore.startAfterBoot = startAfterBoot;
+		(window as any).ipcRenderer.send('change-AutoStart', startAfterBoot);
+
 		const toastSettings: ToastSettings = {
 			message: $LL.TOAST_SAVED_SUCCESSFULLY(),
 			background: 'variant-filled-success'
@@ -135,32 +140,15 @@
 			<strong data-testid="settings-label">{$LL.SETTINGS_LABEL()}</strong>
 		</header>
 		<section class="m-8">
-			<div>
-				<span><strong>{$LL.SETTINGS.PLANNED_TIME()}</strong></span>
-				<div class="flex gap-4 m-2 mb-8">
-					<input
-						class="input text-center text-lg"
-						type="time"
-						bind:value={plannedWorkingTime}
-						aria-label="Settings: Set planned working time"
-					/>
-				</div>
-			</div>
-			<div class="flex flex-row justify-between items-center mb-8">
+			<div class="flex flex-row justify-between items-center my-6">
 				<span><strong>{$LL.SETTINGS.USE_STARTUP_TIME()}</strong></span>
-				<SlideToggle
-					name="slide"
-					active="bg-primary-500"
-					size="md"
-					class="m-2"
-					bind:checked={useStartupTime}
-				/>
+				<SlideToggle name="slide" active="bg-primary-500" size="md" bind:checked={useStartupTime} />
 			</div>
-			<div>
-				<span class:text-surface-400={useStartupTime}
+			<div class="flex flex-row justify-between items-center my-6">
+				<span class="basis-3/4" class:text-surface-400={useStartupTime}
 					><strong>{$LL.SETTINGS.DAILY_START()}</strong></span
 				>
-				<div class="flex gap-4 m-2 mb-8">
+				<div class="w-full">
 					<input
 						class="input text-center text-lg"
 						type="time"
@@ -170,7 +158,32 @@
 					/>
 				</div>
 			</div>
-			<div class="flex flex-row justify-between items-center mb-8">
+
+			<div class="flex flex-row justify-between items-center my-6">
+				<span class="basis-3/4"><strong>{$LL.SETTINGS.PLANNED_TIME()}</strong></span>
+				<div class="w-full">
+					<input
+						class="input text-center text-lg"
+						type="time"
+						bind:value={plannedWorkingTime}
+						aria-label="Settings: Set planned working time"
+					/>
+				</div>
+			</div>
+
+			<hr class="my-8" />
+
+			<div class="flex flex-row justify-between items-center my-6">
+				<span><strong>{$LL.SETTINGS.START_AFTER_BOOT()}</strong></span>
+				<SlideToggle
+					name="slide"
+					active="bg-primary-500"
+					size="md"
+					class="m-2"
+					bind:checked={startAfterBoot}
+				/>
+			</div>
+			<div class="flex flex-row justify-between items-center my-6">
 				<span><strong>{$LL.SETTINGS.SHOW_AFTER_STARTUP()}</strong></span>
 				<SlideToggle
 					name="slide"
@@ -180,20 +193,16 @@
 					bind:checked={showAfterStartup}
 				/>
 			</div>
-			<div>
+			<div class="flex flex-row justify-between items-center my-6">
 				<span><strong>{$LL.SETTINGS.LANGUAGE_LABEL()}</strong></span>
-				<select
-					class="select m-2 mb-8"
-					data-testid="settings-lang-select"
-					bind:value={selectedLocale}
-				>
+				<select class="select m-2" data-testid="settings-lang-select" bind:value={selectedLocale}>
 					{#each locales as locale}
 						<option value={locale}>{fullnameLocales[locale]}</option>
 					{/each}
 				</select>
 			</div>
-			<hr />
-			<div class="flex flex-row justify-between items-center my-8">
+			<hr class="my-8" />
+			<div class="flex flex-row justify-between items-center my-6">
 				<span><strong>{@html $LL.SETTINGS.DELETE_DATA_LABEL()}</strong></span>
 				<button
 					data-testid="settings-del-all-data-btn"
@@ -203,8 +212,8 @@
 				>
 			</div>
 		</section>
-		<hr />
-		<footer class="card-footer flex flex-row justify-between items-center mt-8">
+		<hr class="my-8" />
+		<footer class="card-footer flex flex-row justify-between items-center mt-6">
 			<span class="text-surface-200 text-sm w-2/3">{$LL.SETTINGS.CHANGES_AFTER_RESTART()}</span>
 			<button
 				class="btn variant-filled-primary"

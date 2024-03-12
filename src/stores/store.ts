@@ -17,7 +17,8 @@ let defaultSettings: Settings = {
 	plannedWorkingTime: { hours: 7, minutes: 30 },
 	standardStartTime: { hours: 7, minutes: 30 },
 	useStartupTime: true,
-	showAfterStartup: true
+	showAfterStartup: true,
+	startAfterBoot: true
 };
 
 const storedSettings: Settings = JSON.parse(

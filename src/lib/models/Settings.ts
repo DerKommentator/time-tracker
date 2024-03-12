@@ -5,4 +5,5 @@ export type Settings = {
 	plannedWorkingTime: Time;
 	useStartupTime: boolean;
 	showAfterStartup: boolean;
+	startAfterBoot: boolean;
 };

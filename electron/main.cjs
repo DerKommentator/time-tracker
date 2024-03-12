@@ -32,7 +32,7 @@ if (process.platform === 'win32') {
 	app.setAppUserModelId('TimeTracker' || app.name);
 }
 
-console.log(app.getPath('crashDumps'));
+// console.log(app.getPath('crashDumps'));
 crashReporter.start({ submitURL: '', uploadToServer: false });
 
 const isDevEnvironment = process.env.APP_DEV === 'true';
@@ -215,6 +215,13 @@ ipcMain.on('change-Language', (event, selectedLanguage) => {
 	language = selectedLanguage;
 });
 
+ipcMain.on('change-AutoStart', (event, isAutoStart) => {
+	app.setLoginItemSettings({
+		openAtLogin: isAutoStart,
+		enabled: isAutoStart
+	});
+});
+
 ipcMain.on('show-After-Startup', () => {
 	top.mainWindow.show();
 });
@@ -256,10 +263,6 @@ ipcMain.on('restart_app', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.once('ready', createWindow);
-
-app.setLoginItemSettings({
-	openAtLogin: true
-});
 
 // app.whenReady().then(() => {
 // 	createWindow();
