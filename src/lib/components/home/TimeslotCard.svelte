@@ -98,7 +98,10 @@
 		</div>
 	</div>
 
-	<div class="text-center text-sm font-semibold text-gray-200/80 mt-2">
+	<div
+		class="text-center text-sm font-semibold text-gray-200/80 mt-2"
+		data-testid="timeslot-item-card-breaktime"
+	>
 		{$LL.TIMEINPUT.BREAKTIME_LABEL()}
 		{formatTimeWithLabels(
 			timeslot.breaktimePeriod,

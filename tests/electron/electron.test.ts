@@ -113,6 +113,7 @@ test.describe('Test E2E Electron App', async () => {
 		expect(breaktimeInput).toBeTruthy();
 		await breaktimeInput.fill(formatTime(breaktimePeriod));
 		await expect(breaktimeInput).toHaveValue(formatTime(breaktimePeriod));
+		// returnValues.breaktime = breaktimePeriod;
 
 		const end = new Date();
 		end.setHours(endTime.hours, endTime.minutes);
@@ -142,10 +143,12 @@ test.describe('Test E2E Electron App', async () => {
 		await expect(newTimeslot).toHaveText(formatDate(now));
 
 		const timeslotStartTime = page.getByTestId('timeslot-item-card-start-time');
+		const timeslotBreaktime = page.getByTestId('timeslot-item-card-breaktime');
 		const timeslotEndTime = page.getByTestId('timeslot-item-card-end-time');
 
 		// await expect(timeslotStartTime).toBeVisible();
 		await expect(timeslotStartTime).toHaveValue(formatDateToTime(times.start));
+		await expect(timeslotBreaktime).toContainText(formatTime(times.breaktime));
 		await expect(timeslotEndTime).toHaveValue(formatDateToTime(times.end));
 
 		const delBtn = page.getByTestId('timeslot-delete-btn');
@@ -160,7 +163,7 @@ test.describe('Test E2E Electron App', async () => {
 
 		// Add data for test
 		await addTimeslotAndTest(page, date, { hours: 7, minutes: 0 }, { hours: 0, minutes: 20 }, { hours: 15, minutes: 50 });
-		await addTimeslotAndTest(page, addDays(date, 1), { hours: 7, minutes: 45 }, { hours: 0, minutes: 0 }, { hours: 15, minutes: 30 });
+		await addTimeslotAndTest(page, addDays(date, 1), { hours: 7, minutes: 45 }, { hours: 0, minutes: 30 }, { hours: 15, minutes: 30 });
 		await addTimeslotAndTest(page, addDays(date, 2), { hours: 8, minutes: 10 }, { hours: 0, minutes: 40 }, { hours: 16, minutes: 50 });
 
 		// await page.screenshot({ path: "screenshots/stats.png", fullPage: true });
@@ -171,7 +174,7 @@ test.describe('Test E2E Electron App', async () => {
 		await expect(startTimeAvg).toHaveText('07:38');
 
 		const breaktimeAvg = page.getByTestId('breaktime-avg-card').getByTestId('displayText');
-		await expect(breaktimeAvg).toHaveText('00:20');
+		await expect(breaktimeAvg).toHaveText('00:30');
 
 		const endTimeAvg = page.getByTestId('end-avg-card').getByTestId('displayText');
 		await expect(endTimeAvg).toHaveText('16:04');
@@ -180,13 +183,14 @@ test.describe('Test E2E Electron App', async () => {
 		await expect(startTimeMedian).toHaveText('07:45');
 
 		const breaktimeMedian = page.getByTestId('breaktime-median-card').getByTestId('displayText');
-		await expect(breaktimeMedian).toHaveText('00:20');
+		await expect(breaktimeMedian).toHaveText('00:30');
 
 		const endTimeMedian = page.getByTestId('end-median-card').getByTestId('displayText');
 		await expect(endTimeMedian).toHaveText('15:50');
 
 		const availableOvertime = page.getByTestId('aval-ot-card').getByTestId('displayText');
 		await expect(availableOvertime).toHaveText('01:45');
+
 		// await deleteAllData(page);
 	});
 
