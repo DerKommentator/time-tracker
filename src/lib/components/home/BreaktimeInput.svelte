@@ -23,7 +23,7 @@
 <div class="flex gap-4 m-2 mb-8 items-center">
 	<input
 		data-testid={dataTestId}
-		class="input text-center text-lg"
+		class="input text-center text-lg w-full"
 		class:input-error={inputError}
 		aria-label="Enter {label}"
 		type="time"
@@ -36,7 +36,7 @@
 	<div class="flex-1">
 		<button
 			data-testid="set-current-time-btn"
-			class="btn variant-filled-primary mb-4"
+			class="btn variant-filled-primary mb-4 lg:w-44"
 			on:click={() => {
 				breaktimeStart = new Date();
 				lockBreaktimeEndButton = false;
@@ -47,7 +47,7 @@
 		>
 		<button
 			data-testid="set-current-time-btn"
-			class="btn variant-filled-primary"
+			class="btn variant-filled-primary lg:w-44"
 			disabled={lockBreaktimeEndButton}
 			on:click={() => {
 				breaktimeEnd = new Date();

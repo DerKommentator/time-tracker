@@ -14,7 +14,7 @@
 <div class="flex gap-4 m-2 mb-8">
 	<input
 		data-testid={dataTestId}
-		class="input text-center text-lg"
+		class="input text-center text-lg w-full"
 		class:input-error={inputError}
 		aria-label="Enter {label}"
 		type="time"

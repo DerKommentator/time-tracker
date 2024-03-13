@@ -1,3 +1,8 @@
+# Release: v0.9.18
+
+- ✨ You can now enter and track the period of your work break
+- Settings: Toggle to disable AutoStart
+
 # Release: v0.9.17
 
 - New Electron E2E Tests
