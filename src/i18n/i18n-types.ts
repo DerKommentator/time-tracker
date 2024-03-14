@@ -33,6 +33,8 @@ type RootTranslation = {
 	TOAST_SAVED_FAILED: string;
 	TOAST_DELETED_SUCCESSFULLY: string;
 	TOAST_DELETED_FAILED: string;
+	TOAST_FILETYPE_NOT_SUPPORTED: string;
+	TOAST_NOT_DEXIE_EXPORT: string;
 
 	DELETE_LABEL: string;
 
@@ -124,7 +126,7 @@ type RootTranslation = {
 
 		// Export Button Component
 		EXPORT_LABEL: string;
-		FILETYPE_LABEL: string;
+		EXPORT_IMPORT_LABEL: string;
 	};
 
 	// -- Export Component
@@ -132,6 +134,9 @@ type RootTranslation = {
 		EXPORT_BUTTON_LABEL: string;
 		MODAL_HEADER: string;
 		MODAL_BODY: string;
+		FILETYPE_LABEL: string;
+		TOAST_FAILED_EXPORT: string;
+		TOAST_FAILED_DATA_EXTRACTION: string;
 	}
 };
 
@@ -154,6 +159,8 @@ export type TranslationFunctions = {
 	TOAST_SAVED_FAILED: () => LocalizedString;
 	TOAST_DELETED_SUCCESSFULLY: () => LocalizedString;
 	TOAST_DELETED_FAILED: () => LocalizedString;
+	TOAST_FILETYPE_NOT_SUPPORTED: () => LocalizedString;
+	TOAST_NOT_DEXIE_EXPORT: () => LocalizedString;
 
 	DELETE_LABEL: () => LocalizedString;
 
@@ -251,7 +258,7 @@ export type TranslationFunctions = {
 
 		// Export Button Component
 		EXPORT_LABEL: () => LocalizedString;
-		FILETYPE_LABEL: () => LocalizedString;
+		EXPORT_IMPORT_LABEL: () => LocalizedString;
 	};
 
 	// -- Export Component
@@ -259,6 +266,9 @@ export type TranslationFunctions = {
 		EXPORT_BUTTON_LABEL: () => LocalizedString;
 		MODAL_HEADER: () => LocalizedString;
 		MODAL_BODY: () => LocalizedString;
+		FILETYPE_LABEL: () => LocalizedString;
+		TOAST_FAILED_EXPORT: () => LocalizedString;
+		TOAST_FAILED_DATA_EXTRACTION: () => LocalizedString;
 	};
 };
 

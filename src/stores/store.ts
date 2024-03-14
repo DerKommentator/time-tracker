@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import type { Settings } from '$lib/models/Settings';
+import type { StatisticsStore } from '$lib/models/StatisticsStore';
 
 // -------------- Timeslot Store --------------
 

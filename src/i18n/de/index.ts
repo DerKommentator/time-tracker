@@ -21,6 +21,8 @@ const de = {
 	TOAST_SAVED_FAILED: 'Speichern fehlgeschlagen!',
 	TOAST_DELETED_SUCCESSFULLY: 'Erfolgreich gelöscht!',
 	TOAST_DELETED_FAILED: 'Löschen fehlgeschlagen!',
+	TOAST_FILETYPE_NOT_SUPPORTED: 'Dateityp wird nicht unterstützt!',
+	TOAST_NOT_DEXIE_EXPORT: 'Die Datei ist kein Datenbank Export (db-backup)!',
 
 	// Layout
 	HOME_LABEL: 'Startseite',
@@ -103,14 +105,17 @@ const de = {
 
 		// Export Button Component
 		EXPORT_LABEL: 'Alle Zeiterfassungen exportieren:',
-		FILETYPE_LABEL: 'Dateityp:'
+		EXPORT_IMPORT_LABEL: 'Export / Import:',
 	},
 
 	// -- Export Component
 	EXPORT: {
 		EXPORT_BUTTON_LABEL: 'Export',
 		MODAL_HEADER: 'Wähle den passenden Dateityp für den Export aus!',
-		MODAL_BODY: 'Mögliche Dateitypen:'
+		MODAL_BODY: 'Mögliche Dateitypen:',
+		FILETYPE_LABEL: 'Dateityp:',
+		TOAST_FAILED_EXPORT: 'Das Exportieren ist fehlgeschlagen!',
+		TOAST_FAILED_DATA_EXTRACTION: 'Das Extrahieren der Daten ist fehlgeschlagen!'
 	}
 } satisfies BaseTranslation;
 

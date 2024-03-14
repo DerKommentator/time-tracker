@@ -21,6 +21,8 @@ const en = {
 	TOAST_SAVED_FAILED: 'Save failed!',
 	TOAST_DELETED_SUCCESSFULLY: 'Successfully deleted!',
 	TOAST_DELETED_FAILED: 'Delete failed!',
+	TOAST_FILETYPE_NOT_SUPPORTED: 'File type is not supported!',
+	TOAST_NOT_DEXIE_EXPORT: "Given file is not a dexie export (db-backup)!",
 
 	// Layout
 	HOME_LABEL: 'Home',
@@ -102,14 +104,17 @@ const en = {
 
 		// Export Button Component
 		EXPORT_LABEL: 'Export all time record:',
-		FILETYPE_LABEL: 'File type:'
+		EXPORT_IMPORT_LABEL: 'Export / Import:',
 	},
 
 	// -- Export Component
 	EXPORT: {
 		EXPORT_BUTTON_LABEL: 'Export',
 		MODAL_HEADER: 'Select the file type for the exported data!',
-		MODAL_BODY: 'Possible file types:'
+		MODAL_BODY: 'Possible file types:',
+		FILETYPE_LABEL: 'File type:',
+		TOAST_FAILED_EXPORT: 'The Export failed!',
+		TOAST_FAILED_DATA_EXTRACTION: 'The data extraction failed!'
 	}
 } satisfies Translation;
 

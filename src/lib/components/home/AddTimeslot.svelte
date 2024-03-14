@@ -122,7 +122,7 @@
 		);
 
 		// $statisticsStore.availableOvertime = calcTime(
-		// 	statistics.availableOvertime || { hours: 0, minutes: 0 },
+		// 	$statisticsStore.availableOvertime || { hours: 0, minutes: 0 },
 		// 	overtime,
 		// 	true
 		// );
