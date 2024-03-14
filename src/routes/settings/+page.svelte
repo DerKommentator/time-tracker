@@ -19,6 +19,7 @@
 	import { loadLocaleAsync } from '../../i18n/i18n-util.async';
 	import { db } from '$lib/db/db';
 	import { goto } from '$app/navigation';
+	import ExportButton from '$lib/components/settings/ExportButton.svelte';
 
 	const toastStore = getToastStore();
 	const modalStore = getModalStore();
@@ -55,6 +56,10 @@
 	);
 
 	const fullnameLocales = { de: 'Deutsch', en: 'English' };
+
+	const possibleFileTypes: string[] = ['csv', 'json'];
+	// const fullnameFileTypes = { csv: 'CSV', xlsx: 'Excel (XLSX)', json: 'JSON' };
+	let selectedFileType: string = 'csv';
 
 	function deleteAllData() {
 		const toastSettings: ToastSettings = {
@@ -223,7 +228,30 @@
 					{/each}
 				</select>
 			</div>
+
 			<hr class="my-8" />
+
+			<div class="flex flex-row justify-between items-center mb-6 mt-12">
+				<span class="break-words"><strong>{$LL.SETTINGS.EXPORT_LABEL()}</strong></span>
+				<div class="flex flex-row m-2 gap-x-4">
+					<div class="flex flex-col -mt-7">
+						<span class="text-center mb-2 text-sm">{$LL.SETTINGS.FILETYPE_LABEL()}</span>
+						<select
+							class="select w-fit"
+							data-testid="export-filetype-select"
+							bind:value={selectedFileType}
+						>
+							{#each possibleFileTypes as ft}
+								<option value={ft}>{ft}</option>
+							{/each}
+						</select>
+					</div>
+					<ExportButton {selectedFileType} />
+				</div>
+			</div>
+
+			<hr class="my-8" />
+
 			<div class="flex flex-row justify-between items-center my-6">
 				<span><strong>{@html $LL.SETTINGS.DELETE_DATA_LABEL()}</strong></span>
 				<button

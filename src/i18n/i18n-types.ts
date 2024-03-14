@@ -121,7 +121,18 @@ type RootTranslation = {
 		DELETE_DATA_BTN: string;
 		DELETE_MODAL_TITLE: string;
 		DELETE_MODAL_BODY: string;
+
+		// Export Button Component
+		EXPORT_LABEL: string;
+		FILETYPE_LABEL: string;
 	};
+
+	// -- Export Component
+	EXPORT: {
+		EXPORT_BUTTON_LABEL: string;
+		MODAL_HEADER: string;
+		MODAL_BODY: string;
+	}
 };
 
 export type TranslationFunctions = {
@@ -237,6 +248,17 @@ export type TranslationFunctions = {
 		DELETE_DATA_BTN: () => LocalizedString;
 		DELETE_MODAL_TITLE: () => LocalizedString;
 		DELETE_MODAL_BODY: () => LocalizedString;
+
+		// Export Button Component
+		EXPORT_LABEL: () => LocalizedString;
+		FILETYPE_LABEL: () => LocalizedString;
+	};
+
+	// -- Export Component
+	EXPORT: {
+		EXPORT_BUTTON_LABEL: () => LocalizedString;
+		MODAL_HEADER: () => LocalizedString;
+		MODAL_BODY: () => LocalizedString;
 	};
 };
 

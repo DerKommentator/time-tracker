@@ -104,7 +104,7 @@
 	}
 
 	$: {
-		// TODO: OPTIMIZE
+		// TODO: OPTIMIZE (save these values to reduze recalculation)
 		average = calcAverage(data);
 		median = calcMedian(data);
 		availableOvertime = calcAvailableOvertime(data);

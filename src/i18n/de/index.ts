@@ -99,7 +99,18 @@ const de = {
 		DELETE_DATA_BTN: 'ALLES LÖSCHEN',
 		DELETE_MODAL_TITLE: 'Alles Löschen?',
 		DELETE_MODAL_BODY:
-			"Bist du dir sicher, dass du <span class='text-error-500 font-bold'>ALLE</span> deine Daten löschen möchtest?"
+			"Bist du dir sicher, dass du <span class='text-error-500 font-bold'>ALLE</span> deine Daten löschen möchtest?",
+
+		// Export Button Component
+		EXPORT_LABEL: 'Alle Zeiterfassungen exportieren:',
+		FILETYPE_LABEL: 'Dateityp:'
+	},
+
+	// -- Export Component
+	EXPORT: {
+		EXPORT_BUTTON_LABEL: 'Export',
+		MODAL_HEADER: 'Wähle den passenden Dateityp für den Export aus!',
+		MODAL_BODY: 'Mögliche Dateitypen:'
 	}
 } satisfies BaseTranslation;
 

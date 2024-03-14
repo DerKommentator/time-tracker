@@ -98,7 +98,18 @@ const en = {
 		DELETE_DATA_BTN: 'DELETE ALL',
 		DELETE_MODAL_TITLE: 'Delete Everything?',
 		DELETE_MODAL_BODY:
-			"Are you sure you want to delete <span class='text-error-500 font-bold'>ALL</span> your data?"
+			"Are you sure you want to delete <span class='text-error-500 font-bold'>ALL</span> your data?",
+
+		// Export Button Component
+		EXPORT_LABEL: 'Export all time record:',
+		FILETYPE_LABEL: 'File type:'
+	},
+
+	// -- Export Component
+	EXPORT: {
+		EXPORT_BUTTON_LABEL: 'Export',
+		MODAL_HEADER: 'Select the file type for the exported data!',
+		MODAL_BODY: 'Possible file types:'
 	}
 } satisfies Translation;
 
