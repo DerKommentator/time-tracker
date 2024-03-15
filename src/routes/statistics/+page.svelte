@@ -42,7 +42,7 @@
 	{#if $timeslotsSortByDate}
 		<DisplayGrid data={$timeslotsSortByDate} />
 
-		<div class="card p-4 mx-2 relative h-2/5 sm:h-1/2 lg:h-2/3">
+		<div class="card p-4 mx-2 pb-32 relative h-2/5 sm:h-1/2 lg:h-2/3">
 			<BarChart {data} />
 		</div>
 	{/if}

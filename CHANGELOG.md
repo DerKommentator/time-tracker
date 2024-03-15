@@ -1,3 +1,7 @@
+# Release: v0.9.20
+
+- Add date range picker for the bar chart
+
 # Release: v0.9.19
 
 - ✨ Export your data and backup your time record database

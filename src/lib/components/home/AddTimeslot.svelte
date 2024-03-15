@@ -231,7 +231,7 @@
 	{#if errorMessage && (dateError || startTimeError || endTimeError || breaktimeError)}
 		<p class="text-red-600 text-sm mr-12"><b>{$LL.ERROR_LABEL()} </b>{errorMessage}</p>
 	{:else}
-		<p />
+		<div />
 	{/if}
 	<button
 		class="btn variant-filled-primary"

@@ -4,6 +4,8 @@
 	import { modeCurrent } from '@skeletonlabs/skeleton';
 	import LL from '../../../i18n/i18n-svelte';
 	import { ResizeObserver as ResizeObserverPolyfill } from '@juggle/resize-observer';
+	import { formatStringToDate } from '$lib/utils/HelperFunctions';
+	import { IconFilterOff } from '@tabler/icons-svelte';
 
 	if (typeof window !== 'undefined') {
 		window.ResizeObserver = window.ResizeObserver || ResizeObserverPolyfill;
@@ -24,13 +26,48 @@
 	let colorRed = '255, 43, 43';
 
 	export let data: { date: string; worked: number; avalOt: number }[] = [];
+	let chartData = data.slice();
 
 	let canvas: HTMLCanvasElement;
 	let chart: Chart;
+	let ctx: CanvasRenderingContext2D;
 
 	let innerWidth = 0;
 
-	function createPieChart(ctx: CanvasRenderingContext2D) {
+	let beginDateString: string;
+	let endDateString: string;
+	let dateError: boolean = false;
+	let errorMessage: string = '';
+	let lockDatePicker: boolean = true;
+
+	function generateDataWithDateRange() {
+		if (beginDateString && endDateString) {
+			chart.destroy();
+			const beginDate = new Date(beginDateString).getTime();
+			const endDate = new Date(endDateString).getTime();
+
+			chartData = data.filter((ts) => {
+				const date = formatStringToDate(ts.date);
+				return date.getTime() >= beginDate && date.getTime() <= endDate;
+			});
+
+			chartData = chartData;
+			createBarChart(ctx);
+		}
+	}
+
+	function clearDateRangeFilter() {
+		if (chart) {
+			chart.destroy();
+			chartData = data;
+			createBarChart(ctx);
+			lockDatePicker = true;
+			beginDateString = '';
+			endDateString = '';
+		}
+	}
+
+	function createBarChart(ctx: CanvasRenderingContext2D) {
 		// Workaround: Shows an error but it's working perfectly :/
 		// @ts-ignore
 		chart = new Chart(ctx, {
@@ -39,7 +76,7 @@
 				datasets: [
 					{
 						label: $LL.BARCHART.LEGEND_LABEL_WORKED(),
-						data: data,
+						data: chartData,
 						backgroundColor: `rgb(${primaryColor})`,
 						parsing: {
 							xAxisKey: 'date',
@@ -48,7 +85,7 @@
 					},
 					{
 						label: $LL.BARCHART.LEGEND_LABEL_BREAKTIME(),
-						data: data,
+						data: chartData,
 						backgroundColor: `rgb(${secondaryColor})`,
 						parsing: {
 							xAxisKey: 'date',
@@ -57,7 +94,7 @@
 					},
 					{
 						label: $LL.BARCHART.LEGEND_LABEL_AVAL_OVERTIME(),
-						data: data,
+						data: chartData,
 						backgroundColor: function (context) {
 							if (!context.parsed) return `rgb(${tertiaryColor})`;
 
@@ -97,37 +134,83 @@
 	}
 
 	onMount(() => {
-		const ctx = canvas?.getContext('2d') as CanvasRenderingContext2D;
-		createPieChart(ctx);
+		ctx = canvas?.getContext('2d') as CanvasRenderingContext2D;
+		createBarChart(ctx);
 	});
 
 	// TODO: Optimize
-	$: {
-		if (chart) {
-			if (innerWidth < 1024) {
-				chart.options.aspectRatio = 1;
-			} else {
-				chart.options.aspectRatio = 2;
-			}
-
-			if ($modeCurrent) {
-				chart.options.scales!.x!.ticks!.color = `rgb(${fontBase})`;
-				chart.options.scales!.y!.ticks!.color = `rgb(${fontBase})`;
-				// chart.options.scales!.x!.grid!.color = `rgb(${fontBase})`;
-				// chart.options.scales!.y!.grid!.color = `rgb(${fontBase})`;
-				chart.options.color = `rgb(${fontBase})`;
-			} else {
-				chart.options.scales!.x!.ticks!.color = `rgb(${fontBaseDark})`;
-				chart.options.scales!.y!.ticks!.color = `rgb(${fontBaseDark})`;
-				// chart.options.scales!.x!.grid!.color = `rgb(${fontBaseDark})`;
-				// chart.options.scales!.y!.grid!.color = `rgb(${fontBaseDark})`;
-				chart.options.color = `rgb(${fontBaseDark})`;
-			}
-
-			chart.update();
+	$: if (chart) {
+		if (innerWidth < 1024) {
+			chart.options.aspectRatio = 1;
+		} else {
+			chart.options.aspectRatio = 2;
 		}
+
+		if ($modeCurrent) {
+			chart.options.scales!.x!.ticks!.color = `rgb(${fontBase})`;
+			chart.options.scales!.y!.ticks!.color = `rgb(${fontBase})`;
+			// chart.options.scales!.x!.grid!.color = `rgb(${fontBase})`;
+			// chart.options.scales!.y!.grid!.color = `rgb(${fontBase})`;
+			chart.options.color = `rgb(${fontBase})`;
+		} else {
+			chart.options.scales!.x!.ticks!.color = `rgb(${fontBaseDark})`;
+			chart.options.scales!.y!.ticks!.color = `rgb(${fontBaseDark})`;
+			// chart.options.scales!.x!.grid!.color = `rgb(${fontBaseDark})`;
+			// chart.options.scales!.y!.grid!.color = `rgb(${fontBaseDark})`;
+			chart.options.color = `rgb(${fontBaseDark})`;
+		}
+
+		chart.update();
 	}
 </script>
 
 <svelte:window bind:innerWidth />
+
+<div class="flex flex-col sm:flex-row sm:items-center gap-x-4 mb-8 justify-end">
+	{#if errorMessage && dateError}
+		<p class="text-red-600 text-sm"><b>{$LL.ERROR_LABEL()} </b>{errorMessage}</p>
+	{/if}
+	<button class="btn-icon variant-filled" on:click={() => clearDateRangeFilter()}>
+		<IconFilterOff />
+	</button>
+	<!-- <span class="mr-12"><strong>Date Range:</strong></span> -->
+	<div class="flex flex-col items-center">
+		<!-- <span class="text-sm"><strong>Start:</strong></span> -->
+		<input
+			data-testid="begin-date-range-picker"
+			class="input text-center dark:[-webkit-text-fill-color:white] [-webkit-text-fill-color:black]"
+			class:input-error={errorMessage && dateError}
+			aria-label="Enter First Date"
+			type="date"
+			min={formatStringToDate(data[0].date).toISOString().split('T')[0]}
+			max={new Date().toISOString().split('T')[0]}
+			bind:value={beginDateString}
+			on:input={() => {
+				dateError = false;
+				lockDatePicker = false;
+				generateDataWithDateRange();
+			}}
+		/>
+	</div>
+	<span class="text-center"><strong>-</strong></span>
+	<div class="flex flex-col items-center">
+		<!-- <span class="text-sm"><strong>Ende:</strong></span> -->
+		<input
+			data-testid="end-date-range-picker"
+			class="input text-center dark:[-webkit-text-fill-color:white] [-webkit-text-fill-color:black]"
+			class:input-error={errorMessage && dateError}
+			aria-label="Enter Last Date"
+			type="date"
+			min={beginDateString || formatStringToDate(data[0].date).toISOString().split('T')[0]}
+			max={new Date().toISOString().split('T')[0]}
+			disabled={lockDatePicker}
+			bind:value={endDateString}
+			on:input={() => {
+				dateError = false;
+				generateDataWithDateRange();
+			}}
+		/>
+	</div>
+</div>
+
 <canvas bind:this={canvas} data-testid="barchart-canvas">{chart}</canvas>
