@@ -212,6 +212,12 @@ test.describe('Test E2E Electron App', async () => {
 		await langSelect.selectOption('Deutsch');
 		await saveBtn.click();
 		await expect(settingsLabel).toHaveText('Einstellungen');
+	});
+
+	test('test export and import button', async () => {
+		const page = await electronApp.firstWindow();
+
+		await page.goto('app://-/settings');
 
 		// Export Select
 		const exportSelect = page.getByTestId('export-filetype-select');

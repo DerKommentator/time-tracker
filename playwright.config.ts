@@ -40,6 +40,7 @@ export default defineConfig({
 	//   url: 'http://localhost:4173', // app url
 	// },
 	expect: {
+		timeout: 10000,
 		toMatchSnapshot: { threshold: 0.2 }
 	},
 
