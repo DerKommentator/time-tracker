@@ -4,6 +4,7 @@ import { formatDate, formatDateToTime, formatTime, formatTimeWithLabels } from '
 import { type ElectronApplication, type Page, _electron as electron } from 'playwright';
 import type { BrowserWindow } from 'electron';
 import type { Time } from '$lib/models/Time';
+import path from 'path';
 
 let electronApp: ElectronApplication;
 // let page: Page;
@@ -211,5 +212,38 @@ test.describe('Test E2E Electron App', async () => {
 		await langSelect.selectOption('Deutsch');
 		await saveBtn.click();
 		await expect(settingsLabel).toHaveText('Einstellungen');
+
+		// Export Select
+		const exportSelect = page.getByTestId('export-filetype-select');
+		await exportSelect.selectOption('csv');
+		await expect(exportSelect).toContainText('CSV');
+		await exportSelect.selectOption('json');
+		await expect(exportSelect).toContainText('JSON');
+		await exportSelect.selectOption('db-backup');
+		await expect(exportSelect).toContainText('Database Backup');
+
+		// Export Button
+		const exportBtn = page.getByTestId('export-data-btn');
+		await expect(exportBtn).toBeTruthy();
+		// const filePath = path.join('resources', 'timetracker-export.csv');
+		// await electronApp.evaluate(async ({ dialog }, filePath) => {
+		// 	dialog.showSaveDialog = () => Promise.resolve({ filePath: filePath, canceled: false });
+		// }, filePath);
+
+		// const downloadPromise = page.waitForEvent('download');
+		// await exportBtn.click();
+		// const download = await downloadPromise;
+		// await download.saveAs('tests/resources/' + download.suggestedFilename());
+
+
+		// Import Button
+		// await page.getByTestId('import-data-btn').setInputFiles(path.join(__dirname, 'tests', 'resources', 'timetracker-db-export.dbb'));
+		const importBtn = page.getByTestId('import-data-btn');
+		await expect(importBtn).toBeTruthy();
+		// await importBtn.click();
+		// const fileChooserPromise = page.waitForEvent('filechooser');
+		// const fileChooser = await fileChooserPromise;
+		// await fileChooser.setFiles(path.join('tests', 'resources', 'timetracker-db-export.dbb'));
+
 	});
 });

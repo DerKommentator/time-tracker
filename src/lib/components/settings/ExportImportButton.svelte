@@ -6,9 +6,20 @@
 	import { Parser } from '@json2csv/plainjs';
 	import type { Collection } from 'dexie';
 	import { calcTime, formatTime } from '$lib/utils/HelperFunctions';
-	import { FileButton, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import {
+		FileButton,
+		getToastStore,
+		initializeStores,
+		type ToastSettings
+	} from '@skeletonlabs/skeleton';
 	import type { Timeslot } from '$lib/models/Timeslot';
 	import type { Time } from '$lib/models/Time';
+
+	export let isTestingMode: boolean = false;
+	if ((window as any)?.APP_TESTING || isTestingMode) {
+		// Has to be initilized in every component for component testing
+		initializeStores();
+	}
 
 	const toastStore = getToastStore();
 	let toastSettings: ToastSettings = {
@@ -29,12 +40,12 @@
 	// const possibleFiletypes: string[] = ['csv', 'json', 'db-backup'];
 	let selectedFileType: string = 'csv';
 	let files: FileList;
-	const allowedFiletypes: string[] = ['csv', 'json', 'dex'];
+	const allowedFiletypes: string[] = ['csv', 'json', 'db-backup'];
 	const fullnameFileTypes: Record<string, string> = {
 		csv: 'CSV',
 		xlsx: 'Excel (XLSX)',
 		json: 'JSON',
-		dex: 'Database Backup'
+		'db-backup': 'Database Backup'
 	};
 
 	let lastOvertime: Time = { hours: 0, minutes: 0 };
@@ -77,10 +88,10 @@
 					case 'db-backup':
 						const blob = await db.export({
 							prettyJson: true,
-							filter: (table, value, key) => table === 'tableslots'
+							filter: (table, value, key) => table === 'timeslots'
 						});
 
-						download(blob, 'timetracker-db-export.dex', 'application/json');
+						download(blob, 'timetracker-db-export.dbb', 'application/json');
 						break;
 					// case 'xlsx':
 					// 	download(blob, 'timetracker-export.json', 'application/json');
@@ -161,6 +172,7 @@
 	<span class="divider-vertical" />
 
 	<FileButton
+		data-testid="import-data-btn"
 		button="btn variant-filled-primary"
 		name="files"
 		bind:files
