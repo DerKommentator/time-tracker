@@ -34,7 +34,7 @@
 	}
 </script>
 
-<div class="h-full p-5">
+<div id="statistics" class="h-full p-5">
 	<!-- <a class="btn variant-filled-primary m-10" href="/" aria-label="Home">
 		<IconArrowBack />
 	</a> -->

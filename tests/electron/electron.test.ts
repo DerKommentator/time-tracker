@@ -171,7 +171,9 @@ test.describe('Test E2E Electron App', async () => {
 
 		await page.goto('app://-/statistics');
 
-		await page.screenshot({ path: "screenshots/stats.png", fullPage: true });
+		await expect(page.locator('#statistics')).toBeVisible();
+
+		// await page.screenshot({ path: "screenshots/stats.png", fullPage: true });
 
 		const startTimeAvg = page.getByTestId('start-avg-card').getByTestId('displayText');
 		await expect(startTimeAvg).toHaveText('07:38');
