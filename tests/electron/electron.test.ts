@@ -219,7 +219,7 @@ test.describe('Test E2E Electron App', async () => {
 		await expect(exportSelect).toContainText('CSV');
 		await exportSelect.selectOption('json');
 		await expect(exportSelect).toContainText('JSON');
-		await exportSelect.selectOption('db-backup');
+		await exportSelect.selectOption('dbb');
 		await expect(exportSelect).toContainText('Database Backup');
 
 		// Export Button

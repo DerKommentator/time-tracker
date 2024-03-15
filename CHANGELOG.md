@@ -1,3 +1,8 @@
+# Release: v0.9.19
+
+- ✨ Export your data and backup your time record database
+- Import your database backup
+
 # Release: v0.9.18
 
 - ✨ You can now enter and track the period of your work break

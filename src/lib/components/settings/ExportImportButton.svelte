@@ -40,12 +40,12 @@
 	// const possibleFiletypes: string[] = ['csv', 'json', 'db-backup'];
 	let selectedFileType: string = 'csv';
 	let files: FileList;
-	const allowedFiletypes: string[] = ['csv', 'json', 'db-backup'];
+	const allowedFiletypes: string[] = ['csv', 'json', 'dbb'];
 	const fullnameFileTypes: Record<string, string> = {
 		csv: 'CSV',
 		xlsx: 'Excel (XLSX)',
 		json: 'JSON',
-		'db-backup': 'Database Backup'
+		dbb: 'Database Backup'
 	};
 
 	let lastOvertime: Time = { hours: 0, minutes: 0 };
@@ -135,6 +135,7 @@
 				try {
 					await db.import(file);
 				} catch (error) {
+					console.log(error);
 					toastSettings = {
 						message: $LL.TOAST_NOT_DEXIE_EXPORT(),
 						background: 'variant-filled-error'
