@@ -12,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
 	testDir: './tests/electron',
 	/* Run tests in files in parallel */
-	fullyParallel: true,
+	fullyParallel: process.env.CI ? false : true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
@@ -40,7 +40,6 @@ export default defineConfig({
 	//   url: 'http://localhost:4173', // app url
 	// },
 	expect: {
-		timeout: 10000,
 		toMatchSnapshot: { threshold: 0.2 }
 	},
 
