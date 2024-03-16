@@ -134,6 +134,7 @@ test.describe('Test E2E Electron App', async () => {
 	// Home
 	test('add timeslot', async () => {
 		const page = await electronApp.firstWindow();
+		await page.waitForLoadState();
 
 		let now: Date = new Date();
 		// page.waitForTimeout(1000);
@@ -160,6 +161,7 @@ test.describe('Test E2E Electron App', async () => {
 	// Statistics
 	test('check calculations in statistics', async () => {
 		const page = await electronApp.firstWindow();
+		await page.waitForLoadState();
 		let date = new Date();
 
 		// Add data for test
@@ -170,6 +172,7 @@ test.describe('Test E2E Electron App', async () => {
 		// await page.screenshot({ path: "screenshots/stats.png", fullPage: true });
 
 		await page.goto('app://-/statistics');
+		await page.waitForLoadState();
 
 		await expect(page.locator('#statistics')).toBeVisible();
 
@@ -202,8 +205,10 @@ test.describe('Test E2E Electron App', async () => {
 	// Settings
 	test('change language', async () => {
 		const page = await electronApp.firstWindow();
+		await page.waitForLoadState();
 
 		await page.goto('app://-/settings');
+		await page.waitForLoadState();
 		const langSelect = page.getByTestId('settings-lang-select');
 		await langSelect.selectOption('English');
 
@@ -220,8 +225,10 @@ test.describe('Test E2E Electron App', async () => {
 
 	test('test export and import button', async () => {
 		const page = await electronApp.firstWindow();
+		await page.waitForLoadState();
 
 		await page.goto('app://-/settings');
+		await page.waitForLoadState();
 
 		// Export Select
 		const exportSelect = page.getByTestId('export-filetype-select');
