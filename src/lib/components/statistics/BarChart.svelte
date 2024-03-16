@@ -34,6 +34,8 @@
 
 	let innerWidth = 0;
 
+	const now: string = new Date().toISOString().split('T')[0];
+	let firstTimeslotDate: string;
 	let beginDateString: string;
 	let endDateString: string;
 	let dateError: boolean = false;
@@ -136,6 +138,10 @@
 	onMount(() => {
 		ctx = canvas?.getContext('2d') as CanvasRenderingContext2D;
 		createBarChart(ctx);
+
+		if (data[0]) {
+			firstTimeslotDate = formatStringToDate(data[0].date).toISOString().split('T')[0];
+		}
 	});
 
 	// TODO: Optimize
@@ -182,8 +188,8 @@
 			class:input-error={errorMessage && dateError}
 			aria-label="Enter First Date"
 			type="date"
-			min={formatStringToDate(data[0].date).toISOString().split('T')[0]}
-			max={new Date().toISOString().split('T')[0]}
+			min={firstTimeslotDate}
+			max={now}
 			bind:value={beginDateString}
 			on:input={() => {
 				dateError = false;
@@ -201,8 +207,8 @@
 			class:input-error={errorMessage && dateError}
 			aria-label="Enter Last Date"
 			type="date"
-			min={beginDateString || formatStringToDate(data[0].date).toISOString().split('T')[0]}
-			max={new Date().toISOString().split('T')[0]}
+			min={beginDateString || firstTimeslotDate}
+			max={now}
 			disabled={lockDatePicker}
 			bind:value={endDateString}
 			on:input={() => {

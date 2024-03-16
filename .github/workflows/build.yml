@@ -2,6 +2,8 @@ name: 🥳 New Release is on the way
 
 on:
   push:
+    branches:
+      - test-fix
     tags:
       - 'v*.*.*'
 

@@ -32,15 +32,20 @@ export function formatDate(date: Date): string {
 	return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-export function formatStringToDate(dateString: string): Date {
-	let parts = dateString.split('.');
-	return new Date(
-		parseInt(parts[2], 10),
-		parseInt(parts[1], 10) - 1,
-		parseInt(parts[0], 10),
-		1
-	);
-}
+// export function formatStringToDate(dateString: string): Date {
+// 	let parts = dateString.split('.');
+// 	return new Date(
+// 		parseInt(parts[2], 10),
+// 		parseInt(parts[1], 10) - 1,
+// 		parseInt(parts[0], 10),
+// 		1
+// 	);
+// }
+
+export function formatStringToDate(dateString: string) {
+	let [d, m, y] = dateString.split(/\D/);
+	return new Date(+y, +m - 1, +d, 1);
+};
 
 export function stringToTime(time: string): Time {
 	const times = time.split(':');
