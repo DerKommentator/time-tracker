@@ -38,6 +38,8 @@ crashReporter.start({ submitURL: '', uploadToServer: false });
 const isDevEnvironment = process.env.APP_DEV === 'true';
 const isTestingEnvironment = process.env.APP_TESTING === 'true';
 
+let updateDownloaded = false;
+
 function showNotification(title, bodyText) {
 	const notification = new Notification({
 		toastXml: `<toast>
@@ -246,6 +248,7 @@ autoUpdater.on('error', (error) => {
 
 autoUpdater.on('update-downloaded', () => {
 	top.mainWindow.webContents.send('update_downloaded');
+	updateDownloaded = true;
 });
 
 ipcMain.on('check_for_updates', () => {
@@ -253,8 +256,11 @@ ipcMain.on('check_for_updates', () => {
 });
 
 ipcMain.on('restart_app', () => {
+	top.mainWindow.removeAllListeners('before-quit');
 	app.removeAllListeners('before-quit');
-	autoUpdater.quitAndInstall();
+	if (updateDownloaded) {
+		autoUpdater.quitAndInstall();
+	}
 });
 
 // ============= Electron App Events =============
@@ -276,37 +282,40 @@ app.on('activate', () => {
 
 if (!isTestingEnvironment) {
 	app.on('before-quit', (e) => {
-		e.preventDefault();
-		dialog
-			.showMessageBox({
-				type: 'info',
-				buttons: [
-					translations[language]?.yesText || translations.en.yesText,
-					translations[language]?.noText || translations.en.noText
-				],
-				cancelId: 1,
-				defaultId: 0,
-				title: translations[language]?.msgBox.quitTitle || translations.en.msgBox.quitTitle,
-				detail: translations[language]?.msgBox.quitBodyText || translations.en.msgBox.quitBodyText
-			})
-			.then(({ response }) => {
-				if (response == 0) {
-					// trigger save of time in app
-					top.mainWindow.webContents.send('sendEvent-saveTime');
-					top.mainWindow.webContents.send('sendEvent-exit');
-				} else {
-					// BrowserWindow "close" event spawn after quit operation,
-					// it requires to clean up listeners for "close" event
-					top?.mainWindow?.removeAllListeners('close');
+		if (!updateDownloaded) {
+			e.preventDefault();
+			dialog
+				.showMessageBox({
+					type: 'info',
+					buttons: [
+						translations[language]?.yesText || translations.en.yesText,
+						translations[language]?.noText || translations.en.noText
+					],
+					cancelId: -1,
+					defaultId: 0,
+					title: translations[language]?.msgBox.quitTitle || translations.en.msgBox.quitTitle,
+					detail: translations[language]?.msgBox.quitBodyText || translations.en.msgBox.quitBodyText
+				})
+				.then(({ response }) => {
+					log(response);
+					if (response == 0) {
+						// trigger save of time in app
+						top.mainWindow.webContents.send('sendEvent-saveTime');
+						top.mainWindow.webContents.send('sendEvent-exit');
+					} else if (response == 1) {
+						// BrowserWindow "close" event spawn after quit operation,
+						// it requires to clean up listeners for "close" event
+						top?.mainWindow?.removeAllListeners('close');
 
-					top?.mainWindow?.tray?.destroy();
+						top?.mainWindow?.tray?.destroy();
 
-					// release windows
-					top = null;
+						// release windows
+						top = null;
 
-					app.exit();
-				}
-			});
+						app.exit();
+					}
+				});
+		}
 	});
 }
 

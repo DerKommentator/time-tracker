@@ -66,6 +66,7 @@
 	}
 
 	function restartApp() {
+		(window as any).ipcRenderer.removeAllListeners('before-quit');
 		(window as any).ipcRenderer.send('restart_app');
 	}
 
