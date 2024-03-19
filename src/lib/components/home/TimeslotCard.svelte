@@ -3,11 +3,17 @@
 	import { IconTrash } from '@tabler/icons-svelte';
 	// import { statisticsStore } from '../../../stores/store';
 	import { getToastStore, initializeStores, type ToastSettings } from '@skeletonlabs/skeleton';
-	import { formatTimeWithLabels, formatDate, formatTime } from '$lib/utils/HelperFunctions';
+	import {
+		formatTimeWithLabels,
+		formatDate,
+		formatTime,
+		compareDates
+	} from '$lib/utils/HelperFunctions';
 	import type { Time } from '$lib/models/Time';
 	import { db } from '$lib/db/db';
 	import type { DbError } from '$lib/models/DbError';
 	import LL from '../../../i18n/i18n-svelte';
+	import { onMount } from 'svelte';
 
 	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
 	export let isTestingMode: boolean = false;
@@ -37,6 +43,10 @@
 					};
 
 					toastStore.trigger(toastSettings);
+
+					if (compareDates(timeslot.date, new Date()) == 0) {
+						(window as any).ipcRenderer.send('deleted-todays-entry');
+					}
 				});
 		} catch (error) {
 			status = { text: $LL.TIMECARD.ERROR_DELETED(), cssColor: 'variant-filled-error' };
@@ -58,6 +68,12 @@
 
 		// toastStore.trigger(toastSettings);
 	}
+
+	onMount(() => {
+		if (compareDates(timeslot.date, new Date()) == 0) {
+			(window as any).ipcRenderer.send('saved-todays-entry');
+		}
+	});
 </script>
 
 <header class="card-header text-xl flex justify-between items-center">

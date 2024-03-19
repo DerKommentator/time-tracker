@@ -11,7 +11,9 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 			'check_for_updates',
 			'change-Language',
 			'change-AutoStart',
-			'show-After-Startup'
+			'show-After-Startup',
+			'saved-todays-entry',
+			'deleted-todays-entry'
 		]; // <-- Array of all ipcRenderer Channels used in the client
 		if (validChannels.includes(channel)) {
 			ipcRenderer.send(channel, data);

@@ -39,6 +39,7 @@ const isDevEnvironment = process.env.APP_DEV === 'true';
 const isTestingEnvironment = process.env.APP_TESTING === 'true';
 
 let updateDownloaded = false;
+let savedTodaysEntry = false;
 
 function showNotification(title, bodyText) {
 	const notification = new Notification({
@@ -228,6 +229,14 @@ ipcMain.on('show-After-Startup', () => {
 	top.mainWindow.show();
 });
 
+ipcMain.on('saved-todays-entry', () => {
+	savedTodaysEntry = true;
+});
+
+ipcMain.on('deleted-todays-entry', () => {
+	savedTodaysEntry = false;
+});
+
 // ============= Updater =============
 
 ipcMain.on('app_version', (event) => {
@@ -282,7 +291,7 @@ app.on('activate', () => {
 
 if (!isTestingEnvironment) {
 	app.on('before-quit', (e) => {
-		if (!updateDownloaded) {
+		if (!updateDownloaded && !savedTodaysEntry) {
 			e.preventDefault();
 			dialog
 				.showMessageBox({
@@ -297,7 +306,6 @@ if (!isTestingEnvironment) {
 					detail: translations[language]?.msgBox.quitBodyText || translations.en.msgBox.quitBodyText
 				})
 				.then(({ response }) => {
-					log(response);
 					if (response == 0) {
 						// trigger save of time in app
 						top.mainWindow.webContents.send('sendEvent-saveTime');
@@ -316,6 +324,8 @@ if (!isTestingEnvironment) {
 					}
 				});
 		}
+
+		top?.mainWindow?.removeAllListeners('close');
 	});
 }
 

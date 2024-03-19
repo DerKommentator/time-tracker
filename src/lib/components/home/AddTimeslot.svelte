@@ -14,6 +14,7 @@
 <script lang="ts">
 	import {
 		calcTime,
+		compareDates,
 		formatDate,
 		formatDateToTime,
 		formatTime,
@@ -59,9 +60,9 @@
 	let endTimeError: boolean = false;
 	let errorMessage: string = '';
 
-	let status: DbError = { text: '', cssColor: '' };
+	// let status: DbError = { text: '', cssColor: '' };
 
-	async function addTimeslotToDb(timeslot: Timeslot) {
+	async function addTimeslotToDb(timeslot: Timeslot): Promise<DbError> {
 		try {
 			const id = await db[databaseName].add({
 				uuid: timeslot.uuid,
@@ -72,12 +73,12 @@
 				statistics: timeslot.statistics
 			});
 
-			status = {
+			return {
 				text: $LL.TIMESLOT.TOAST_ADDED_SUCCESSFULLY({ date: formatDate(timeslot.date) }),
 				cssColor: 'variant-filled-success'
 			};
 		} catch (error) {
-			status = {
+			return {
 				text: $LL.TIMESLOT.TOAST_ADDED_FAILED({
 					date: formatDate(timeslot.date),
 					error: (error as Error).message
@@ -140,7 +141,7 @@
 			}
 		};
 
-		await addTimeslotToDb(newTimeslot);
+		const status = await addTimeslotToDb(newTimeslot);
 
 		const toastSettings: ToastSettings = {
 			message: status.text,
@@ -148,7 +149,9 @@
 		};
 		toastStore.trigger(toastSettings);
 
-		//(window as any).ipcRenderer.notification(['Hallo', 'TestBody']);
+		if (compareDates(newTimeslot.date, now) == 0) {
+			(window as any).ipcRenderer.send('saved-todays-entry');
+		}
 	}
 
 	onMount(() => {

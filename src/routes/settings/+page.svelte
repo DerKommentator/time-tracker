@@ -147,7 +147,7 @@
 		<IconArrowBack />
 	</a>
 
-	<div class="card p-4 mt-10 mx-5 lg:mx-auto lg:w-1/2">
+	<div class="card p-4 mt-10 mx-5 lg:mx-auto lg:w-3/5">
 		<header class="card-header text-xl text-center">
 			<strong data-testid="settings-label">{$LL.SETTINGS_LABEL()}</strong>
 		</header>
@@ -218,7 +218,11 @@
 			</div>
 			<div class="flex flex-row justify-between items-center my-6">
 				<span><strong>{$LL.SETTINGS.LANGUAGE_LABEL()}</strong></span>
-				<select class="select m-2" data-testid="settings-lang-select" bind:value={selectedLocale}>
+				<select
+					class="select m-2 w-1/2"
+					data-testid="settings-lang-select"
+					bind:value={selectedLocale}
+				>
 					{#each locales as locale}
 						<option value={locale}>{fullnameLocales[locale]}</option>
 					{/each}

@@ -32,15 +32,31 @@ export function formatDate(date: Date): string {
 	return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// export function formatStringToDate(dateString: string): Date {
-// 	let parts = dateString.split('.');
-// 	return new Date(
-// 		parseInt(parts[2], 10),
-// 		parseInt(parts[1], 10) - 1,
-// 		parseInt(parts[0], 10),
-// 		1
-// 	);
-// }
+
+/**
+ * Compare two dates
+ *
+ * @param {Date} date1
+ * @param {Date} date2
+ * @returns {number} If date1 is before date2: 1.
+ *     If date1 and date2 are equal: 0.
+ *     If date2 is before date1: -1.
+ */
+export function compareDates(date1: Date, date2: Date): number {
+	date1 = new Date(Date.UTC(date1.getUTCFullYear(), date1.getUTCMonth(), date1.getUTCDate()));
+	date2 = new Date(Date.UTC(date2.getUTCFullYear(), date2.getUTCMonth(), date2.getUTCDate()));
+
+	if (date1.getTime() < date2.getTime()) {
+		return 1;
+	}
+	else if (date1.getTime() == date2.getTime()) {
+		return 0;
+	}
+	else {
+		return -1;
+	}
+
+}
 
 export function formatStringToDate(dateString: string) {
 	let [d, m, y] = dateString.split(/\D/);
