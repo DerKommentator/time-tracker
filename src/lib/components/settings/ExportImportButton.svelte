@@ -24,7 +24,7 @@
 	const toastStore = getToastStore();
 	let toastSettings: ToastSettings = {
 		message: $LL.TOAST_FILETYPE_NOT_SUPPORTED(),
-		background: 'variant-filled-warning'
+		background: 'variant-filled-error'
 	};
 
 	// export let selectedFileType: string;
@@ -105,7 +105,14 @@
 				};
 				toastStore.trigger(toastSettings);
 				console.error(err.stack || err);
+				return;
 			});
+
+		toastSettings = {
+			message: $LL.EXPORT.TOAST_SUCCESS_IMPORT(),
+			background: 'variant-filled-success'
+		};
+		toastStore.trigger(toastSettings);
 	}
 
 	// async function map(coll: Collection, mapperFn: any) {
@@ -177,6 +184,6 @@
 		button="btn variant-filled-primary"
 		name="files"
 		bind:files
-		on:change={onChangeHandler}>Import</FileButton
+		on:change={onChangeHandler}>{$LL.EXPORT.IMPORT_BUTTON_LABEL()}</FileButton
 	>
 </div>

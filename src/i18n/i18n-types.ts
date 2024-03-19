@@ -126,16 +126,20 @@ type RootTranslation = {
 
 		// Export Button Component
 		EXPORT_LABEL: string;
-		EXPORT_IMPORT_LABEL: string;
+		EXPORT_IMPORT_DATA_LABEL: string;
+
+		EXPORT_IMPORT_SETTINGS_LABEL: string;
 	};
 
 	// -- Export Component
 	EXPORT: {
 		EXPORT_BUTTON_LABEL: string;
+		IMPORT_BUTTON_LABEL: string;
 		MODAL_HEADER: string;
 		MODAL_BODY: string;
 		FILETYPE_LABEL: string;
 		TOAST_FAILED_EXPORT: string;
+		TOAST_SUCCESS_IMPORT: string;
 		TOAST_FAILED_DATA_EXTRACTION: string;
 	}
 };
@@ -258,16 +262,20 @@ export type TranslationFunctions = {
 
 		// Export Button Component
 		EXPORT_LABEL: () => LocalizedString;
-		EXPORT_IMPORT_LABEL: () => LocalizedString;
+		EXPORT_IMPORT_DATA_LABEL: () => LocalizedString;
+
+		EXPORT_IMPORT_SETTINGS_LABEL: () => LocalizedString;
 	};
 
 	// -- Export Component
 	EXPORT: {
 		EXPORT_BUTTON_LABEL: () => LocalizedString;
+		IMPORT_BUTTON_LABEL: () => LocalizedString;
 		MODAL_HEADER: () => LocalizedString;
 		MODAL_BODY: () => LocalizedString;
 		FILETYPE_LABEL: () => LocalizedString;
 		TOAST_FAILED_EXPORT: () => LocalizedString;
+		TOAST_SUCCESS_IMPORT: () => LocalizedString;
 		TOAST_FAILED_DATA_EXTRACTION: () => LocalizedString;
 	};
 };

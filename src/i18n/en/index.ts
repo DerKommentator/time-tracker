@@ -104,16 +104,20 @@ const en = {
 
 		// Export Button Component
 		EXPORT_LABEL: 'Export all time record:',
-		EXPORT_IMPORT_LABEL: 'Export / Import:',
+		EXPORT_IMPORT_DATA_LABEL: 'Export / Import (time records):',
+
+		EXPORT_IMPORT_SETTINGS_LABEL: 'Export / Import (settings):',
 	},
 
 	// -- Export Component
 	EXPORT: {
 		EXPORT_BUTTON_LABEL: 'Export',
+		IMPORT_BUTTON_LABEL: 'Import',
 		MODAL_HEADER: 'Select the file type for the exported data!',
 		MODAL_BODY: 'Possible file types:',
 		FILETYPE_LABEL: 'File type:',
 		TOAST_FAILED_EXPORT: 'The Export failed!',
+		TOAST_SUCCESS_IMPORT: 'Import was successfully!',
 		TOAST_FAILED_DATA_EXTRACTION: 'The data extraction failed!'
 	}
 } satisfies Translation;

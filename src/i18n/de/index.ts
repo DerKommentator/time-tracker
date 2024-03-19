@@ -105,16 +105,20 @@ const de = {
 
 		// Export Button Component
 		EXPORT_LABEL: 'Alle Zeiterfassungen exportieren:',
-		EXPORT_IMPORT_LABEL: 'Export / Import:',
+		EXPORT_IMPORT_DATA_LABEL: 'Export / Import (Zeiterfassungen):',
+
+		EXPORT_IMPORT_SETTINGS_LABEL: 'Export / Import (Einstellungen):',
 	},
 
 	// -- Export Component
 	EXPORT: {
 		EXPORT_BUTTON_LABEL: 'Export',
+		IMPORT_BUTTON_LABEL: 'Import',
 		MODAL_HEADER: 'Wähle den passenden Dateityp für den Export aus!',
 		MODAL_BODY: 'Mögliche Dateitypen:',
 		FILETYPE_LABEL: 'Dateityp:',
 		TOAST_FAILED_EXPORT: 'Das Exportieren ist fehlgeschlagen!',
+		TOAST_SUCCESS_IMPORT: 'Der Import war erfolgreich!',
 		TOAST_FAILED_DATA_EXTRACTION: 'Das Extrahieren der Daten ist fehlgeschlagen!'
 	}
 } satisfies BaseTranslation;

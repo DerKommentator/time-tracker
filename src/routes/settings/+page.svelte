@@ -9,7 +9,8 @@
 		SlideToggle,
 		type ModalSettings,
 		getModalStore,
-		Modal
+		Modal,
+		FileButton
 	} from '@skeletonlabs/skeleton';
 	import { formatTime } from '$lib/utils/HelperFunctions';
 	import { locales } from '../../i18n/i18n-util';
@@ -20,6 +21,7 @@
 	import { db } from '$lib/db/db';
 	import { goto } from '$app/navigation';
 	import ExportImportButton from '$lib/components/settings/ExportImportButton.svelte';
+	import download from 'downloadjs';
 
 	const toastStore = getToastStore();
 	const modalStore = getModalStore();
@@ -54,6 +56,12 @@
 	let standardBreaktime: string = formatTime(
 		$settingsStore.standardBreaktime || { hours: 0, minutes: 40 }
 	);
+
+	let files: FileList;
+	let toastSettings: ToastSettings = {
+		message: $LL.TOAST_FILETYPE_NOT_SUPPORTED(),
+		background: 'variant-filled-error'
+	};
 
 	const fullnameLocales = { de: 'Deutsch', en: 'English' };
 
@@ -134,6 +142,59 @@
 			background: 'variant-filled-success'
 		};
 		toastStore.trigger(toastSettings);
+	}
+
+	async function importSettings() {
+		if (!files.length) return;
+
+		let reader = new FileReader();
+		reader.onload = (event) => {
+			let str = event.target?.result;
+			let json = JSON.parse(str?.toString() || '{}');
+			$settingsStore = json;
+		};
+
+		const fileExt = files[0].name.split('.').pop() || '';
+
+		if (fileExt == 'json') {
+			try {
+				reader.readAsText(files[0]);
+			} catch (error) {
+				console.log(error);
+				toastSettings = {
+					message: $LL.TOAST_NOT_DEXIE_EXPORT(),
+					background: 'variant-filled-error'
+				};
+				toastStore.trigger(toastSettings);
+
+				return;
+			}
+		} else {
+			toastStore.trigger(toastSettings);
+		}
+
+		toastSettings = {
+			message: $LL.EXPORT.TOAST_SUCCESS_IMPORT(),
+			background: 'variant-filled-success'
+		};
+		toastStore.trigger(toastSettings);
+	}
+
+	async function exportSettings() {
+		try {
+			download(
+				JSON.stringify($settingsStore),
+				'timetracker-settings-export.json',
+				'application/json'
+			);
+		} catch (err) {
+			toastSettings = {
+				message: $LL.EXPORT.TOAST_FAILED_EXPORT(),
+				background: 'variant-filled-error'
+			};
+			toastStore.trigger(toastSettings);
+			console.error(err);
+		}
 	}
 </script>
 
@@ -232,8 +293,33 @@
 			<hr class="my-8" />
 
 			<div class="flex flex-row justify-between items-center mb-6 mt-12">
-				<span class="break-words"><strong>{$LL.SETTINGS.EXPORT_IMPORT_LABEL()}</strong></span>
+				<span class="break-words"><strong>{$LL.SETTINGS.EXPORT_IMPORT_DATA_LABEL()}</strong></span>
 				<ExportImportButton />
+			</div>
+
+			<hr class="w-3/4 m-auto" />
+
+			<div class="flex flex-row justify-between items-center mb-6 mt-12">
+				<span class="break-words"
+					><strong>{$LL.SETTINGS.EXPORT_IMPORT_SETTINGS_LABEL()}</strong></span
+				>
+				<div class="flex flex-row gap-x-4 m-2">
+					<button
+						data-testid="export-data-btn"
+						class="btn variant-filled-primary"
+						on:click={exportSettings}>{$LL.EXPORT.EXPORT_BUTTON_LABEL()}</button
+					>
+
+					<span class="divider-vertical" />
+
+					<FileButton
+						data-testid="import-data-btn"
+						button="btn variant-filled-primary"
+						name="files"
+						bind:files
+						on:change={importSettings}>{$LL.EXPORT.IMPORT_BUTTON_LABEL()}</FileButton
+					>
+				</div>
 			</div>
 
 			<hr class="my-8" />
