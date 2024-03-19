@@ -1,3 +1,9 @@
+# Release: v0.9.21
+
+- ✨ You can now export and import your settings
+- If the timeslot entry for the current day has been saved, the message dialog no longer appears when the program is closed
+- Fixed the update bug (after the update restart, the program could not close itself)
+
 # Release: v0.9.20
 
 - Add date range picker for the bar chart
