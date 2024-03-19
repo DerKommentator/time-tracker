@@ -70,7 +70,7 @@
 	}
 
 	onMount(() => {
-		if (compareDates(timeslot.date, new Date()) == 0) {
+		if ((window as any)?.IN_DESKTOP_ENV && compareDates(timeslot.date, new Date()) == 0) {
 			(window as any).ipcRenderer.send('saved-todays-entry');
 		}
 	});

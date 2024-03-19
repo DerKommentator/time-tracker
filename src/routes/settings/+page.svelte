@@ -305,7 +305,7 @@
 				>
 				<div class="flex flex-row gap-x-4 m-2">
 					<button
-						data-testid="export-data-btn"
+						data-testid="export-settings-btn"
 						class="btn variant-filled-primary"
 						on:click={exportSettings}>{$LL.EXPORT.EXPORT_BUTTON_LABEL()}</button
 					>
@@ -313,7 +313,7 @@
 					<span class="divider-vertical" />
 
 					<FileButton
-						data-testid="import-data-btn"
+						data-testid="import-settings-btn"
 						button="btn variant-filled-primary"
 						name="files"
 						bind:files
