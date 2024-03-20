@@ -90,7 +90,7 @@ const de = {
 	// === Settings Page ===
 	SETTINGS: {
 		DAILY_START: 'Täglicher Arbeitsbeginn:',
-		PLANNED_TIME: 'Geplante Arbeitszeit:',
+		PLANNED_TIME: 'Sollarbeitszeit:',
 		USE_STARTUP_TIME: 'Die Zeit beim Programmstart als Arbeitsbeginn nutzen?',
 		STANDARD_BREAKTIME: 'Reguläre Pausenzeit:',
 		LANGUAGE_LABEL: 'Sprache:',

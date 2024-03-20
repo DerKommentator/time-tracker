@@ -4,8 +4,13 @@
 	import { modeCurrent } from '@skeletonlabs/skeleton';
 	import LL from '../../../i18n/i18n-svelte';
 	import { ResizeObserver as ResizeObserverPolyfill } from '@juggle/resize-observer';
-	import { formatStringToDate } from '$lib/utils/HelperFunctions';
+	import {
+		formatStringToDate,
+		formatTimeWithLabels,
+		minutesToTime
+	} from '$lib/utils/HelperFunctions';
 	import { IconFilterOff } from '@tabler/icons-svelte';
+	import type { Time } from '$lib/models/Time';
 
 	if (typeof window !== 'undefined') {
 		window.ResizeObserver = window.ResizeObserver || ResizeObserverPolyfill;
@@ -114,6 +119,28 @@
 				]
 			},
 			options: {
+				plugins: {
+					tooltip: {
+						callbacks: {
+							label: function (context) {
+								let label = context.dataset.label || '';
+
+								if (label) {
+									label += ': ';
+								}
+								if (context.parsed.y !== null) {
+									const time: Time = minutesToTime(context.parsed.y * 60);
+									label += formatTimeWithLabels(
+										time,
+										$LL.SHORT_HOURS_LABEL(),
+										$LL.SHORT_MINUTES_LABEL()
+									);
+								}
+								return label;
+							}
+						}
+					}
+				},
 				responsive: true,
 				maintainAspectRatio: false,
 				scales: {

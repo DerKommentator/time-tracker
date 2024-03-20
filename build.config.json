@@ -4,7 +4,8 @@
 		"electron/preload.js",
 		"electron/logoPng/icon.png",
 		"electron/icon.ico",
-		"RELEASE.md",
+		"CHANGELOG.md",
+		"LICENSE.md",
 		{
 			"from": "build",
 			"to": ""
