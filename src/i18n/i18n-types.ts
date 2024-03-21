@@ -91,22 +91,25 @@ type RootTranslation = {
 	};
 
 	// === Statistics Page ===
-	// -- DisplayGrid Component
-	GRIDCARD: {
-		START_AVG: string;
-		BREAKTIME_AVG: string;
-		END_AVG: string;
-		START_MEDIAN: string;
-		BREAKTIME_MEDIAN: string;
-		END_MEDIAN: string;
-		AVAILABLE_OVERTIME: string;
-	};
+	STATISTICS: {
+		// -- DisplayGrid Component
+		GRIDCARD: {
+			START_AVG: string;
+			BREAKTIME_AVG: string;
+			END_AVG: string;
+			START_MEDIAN: string;
+			BREAKTIME_MEDIAN: string;
+			END_MEDIAN: string;
+			AVAILABLE_OVERTIME: string;
+		};
 
-	// -- BarChart Component
-	BARCHART: {
-		LEGEND_LABEL_WORKED: string;
-		LEGEND_LABEL_AVAL_OVERTIME: string;
-		LEGEND_LABEL_BREAKTIME: string;
+		// -- BarChart Component
+		BARCHART: {
+			LEGEND_LABEL_WORKED: string;
+			LEGEND_LABEL_AVAL_OVERTIME: string;
+			LEGEND_LABEL_BREAKTIME: string;
+			SHOW_ITEMS_LABEL: string;
+		};
 	};
 
 	// === Settings Page ===
@@ -227,22 +230,25 @@ export type TranslationFunctions = {
 	};
 
 	// === Statistics Page ===
-	// -- DisplayGrid Component
-	GRIDCARD: {
-		START_AVG: () => LocalizedString;
-		BREAKTIME_AVG: () => LocalizedString;
-		END_AVG: () => LocalizedString;
-		START_MEDIAN: () => LocalizedString;
-		BREAKTIME_MEDIAN: () => LocalizedString;
-		END_MEDIAN: () => LocalizedString;
-		AVAILABLE_OVERTIME: () => LocalizedString;
-	};
+	STATISTICS: {
+		// -- DisplayGrid Component
+		GRIDCARD: {
+			START_AVG: () => LocalizedString;
+			BREAKTIME_AVG: () => LocalizedString;
+			END_AVG: () => LocalizedString;
+			START_MEDIAN: () => LocalizedString;
+			BREAKTIME_MEDIAN: () => LocalizedString;
+			END_MEDIAN: () => LocalizedString;
+			AVAILABLE_OVERTIME: () => LocalizedString;
+		};
 
-	// -- BarChart Component
-	BARCHART: {
-		LEGEND_LABEL_WORKED: () => LocalizedString;
-		LEGEND_LABEL_AVAL_OVERTIME: () => LocalizedString;
-		LEGEND_LABEL_BREAKTIME: () => LocalizedString;
+		// -- BarChart Component
+		BARCHART: {
+			LEGEND_LABEL_WORKED: () => LocalizedString;
+			LEGEND_LABEL_AVAL_OVERTIME: () => LocalizedString;
+			LEGEND_LABEL_BREAKTIME: () => LocalizedString;
+			SHOW_ITEMS_LABEL: () => LocalizedString;
+		};
 	};
 
 	// === Settings Page ===

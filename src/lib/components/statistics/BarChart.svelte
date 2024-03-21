@@ -30,7 +30,9 @@
 	let fontBaseDark = '255, 255, 255';
 	let colorRed = '255, 43, 43';
 
+	export let fetchLimit: number = 20;
 	export let data: { date: string; worked: number; avalOt: number }[] = [];
+	const possibleRenderItems: number[] = [5, 10, 20, 30, 40, 50];
 	let chartData = data.slice();
 
 	let canvas: HTMLCanvasElement;
@@ -82,7 +84,7 @@
 			data: {
 				datasets: [
 					{
-						label: $LL.BARCHART.LEGEND_LABEL_WORKED(),
+						label: $LL.STATISTICS.BARCHART.LEGEND_LABEL_WORKED(),
 						data: chartData,
 						backgroundColor: `rgb(${primaryColor})`,
 						parsing: {
@@ -91,7 +93,7 @@
 						}
 					},
 					{
-						label: $LL.BARCHART.LEGEND_LABEL_BREAKTIME(),
+						label: $LL.STATISTICS.BARCHART.LEGEND_LABEL_BREAKTIME(),
 						data: chartData,
 						backgroundColor: `rgb(${secondaryColor})`,
 						parsing: {
@@ -100,7 +102,7 @@
 						}
 					},
 					{
-						label: $LL.BARCHART.LEGEND_LABEL_AVAL_OVERTIME(),
+						label: $LL.STATISTICS.BARCHART.LEGEND_LABEL_AVAL_OVERTIME(),
 						data: chartData,
 						backgroundColor: function (context) {
 							if (!context.parsed) return `rgb(${tertiaryColor})`;
@@ -203,11 +205,11 @@
 	{#if errorMessage && dateError}
 		<p class="text-red-600 text-sm"><b>{$LL.ERROR_LABEL()} </b>{errorMessage}</p>
 	{/if}
-	<button class="btn-icon variant-filled" on:click={() => clearDateRangeFilter()}>
+	<button class="btn-icon variant-filled mb-4 sm:mb-0" on:click={() => clearDateRangeFilter()}>
 		<IconFilterOff />
 	</button>
 	<!-- <span class="mr-12"><strong>Date Range:</strong></span> -->
-	<div class="flex flex-col items-center">
+	<div class="flex flex-col sm:flex-row sm:items-center gap-x-4">
 		<!-- <span class="text-sm"><strong>Start:</strong></span> -->
 		<input
 			data-testid="begin-date-range-picker"
@@ -224,26 +226,35 @@
 				generateDataWithDateRange();
 			}}
 		/>
-	</div>
-	<span class="text-center"><strong>-</strong></span>
-	<div class="flex flex-col items-center">
-		<!-- <span class="text-sm"><strong>Ende:</strong></span> -->
-		<input
-			data-testid="end-date-range-picker"
-			class="input text-center dark:[-webkit-text-fill-color:white] [-webkit-text-fill-color:black]"
-			class:input-error={errorMessage && dateError}
-			aria-label="Enter Last Date"
-			type="date"
-			min={beginDateString || firstTimeslotDate}
-			max={now}
-			disabled={lockDatePicker}
-			bind:value={endDateString}
-			on:input={() => {
-				dateError = false;
-				generateDataWithDateRange();
-			}}
-		/>
+		<span class="text-center"><strong>-</strong></span>
+		<div class="flex flex-col items-center">
+			<!-- <span class="text-sm"><strong>Ende:</strong></span> -->
+			<input
+				data-testid="end-date-range-picker"
+				class="input text-center dark:[-webkit-text-fill-color:white] [-webkit-text-fill-color:black]"
+				class:input-error={errorMessage && dateError}
+				aria-label="Enter Last Date"
+				type="date"
+				min={beginDateString || firstTimeslotDate}
+				max={now}
+				disabled={lockDatePicker}
+				bind:value={endDateString}
+				on:input={() => {
+					dateError = false;
+					generateDataWithDateRange();
+				}}
+			/>
+		</div>
 	</div>
 </div>
 
 <canvas bind:this={canvas} data-testid="barchart-canvas">{chart}</canvas>
+
+<div class="flex flex-row items-center mt-4 gap-x-2 float-right">
+	<span><strong>{$LL.STATISTICS.BARCHART.SHOW_ITEMS_LABEL()}</strong></span>
+	<select class="select m-2 w-24" data-testid="settings-lang-select" bind:value={fetchLimit}>
+		{#each possibleRenderItems as pNumber}
+			<option value={pNumber}>{pNumber}</option>
+		{/each}
+	</select>
+</div>

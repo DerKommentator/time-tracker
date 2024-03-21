@@ -68,22 +68,25 @@ const en = {
 	},
 
 	// === Statistics Page ===
-	// -- DisplayGrid Component
-	GRIDCARD: {
-		START_AVG: 'Average - Start of Work:',
-		BREAKTIME_AVG: 'Average - Breaktime:',
-		END_AVG: 'Average - End of Work:',
-		START_MEDIAN: 'Median - Start of Work:',
-		BREAKTIME_MEDIAN: 'Median - Breaktime:',
-		END_MEDIAN: 'Median - End of Work:',
-		AVAILABLE_OVERTIME: 'Available Overtime:'
-	},
+	STATISTICS: {
+		// -- DisplayGrid Component
+		GRIDCARD: {
+			START_AVG: 'Average - Start of Work:',
+			BREAKTIME_AVG: 'Average - Breaktime:',
+			END_AVG: 'Average - End of Work:',
+			START_MEDIAN: 'Median - Start of Work:',
+			BREAKTIME_MEDIAN: 'Median - Breaktime:',
+			END_MEDIAN: 'Median - End of Work:',
+			AVAILABLE_OVERTIME: 'Available Overtime:'
+		},
 
-	// -- BarChart Component
-	BARCHART: {
-		LEGEND_LABEL_WORKED: 'Working Hours (in Hours)',
-		LEGEND_LABEL_AVAL_OVERTIME: 'Available Overtime (in Hours)',
-		LEGEND_LABEL_BREAKTIME: 'Breaktime (in Hours)'
+		// -- BarChart Component
+		BARCHART: {
+			LEGEND_LABEL_WORKED: 'Working Hours (in Hours)',
+			LEGEND_LABEL_AVAL_OVERTIME: 'Available Overtime (in Hours)',
+			LEGEND_LABEL_BREAKTIME: 'Breaktime (in Hours)',
+			SHOW_ITEMS_LABEL: 'Items to render:'
+		},
 	},
 
 	// === Settings Page ===

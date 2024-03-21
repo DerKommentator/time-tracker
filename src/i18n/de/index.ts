@@ -69,22 +69,25 @@ const de = {
 	},
 
 	// === Statistics Page ===
-	// -- DisplayGrid Component
-	GRIDCARD: {
-		START_AVG: 'Arbeitsbeginn Durchschnitt:',
-		BREAKTIME_AVG: 'Pausenzeit Durchschnitt:',
-		END_AVG: 'Arbeitsende Durchschnitt:',
-		START_MEDIAN: 'Arbeitsbeginn Median:',
-		BREAKTIME_MEDIAN: 'Pausenzeit Median:',
-		END_MEDIAN: 'Arbeitsende Median:',
-		AVAILABLE_OVERTIME: 'Verfügbare Überstunden:'
-	},
+	STATISTICS: {
+		// -- DisplayGrid Component
+		GRIDCARD: {
+			START_AVG: 'Arbeitsbeginn Durchschnitt:',
+			BREAKTIME_AVG: 'Pausenzeit Durchschnitt:',
+			END_AVG: 'Arbeitsende Durchschnitt:',
+			START_MEDIAN: 'Arbeitsbeginn Median:',
+			BREAKTIME_MEDIAN: 'Pausenzeit Median:',
+			END_MEDIAN: 'Arbeitsende Median:',
+			AVAILABLE_OVERTIME: 'Verfügbare Überstunden:'
+		},
 
-	// -- BarChart Component
-	BARCHART: {
-		LEGEND_LABEL_WORKED: 'Arbeitszeit (in Stunden)',
-		LEGEND_LABEL_AVAL_OVERTIME: 'Verfügbare Überstunden (in Stunden)',
-		LEGEND_LABEL_BREAKTIME: 'Pausenzeit (in Stunden)'
+		// -- BarChart Component
+		BARCHART: {
+			LEGEND_LABEL_WORKED: 'Arbeitszeit (in Stunden)',
+			LEGEND_LABEL_AVAL_OVERTIME: 'Verfügbare Überstunden (in Stunden)',
+			LEGEND_LABEL_BREAKTIME: 'Pausenzeit (in Stunden)',
+			SHOW_ITEMS_LABEL: 'Anzahl von Elementen:'
+		},
 	},
 
 	// === Settings Page ===

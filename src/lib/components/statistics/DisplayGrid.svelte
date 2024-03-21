@@ -113,37 +113,37 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-1 m-2 mb-7">
 	<TimeGridCard
-		headline={$LL.GRIDCARD.START_AVG()}
+		headline={$LL.STATISTICS.GRIDCARD.START_AVG()}
 		displayText={average.avgStart}
 		dataTestId="start-avg-card"
 	/>
 	<TimeGridCard
-		headline={$LL.GRIDCARD.BREAKTIME_AVG()}
+		headline={$LL.STATISTICS.GRIDCARD.BREAKTIME_AVG()}
 		displayText={average.avgBreaktime}
 		dataTestId="breaktime-avg-card"
 	/>
 	<TimeGridCard
-		headline={$LL.GRIDCARD.END_AVG()}
+		headline={$LL.STATISTICS.GRIDCARD.END_AVG()}
 		displayText={average.avgEnd}
 		dataTestId="end-avg-card"
 	/>
 	<TimeGridCard
-		headline={$LL.GRIDCARD.START_MEDIAN()}
+		headline={$LL.STATISTICS.GRIDCARD.START_MEDIAN()}
 		displayText={median.medianStart}
 		dataTestId="start-median-card"
 	/>
 	<TimeGridCard
-		headline={$LL.GRIDCARD.BREAKTIME_MEDIAN()}
+		headline={$LL.STATISTICS.GRIDCARD.BREAKTIME_MEDIAN()}
 		displayText={median.medianBreaktime}
 		dataTestId="breaktime-median-card"
 	/>
 	<TimeGridCard
-		headline={$LL.GRIDCARD.END_MEDIAN()}
+		headline={$LL.STATISTICS.GRIDCARD.END_MEDIAN()}
 		displayText={median.medianEnd}
 		dataTestId="end-median-card"
 	/>
 	<TimeGridCard
-		headline={$LL.GRIDCARD.AVAILABLE_OVERTIME()}
+		headline={$LL.STATISTICS.GRIDCARD.AVAILABLE_OVERTIME()}
 		displayText={formatOvertime(availableOvertime)}
 		dataTestId="aval-ot-card"
 	/>

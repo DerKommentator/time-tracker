@@ -348,7 +348,7 @@ app.whenReady().then(() => {
 					translations[language]?.notify.wakeupHeadline || translations.en.notify.wakeupHeadline,
 					translations[language]?.notify.wakeupBody || translations.en.notify.wakeupBody
 				);
-			}, 3000);
+			}, 2000);
 			showNotify = false;
 		}
 	});
