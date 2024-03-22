@@ -21,7 +21,12 @@
 		stringToTime
 	} from '$lib/utils/HelperFunctions';
 	// import { statisticsStore } from '../../../stores/store';
-	import { getToastStore, initializeStores, type ToastSettings } from '@skeletonlabs/skeleton';
+	import {
+		getToastStore,
+		initializeStores,
+		SlideToggle,
+		type ToastSettings
+	} from '@skeletonlabs/skeleton';
 	import type { Time } from '$lib/models/Time';
 	import type { Timeslot } from '$lib/models/Timeslot';
 	import type { Settings } from '$lib/models/Settings';
@@ -32,6 +37,7 @@
 	import BreaktimeInput from './BreaktimeInput.svelte';
 	import LL from '../../../i18n/i18n-svelte';
 	import { onDestroy, onMount } from 'svelte';
+	import en from '../../../i18n/en';
 
 	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
 
@@ -52,6 +58,7 @@
 	let now: Date = new Date();
 	let dateString: string = now.toISOString().split('T')[0];
 	let lockSave: boolean = false;
+	let isFlexitimeDay: boolean = false;
 	let breaktimePeriod: string = '00:40';
 
 	let dateError: boolean = false;
@@ -70,7 +77,8 @@
 				breaktimePeriod: timeslot.breaktimePeriod,
 				end: timeslot.end,
 				date: timeslot.date,
-				statistics: timeslot.statistics
+				statistics: timeslot.statistics,
+				isFlexitimeDay: timeslot.isFlexitimeDay
 			});
 
 			return {
@@ -90,7 +98,7 @@
 
 	async function saveTime() {
 		errorMessage = '';
-		if (!endTime) {
+		if (!endTime && !isFlexitimeDay) {
 			endTimeError = true;
 			errorMessage = $LL.TIMESLOT.ERROR_END_MISSING();
 			return;
@@ -104,23 +112,33 @@
 			return;
 		}
 
-		const start: Time = stringToTime(startTime);
-		const end: Time = stringToTime(endTime);
+		let start: Time = { hours: 0, minutes: 0 };
+		let end: Time = { hours: 0, minutes: 0 };
+		let breaktime: Time = { hours: 0, minutes: 0 };
+		let hoursWorked: Time = { hours: 0, minutes: 0 };
+		let overtime: Time = { hours: 0, minutes: 0 };
 
-		if (start.hours > end.hours || (start.hours == end.hours && start.minutes >= end.minutes)) {
-			startTimeError = true;
-			endTimeError = true;
-			errorMessage = $LL.TIMESLOT.ERROR_END_BEFORE_START();
-			return;
+		if (!isFlexitimeDay) {
+			start = stringToTime(startTime);
+			end = stringToTime(endTime);
+
+			if (start.hours > end.hours || (start.hours == end.hours && start.minutes >= end.minutes)) {
+				startTimeError = true;
+				endTimeError = true;
+				errorMessage = $LL.TIMESLOT.ERROR_END_BEFORE_START();
+				return;
+			}
+
+			breaktime = stringToTime(breaktimePeriod);
+			hoursWorked = calcTime(start, end);
+			hoursWorked = calcTime(breaktime, hoursWorked);
+			overtime = calcTime(settings.plannedWorkingTime || { hours: 7, minutes: 30 }, hoursWorked);
+		} else {
+			overtime = {
+				hours: settings.plannedWorkingTime.hours * -1,
+				minutes: settings.plannedWorkingTime.minutes * -1
+			};
 		}
-
-		const breaktime: Time = stringToTime(breaktimePeriod);
-		let hoursWorked: Time = calcTime(start, end);
-		hoursWorked = calcTime(breaktime, hoursWorked);
-		let overtime: Time = calcTime(
-			settings.plannedWorkingTime || { hours: 7, minutes: 30 },
-			hoursWorked
-		);
 
 		// $statisticsStore.availableOvertime = calcTime(
 		// 	$statisticsStore.availableOvertime || { hours: 0, minutes: 0 },
@@ -130,15 +148,16 @@
 
 		let newTimeslot: Timeslot = {
 			uuid: crypto.randomUUID(),
-			begin: { hours: start.hours, minutes: start.minutes },
-			end: { hours: end.hours, minutes: end.minutes },
-			breaktimePeriod: { hours: breaktime.hours, minutes: breaktime.minutes },
+			begin: start,
+			end: end,
+			breaktimePeriod: breaktime,
 			date: new Date(dateString),
 			statistics: {
 				hoursWorked: hoursWorked,
 				timeDiffPlannedToWorked: overtime
 				// availableOvertime: $statisticsStore.availableOvertime
-			}
+			},
+			isFlexitimeDay: +isFlexitimeDay
 		};
 
 		const status = await addTimeslotToDb(newTimeslot);
@@ -188,20 +207,35 @@
 
 <header class="card-header text-xl"><strong>{$LL.TIMESLOT.ADD_HEADLINE()}</strong></header>
 <section class="m-8">
-	<div>
-		<span><strong>{$LL.TIMESLOT.DATE_LABEL()}</strong></span>
-		<div class="flex gap-4 m-2 mb-8">
-			<input
-				data-testid="timeslot-datepicker"
-				class="input text-center text-lg"
-				class:input-error={errorMessage && dateError}
-				aria-label="Enter Date"
-				type="date"
-				bind:value={dateString}
-				on:input={() => {
-					dateError = false;
-				}}
-			/>
+	<div class="flex flex-row items-center justify-between gap-x-2 lg:gap-x-6">
+		<div class="w-3/4">
+			<span><strong>{$LL.TIMESLOT.DATE_LABEL()}</strong></span>
+			<div class="flex gap-4 m-2 mr-0 mb-8">
+				<input
+					data-testid="timeslot-datepicker"
+					class="input text-center text-lg"
+					class:input-error={errorMessage && dateError}
+					aria-label="Enter Date"
+					type="date"
+					bind:value={dateString}
+					on:input={() => {
+						dateError = false;
+					}}
+				/>
+			</div>
+		</div>
+		<hr class="h-14 divider-vertical" />
+		<div class="flex flex-col gap-y-2 justify-center text-center">
+			<span><strong>{$LL.TIMESLOT.FLEXITIME_DAY_LABEL()}</strong></span>
+			<div class="flex gap-4 mb-8">
+				<SlideToggle
+					name="slide"
+					active="bg-primary-500"
+					size="md"
+					data-testid="timeslot-flexiday-toggle"
+					bind:checked={isFlexitimeDay}
+				/>
+			</div>
 		</div>
 	</div>
 	<div>
@@ -210,6 +244,7 @@
 			label={$LL.TIMEINPUT.START_LABEL()}
 			inputError={startTimeError}
 			bind:time={startTime}
+			disabled={isFlexitimeDay}
 		/>
 	</div>
 	<div>
@@ -218,6 +253,7 @@
 			label={$LL.TIMEINPUT.BREAKTIME_PERIOD_LABEL()}
 			inputError={breaktimeError}
 			bind:time={breaktimePeriod}
+			disabled={isFlexitimeDay}
 		/>
 	</div>
 	<div>
@@ -227,6 +263,7 @@
 			inputError={endTimeError}
 			bind:time={endTime}
 			minTimeLimit={startTime}
+			disabled={isFlexitimeDay}
 		/>
 	</div>
 </section>

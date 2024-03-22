@@ -11,6 +11,14 @@ export class MySubClassedDexie extends Dexie {
 			timeslots: '++uuid, begin, breaktimePeriod, end, date, statistics',
 			testTableTimeslots: '++uuid, begin, breaktimePeriod, end, date, statistics'
 		});
+		this.version(4).stores({
+			timeslots: '++uuid, begin, breaktimePeriod, end, date, statistics, isFlexitimeDay',
+			testTableTimeslots: '++uuid, begin, breaktimePeriod, end, date, statistics, isFlexitimeDay'
+		}).upgrade(tx => {
+			return tx.table("timeslots").toCollection().modify(timeslot => {
+				timeslot.isFlexitimeDay = 0;
+			});
+		});
 	}
 }
 

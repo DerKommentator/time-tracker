@@ -20,7 +20,8 @@ const timeslot: Timeslot = {
 		// availableOvertime: { hours: 1, minutes: 0 },
 		hoursWorked: { hours: 8, minutes: 0 },
 		timeDiffPlannedToWorked: { hours: 0, minutes: 30 }
-	}
+	},
+	isFlexitimeDay: 0
 };
 
 describe('TimeslotCard Component', () => {

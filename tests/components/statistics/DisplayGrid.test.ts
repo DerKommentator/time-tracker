@@ -21,7 +21,8 @@ const timeslots: Timeslot[] = [
 			// availableOvertime: { hours: 1, minutes: 0 },
 			hoursWorked: { hours: 8, minutes: 0 },
 			timeDiffPlannedToWorked: { hours: 0, minutes: 30 }
-		}
+		},
+		isFlexitimeDay: 0
 	},
 	{
 		uuid: uuid,
@@ -33,7 +34,8 @@ const timeslots: Timeslot[] = [
 			// availableOvertime: { hours: 0, minutes: 30 },
 			hoursWorked: { hours: 6, minutes: 0 },
 			timeDiffPlannedToWorked: { hours: -1, minutes: -30 }
-		}
+		},
+		isFlexitimeDay: 0
 	},
 	{
 		uuid: uuid,
@@ -45,7 +47,8 @@ const timeslots: Timeslot[] = [
 			// availableOvertime: { hours: -5, minutes: 0 },
 			hoursWorked: { hours: 1, minutes: 20 },
 			timeDiffPlannedToWorked: { hours: -6, minutes: -10 }
-		}
+		},
+		isFlexitimeDay: 0
 	},
 	{
 		uuid: uuid,
@@ -57,7 +60,8 @@ const timeslots: Timeslot[] = [
 			// availableOvertime: { hours: -4, minutes: -35 },
 			hoursWorked: { hours: 7, minutes: 35 },
 			timeDiffPlannedToWorked: { hours: 0, minutes: 5 }
-		}
+		},
+		isFlexitimeDay: 0
 	}
 ];
 

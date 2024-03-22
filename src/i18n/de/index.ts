@@ -43,6 +43,7 @@ const de = {
 	TIMESLOT: {
 		ADD_HEADLINE: 'Manuell Hinzufügen:',
 		DATE_LABEL: 'Datum:',
+		FLEXITIME_DAY_LABEL: 'EGZ:',
 		ERROR_END_MISSING: 'Das Arbeitsende fehlt!',
 		ERROR_ALREADY_EXIST: 'Für diesen Tag gibt es bereits einen Eintrag!',
 		ERROR_END_BEFORE_START: 'Das Arbeitsende darf nicht vor dem Arbeitsbeginn sein!',
@@ -86,7 +87,8 @@ const de = {
 			LEGEND_LABEL_WORKED: 'Arbeitszeit (in Stunden)',
 			LEGEND_LABEL_AVAL_OVERTIME: 'Verfügbare Überstunden (in Stunden)',
 			LEGEND_LABEL_BREAKTIME: 'Pausenzeit (in Stunden)',
-			SHOW_ITEMS_LABEL: 'Anzahl von Elementen:'
+			SHOW_ITEMS_LABEL: 'Anzahl von Elementen:',
+			SHOW_FLEXITIME_DAYS: 'EGT Tage anzeigen:'
 		},
 	},
 

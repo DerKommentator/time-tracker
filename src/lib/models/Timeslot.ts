@@ -8,4 +8,5 @@ export type Timeslot = {
 	end: Time;
 	date: Date;
 	statistics: Statistics;
+	isFlexitimeDay: number;
 };

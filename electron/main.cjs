@@ -167,6 +167,7 @@ function createWindow() {
 	powerSaveBlocker.start('prevent-app-suspension');
 
 	mws.manage(top.mainWindow);
+
 	// define how electron will load the app
 	if (isDevEnvironment && !isTestingEnvironment) {
 		// if your vite app is running on a different port, change it here
@@ -187,7 +188,9 @@ function createWindow() {
 		serveURL(top.mainWindow);
 
 		top.mainWindow.once('ready-to-show', () => {
-			autoUpdater.checkForUpdatesAndNotify();
+			if (!isTestingEnvironment) {
+				autoUpdater.checkForUpdatesAndNotify();
+			}
 		});
 
 		log('Electron running in prod mode: 🚀');

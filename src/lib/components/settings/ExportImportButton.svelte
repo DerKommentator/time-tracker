@@ -61,7 +61,8 @@
 				breaktimePeriod: formatTime(doc.breaktimePeriod),
 				end: formatTime(doc.end),
 				date: doc.date.toLocaleDateString(),
-				overtime: formatTime(lastOvertime)
+				overtime: formatTime(lastOvertime),
+				egz: doc.isFlexitimeDay
 			};
 		})
 			.then(async (result) => {
@@ -107,12 +108,6 @@
 				console.error(err.stack || err);
 				return;
 			});
-
-		toastSettings = {
-			message: $LL.EXPORT.TOAST_SUCCESS_IMPORT(),
-			background: 'variant-filled-success'
-		};
-		toastStore.trigger(toastSettings);
 	}
 
 	// async function map(coll: Collection, mapperFn: any) {
@@ -141,6 +136,12 @@
 			if (allowedFiletypes.includes(fileExt)) {
 				try {
 					await db.import(file);
+
+					toastSettings = {
+						message: $LL.EXPORT.TOAST_SUCCESS_IMPORT(),
+						background: 'variant-filled-success'
+					};
+					toastStore.trigger(toastSettings);
 				} catch (error) {
 					console.log(error);
 					toastSettings = {

@@ -8,6 +8,7 @@
 	export let inputError: boolean = false;
 	export let time: string;
 	export let minTimeLimit: string = '';
+	export let disabled: boolean = false;
 </script>
 
 <span><strong>{label}</strong></span>
@@ -18,6 +19,7 @@
 		class:input-error={inputError}
 		aria-label="Enter {label}"
 		type="time"
+		{disabled}
 		min={minTimeLimit}
 		bind:value={time}
 		on:input={() => {
@@ -27,6 +29,7 @@
 	<button
 		data-testid="set-current-time-btn"
 		class="btn variant-filled-primary"
+		{disabled}
 		on:click={() => {
 			time = formatDateToTime(new Date());
 		}}

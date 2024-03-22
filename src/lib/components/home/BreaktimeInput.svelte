@@ -8,6 +8,7 @@
 	export let inputError: boolean = false;
 	export let time: string;
 	export let minTimeLimit: string = '';
+	export let disabled: boolean = false;
 
 	let breaktimeStart: Date;
 	let breaktimeEnd: Date;
@@ -27,6 +28,7 @@
 		class:input-error={inputError}
 		aria-label="Enter {label}"
 		type="time"
+		{disabled}
 		min={minTimeLimit}
 		bind:value={time}
 		on:input={() => {
@@ -37,6 +39,7 @@
 		<button
 			data-testid="set-current-time-btn"
 			class="btn variant-filled-primary mb-4 lg:w-44"
+			{disabled}
 			on:click={() => {
 				breaktimeStart = new Date();
 				lockBreaktimeEndButton = false;
@@ -48,7 +51,7 @@
 		<button
 			data-testid="set-current-time-btn"
 			class="btn variant-filled-primary lg:w-44"
-			disabled={lockBreaktimeEndButton}
+			disabled={lockBreaktimeEndButton || disabled}
 			on:click={() => {
 				breaktimeEnd = new Date();
 				lockBreaktimeEndButton = true;

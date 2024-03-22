@@ -56,6 +56,7 @@ type RootTranslation = {
 	TIMESLOT: {
 		ADD_HEADLINE: string;
 		DATE_LABEL: string;
+		FLEXITIME_DAY_LABEL: string;
 		ERROR_END_MISSING: string;
 		ERROR_ALREADY_EXIST: string;
 		ERROR_END_BEFORE_START: string;
@@ -109,6 +110,7 @@ type RootTranslation = {
 			LEGEND_LABEL_AVAL_OVERTIME: string;
 			LEGEND_LABEL_BREAKTIME: string;
 			SHOW_ITEMS_LABEL: string;
+			SHOW_FLEXITIME_DAYS: string;
 		};
 	};
 
@@ -194,6 +196,7 @@ export type TranslationFunctions = {
 	TIMESLOT: {
 		ADD_HEADLINE: () => LocalizedString;
 		DATE_LABEL: () => LocalizedString;
+		FLEXITIME_DAY_LABEL: () => LocalizedString;
 		ERROR_END_MISSING: () => LocalizedString;
 		ERROR_ALREADY_EXIST: () => LocalizedString;
 		ERROR_END_BEFORE_START: () => LocalizedString;
@@ -248,6 +251,7 @@ export type TranslationFunctions = {
 			LEGEND_LABEL_AVAL_OVERTIME: () => LocalizedString;
 			LEGEND_LABEL_BREAKTIME: () => LocalizedString;
 			SHOW_ITEMS_LABEL: () => LocalizedString;
+			SHOW_FLEXITIME_DAYS: () => LocalizedString;
 		};
 	};
 

@@ -42,6 +42,7 @@ const en = {
 	TIMESLOT: {
 		ADD_HEADLINE: 'Add manually:',
 		DATE_LABEL: 'Date:',
+		FLEXITIME_DAY_LABEL: 'EGZ:',
 		ERROR_END_MISSING: 'The end of work is missing!',
 		ERROR_ALREADY_EXIST: 'A timeslot for this date already exist!',
 		ERROR_END_BEFORE_START: 'The start of work must be before the end of work!',
@@ -85,7 +86,8 @@ const en = {
 			LEGEND_LABEL_WORKED: 'Working Hours (in Hours)',
 			LEGEND_LABEL_AVAL_OVERTIME: 'Available Overtime (in Hours)',
 			LEGEND_LABEL_BREAKTIME: 'Breaktime (in Hours)',
-			SHOW_ITEMS_LABEL: 'Items to render:'
+			SHOW_ITEMS_LABEL: 'Items to render:',
+			SHOW_FLEXITIME_DAYS: 'Show EGZ Days'
 		},
 	},
 

@@ -8,7 +8,7 @@
 	import { liveQuery } from 'dexie';
 	import { db } from '$lib/db/db';
 	import { tryPersistWithoutPromtingUser } from '$lib/db/persistStorage';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	//initializeStores();
 	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
@@ -18,6 +18,7 @@
 	}
 
 	onMount(async () => {
+		// await db.open();
 		await tryPersistWithoutPromtingUser();
 	});
 

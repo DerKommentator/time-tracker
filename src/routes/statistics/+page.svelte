@@ -9,7 +9,7 @@
 	import type { Time } from '$lib/models/Time';
 	import type { Timeslot } from '$lib/models/Timeslot';
 
-	let data: { date: string; worked: number; avalOt: number }[];
+	let data: { date: Date; worked: number; avalOt: number; isFlexitimeDay: number }[];
 
 	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
 
@@ -21,9 +21,7 @@
 	}
 
 	$: if (fetchLimit > 0) {
-		timeslotsSortByDate = liveQuery(() =>
-			db[databaseName].toCollection().limit(fetchLimit).sortBy('date')
-		);
+		timeslotsSortByDate = liveQuery(() => db[databaseName].limit(fetchLimit).sortBy('date'));
 	}
 
 	$: if ($timeslotsSortByDate) {
@@ -31,16 +29,15 @@
 		data = $timeslotsSortByDate.map((timeslot) => {
 			overtimeSum = calcTime(overtimeSum, timeslot.statistics.timeDiffPlannedToWorked, true);
 			return {
-				date: new Date(timeslot.date).toLocaleDateString(),
+				date: new Date(timeslot.date),
 				worked: timeToHours(timeslot.statistics.hoursWorked),
 				breaktimePeriod: timeToHours(timeslot.breaktimePeriod),
-				avalOt: timeToHours(overtimeSum)
+				avalOt: timeToHours(overtimeSum),
+				// TODO: change functionality of bar for egz
+				isFlexitimeDay: timeslot.isFlexitimeDay * 7
 			};
 		});
 	}
-
-	// Clean Code
-	const forceUpdate = async (render: any) => {};
 </script>
 
 <div id="statistics" class="h-full p-5">
