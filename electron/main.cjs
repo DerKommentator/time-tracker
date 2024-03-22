@@ -270,6 +270,12 @@ ipcMain.on('check_for_updates', () => {
 ipcMain.on('restart_app', () => {
 	top.mainWindow.removeAllListeners('before-quit');
 	app.removeAllListeners('before-quit');
+
+	top.mainWindow.removeAllListeners('close');
+	top.mainWindow.tray.destroy();
+	// release windows
+	top = null;
+
 	if (updateDownloaded) {
 		autoUpdater.quitAndInstall();
 	}
@@ -292,22 +298,19 @@ app.on('activate', () => {
 	if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-if (!app.requestSingleInstanceLock()) {
-	top = null;
-	app.quit();
-} else {
-	app.on('second-instance', (event, commandLine, workingDirectory) => {
-		if (top?.mainWindow) {
-			if (top?.mainWindow?.isMinimized()) {
-				top?.mainWindow?.restore();
-			}
-			top?.mainWindow?.focus();
-		}
-	});
-
-	// Create myWindow, load the rest of the app, etc...
-	app.on('ready', () => {});
-}
+// if (!app.requestSingleInstanceLock()) {
+// 	top = null;
+// 	app.quit();
+// } else {
+// 	app.on('second-instance', (event, commandLine, workingDirectory) => {
+// 		if (top?.mainWindow) {
+// 			if (top?.mainWindow?.isMinimized()) {
+// 				top?.mainWindow?.restore();
+// 			}
+// 			top?.mainWindow?.focus();
+// 		}
+// 	});
+// }
 
 if (!isTestingEnvironment) {
 	app.on('before-quit', (e) => {

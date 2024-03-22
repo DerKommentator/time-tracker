@@ -86,7 +86,7 @@
 						const json = JSON.stringify({ data: result }, null, 2);
 						download(json, 'timetracker-export.json', 'application/json');
 						break;
-					case 'db-backup':
+					case 'dbb':
 						const blob = await db.export({
 							prettyJson: true,
 							filter: (table, value, key) => table === 'timeslots'

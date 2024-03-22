@@ -15,6 +15,7 @@
 	import {
 		calcTime,
 		compareDates,
+		compareTimes,
 		formatDate,
 		formatDateToTime,
 		formatTime,
@@ -30,14 +31,12 @@
 	import type { Time } from '$lib/models/Time';
 	import type { Timeslot } from '$lib/models/Timeslot';
 	import type { Settings } from '$lib/models/Settings';
-	import type { StatisticsStore } from '$lib/models/StatisticsStore';
 	import { db } from '$lib/db/db';
 	import type { DbError } from '$lib/models/DbError';
 	import TimeInput from './TimeInput.svelte';
 	import BreaktimeInput from './BreaktimeInput.svelte';
 	import LL from '../../../i18n/i18n-svelte';
 	import { onDestroy, onMount } from 'svelte';
-	import en from '../../../i18n/en';
 
 	let databaseName: 'timeslots' | 'testTableTimeslots' = 'timeslots';
 
@@ -122,7 +121,7 @@
 			start = stringToTime(startTime);
 			end = stringToTime(endTime);
 
-			if (start.hours > end.hours || (start.hours == end.hours && start.minutes >= end.minutes)) {
+			if (compareTimes(start, end)) {
 				startTimeError = true;
 				endTimeError = true;
 				errorMessage = $LL.TIMESLOT.ERROR_END_BEFORE_START();
@@ -138,6 +137,13 @@
 				hours: settings.plannedWorkingTime.hours * -1,
 				minutes: settings.plannedWorkingTime.minutes * -1
 			};
+		}
+
+		if (compareTimes(breaktime, hoursWorked)) {
+			breaktimeError = true;
+			endTimeError = true;
+			errorMessage = $LL.TIMESLOT.ERROR_BREAKTIME_TO_LONG();
+			return;
 		}
 
 		// $statisticsStore.availableOvertime = calcTime(

@@ -60,6 +60,7 @@ type RootTranslation = {
 		ERROR_END_MISSING: string;
 		ERROR_ALREADY_EXIST: string;
 		ERROR_END_BEFORE_START: string;
+		ERROR_BREAKTIME_TO_LONG: string;
 
 		/**
 		 * Timeslot for {date} successfully added!
@@ -200,6 +201,7 @@ export type TranslationFunctions = {
 		ERROR_END_MISSING: () => LocalizedString;
 		ERROR_ALREADY_EXIST: () => LocalizedString;
 		ERROR_END_BEFORE_START: () => LocalizedString;
+		ERROR_BREAKTIME_TO_LONG: () => LocalizedString;
 
 		/**
 		 * Timeslot for {date} successfully added!

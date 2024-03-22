@@ -1,3 +1,9 @@
+# Release: v0.9.23
+
+- ✨ Search bar to search through all saved dates
+- Bar chart design update
+- Small design changes
+
 # Release: v0.9.22
 
 - EGZ added as a selectable option. Planned working hours are deducted from overtime.

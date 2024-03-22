@@ -47,6 +47,7 @@ const de = {
 		ERROR_END_MISSING: 'Das Arbeitsende fehlt!',
 		ERROR_ALREADY_EXIST: 'Für diesen Tag gibt es bereits einen Eintrag!',
 		ERROR_END_BEFORE_START: 'Das Arbeitsende darf nicht vor dem Arbeitsbeginn sein!',
+		ERROR_BREAKTIME_TO_LONG: 'Die Pause kann nicht länger als die Arbeitszeit sein!',
 
 		TOAST_ADDED_SUCCESSFULLY: 'Der Eintrag für {date} wurde erfolgreich hinzugefügt!',
 		TOAST_ADDED_FAILED: 'Ein Fehler beim Speichern vom Eintrag {date} ist aufgetreten: {error}'

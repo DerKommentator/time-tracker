@@ -83,6 +83,10 @@ export function calcTime(start: Time, end: Time, addition: boolean = false): Tim
 	return { hours: hours, minutes: parseInt(minutes.toFixed(0)) };
 }
 
+export function compareTimes(start: Time, end: Time) {
+	return (start.hours > end.hours || (start.hours == end.hours && start.minutes >= end.minutes));
+}
+
 export function formatOvertime(overtime: Time): string {
 	if (overtime.hours < 0 || overtime.minutes < 0) {
 		return `-${formatTime({

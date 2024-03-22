@@ -46,6 +46,7 @@ const en = {
 		ERROR_END_MISSING: 'The end of work is missing!',
 		ERROR_ALREADY_EXIST: 'A timeslot for this date already exist!',
 		ERROR_END_BEFORE_START: 'The start of work must be before the end of work!',
+		ERROR_BREAKTIME_TO_LONG: 'The break cannot be longer than the working time!',
 
 		TOAST_ADDED_SUCCESSFULLY: 'Timeslot for {date} successfully added!',
 		TOAST_ADDED_FAILED: 'Failed to add timeslot for {date}: {error}'
