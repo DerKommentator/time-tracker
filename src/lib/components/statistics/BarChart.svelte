@@ -164,7 +164,7 @@
 				scales: {
 					x: {
 						stacked: true,
-						type: 'time',
+						type: 'timeseries',
 						time: {
 							unit: 'day',
 							tooltipFormat: 'DD.MM.YYYY',
