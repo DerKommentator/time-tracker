@@ -292,6 +292,23 @@ app.on('activate', () => {
 	if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
+if (!app.requestSingleInstanceLock()) {
+	top = null;
+	app.quit();
+} else {
+	app.on('second-instance', (event, commandLine, workingDirectory) => {
+		if (top?.mainWindow) {
+			if (top?.mainWindow?.isMinimized()) {
+				top?.mainWindow?.restore();
+			}
+			top?.mainWindow?.focus();
+		}
+	});
+
+	// Create myWindow, load the rest of the app, etc...
+	app.on('ready', () => {});
+}
+
 if (!isTestingEnvironment) {
 	app.on('before-quit', (e) => {
 		if (!updateDownloaded && !savedTodaysEntry) {

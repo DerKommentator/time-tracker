@@ -1,3 +1,8 @@
+# Release: v0.9.22
+
+- EGZ added as a selectable option. Planned working hours are deducted from overtime.
+- Updates for bar chart design / format
+
 # Release: v0.9.21
 
 - ✨ You can now export and import your settings
