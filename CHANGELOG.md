@@ -1,6 +1,7 @@
 # Release: v0.9.23
 
 - ✨ Search bar to search through all saved dates
+- Fix: Database export
 - Bar chart design update
 - Small design changes
 

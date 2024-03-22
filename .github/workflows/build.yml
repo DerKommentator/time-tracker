@@ -73,14 +73,14 @@ jobs:
       # - name: 📦 Install Playwright deps
       #   run: npx playwright install-deps
 
-      - name: Cache Electron build files
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/electron/
-          key: electron-build-files
-          restore-keys: |
-            electron-build-files
+      # - name: Cache Electron build files
+      #   id: cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.cache/electron/
+      #     key: electron-build-files
+      #     restore-keys: |
+      #       electron-build-files
 
       - name: 🏗️ Run build
         run: npm run build

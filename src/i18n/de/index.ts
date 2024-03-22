@@ -89,7 +89,7 @@ const de = {
 			LEGEND_LABEL_AVAL_OVERTIME: 'Verfügbare Überstunden (in Stunden)',
 			LEGEND_LABEL_BREAKTIME: 'Pausenzeit (in Stunden)',
 			SHOW_ITEMS_LABEL: 'Anzahl von Elementen:',
-			SHOW_FLEXITIME_DAYS: 'EGT Tage anzeigen:'
+			SHOW_FLEXITIME_DAYS: 'EGZ Tage anzeigen:'
 		},
 	},
 

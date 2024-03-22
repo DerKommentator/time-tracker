@@ -88,7 +88,7 @@ const en = {
 			LEGEND_LABEL_AVAL_OVERTIME: 'Available Overtime (in Hours)',
 			LEGEND_LABEL_BREAKTIME: 'Breaktime (in Hours)',
 			SHOW_ITEMS_LABEL: 'Items to render:',
-			SHOW_FLEXITIME_DAYS: 'Show EGZ Days'
+			SHOW_FLEXITIME_DAYS: 'Show EGZ Days:'
 		},
 	},
 
