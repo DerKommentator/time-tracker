@@ -128,7 +128,7 @@ test.describe('Test E2E Electron App', async () => {
 		expect(saveBtn).toBeTruthy();
 		await saveBtn.click();
 
-		await page.waitForTimeout(10000);
+		// await page.waitForTimeout(10000);
 
 		return returnValues;
 	}
