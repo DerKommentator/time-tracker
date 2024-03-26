@@ -33,7 +33,6 @@
 	}
 
 	onMount(async () => {
-		// await db.open();
 		await tryPersistWithoutPromtingUser();
 		timeslots = liveQuery(() => db[databaseName].reverse().sortBy('date'));
 	});
