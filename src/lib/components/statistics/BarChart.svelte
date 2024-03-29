@@ -135,8 +135,6 @@
 				plugins: {
 					legend: {
 						labels: {
-							boxWidth: 40,
-							boxHeight: 15,
 							generateLabels: function (chart) {
 								let labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
 
@@ -144,7 +142,7 @@
 								grad.addColorStop(0.49, `rgb(${tertiaryColor})`);
 								grad.addColorStop(0.505, `rgb(${colorRed})`);
 
-								for (var key in labels) {
+								for (let key in labels) {
 									if (key == '2') {
 										labels[key].fillStyle = grad;
 									}

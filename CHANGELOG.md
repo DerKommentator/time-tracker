@@ -1,3 +1,8 @@
+# Release: v0.9.24
+
+- Fix: Multiple instance of program cause db error (issue #5)
+- Small design updates for the bar chart
+
 # Release: v0.9.23
 
 - ✨ Search bar to search through all saved dates
